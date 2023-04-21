@@ -1,10 +1,9 @@
-@import './base.css';
+@import 'base';
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'vue-datepicker-next/index.css';
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+body {
+  font-family: 'Noto Sans TC', '微軟正黑體', sans-serif;
+  font-size: 16px;
+  background-color: #f9f9f9;
 }
