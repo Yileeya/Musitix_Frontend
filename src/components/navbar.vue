@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand">
         <RouterLink to="/">
@@ -99,7 +99,6 @@ const showIconNavItems = computed(() => {
 <style scoped lang="scss">
 .navbar {
   background-color: white !important;
-  padding: 1em;
   .container-fluid {
     max-width: 1300px;
     .nav-item a {
@@ -165,16 +164,6 @@ const showIconNavItems = computed(() => {
       svg {
         max-width: 50%;
       }
-    }
-    .navbar-collapse-show {
-      position: fixed;
-      bottom: 0;
-      background: white;
-      width: 100%;
-      left: 0;
-      display: flex !important;
-      justify-content: space-around;
-      padding: 1em 0.5em;
     }
   }
 }
