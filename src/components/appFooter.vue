@@ -8,7 +8,7 @@
       <div class="col-md-6 footer-items">
         <section v-for="footerItem in footerItems" :key="footerItem.name">
           <h5>{{ footerItem.title }}</h5>
-          <p v-for="content in footerItem.items">
+          <p v-for="content in footerItem.items" :key="content.title">
             <template v-if="footerItem.name === 'follow'">
               <a :href="content.link" target="_blank">
                 <component :is="content.icon" />
@@ -31,7 +31,7 @@
 import MusitixIconSvg from '@/components/icons/musitixIconSvg.vue'
 import Facebook from '@/components/icons/facebook.vue'
 import Instagram from '@/components/icons/instagram.vue'
-import { ref } from 'vue'
+import { ref, markRaw } from 'vue'
 const copyRight = ref('Copyright © 2023 consulation ｜ All Rights Reserved')
 const footerItems = ref([
   {
@@ -80,12 +80,12 @@ const footerItems = ref([
     items: [
       {
         title: 'Facebook',
-        icon: Facebook,
+        icon: markRaw(Facebook),
         link: 'https://www.facebook.com'
       },
       {
         title: 'Instagram',
-        icon: Instagram,
+        icon: markRaw(Instagram),
         link: 'https://www.instagram.com'
       }
     ]
