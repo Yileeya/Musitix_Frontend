@@ -4,12 +4,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    component: () => import('../views/home/homeLayout.vue')
-  },
-  {
-    path: '/todo',
-    name: 'todo',
-    component: () => import('../views/TodoView.vue')
+    component: () => import('@/views/home/HomeLayout.vue')
   }
 ]
 export default routes
