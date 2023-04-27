@@ -28,9 +28,9 @@
 </template>
 
 <script setup lang="ts">
-import MusitixIconSvg from '@/components/icons/musitixIconSvg.vue'
-import Facebook from '@/components/icons/facebook.vue'
-import Instagram from '@/components/icons/instagram.vue'
+import MusitixIconSvg from '@/components/icons/MusitixIconSvg.vue'
+import Facebook from '@/components/icons/Facebook.vue'
+import Instagram from '@/components/icons/Instagram.vue'
 import { ref, markRaw } from 'vue'
 const copyRight = ref('Copyright © 2023 consulation ｜ All Rights Reserved')
 const footerItems = ref([

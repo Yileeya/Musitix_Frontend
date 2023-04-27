@@ -40,12 +40,12 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { ref, computed, markRaw } from 'vue'
-import MusitixIconSvg from '@/components/icons/musitixIconSvg.vue'
-import CircleUserSvg from '@/components/icons/circleUserSvg.vue'
-import HomeSvg from '@/components/icons/homeSvg.vue'
-import SearchSvg from '@/components/icons/searchSvg.vue'
-import NewsSvg from '@/components/icons/newsSvg.vue'
-import PeopleSvg from '@/components/icons/peopleSvg.vue'
+import MusitixIconSvg from '@/components/icons/MusitixIconSvg.vue'
+import CircleUserSvg from '@/components/icons/CircleUserSvg.vue'
+import HomeSvg from '@/components/icons/HomeSvg.vue'
+import SearchSvg from '@/components/icons/SearchSvg.vue'
+import NewsSvg from '@/components/icons/NewsSvg.vue'
+import PeopleSvg from '@/components/icons/PeopleSvg.vue'
 
 const navItems = ref([
   {
