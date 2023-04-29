@@ -24,11 +24,11 @@ const emit = defineEmits<{
 
 function emitRouterChange() {
   if (!search.value) return
-  emit('changeRouterPath', '/todo')
+  emit('changeRouterPath', '/search')
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .search-bar {
   position: relative;
   margin-top: -1em;
