@@ -19,6 +19,7 @@ body {
   --gray-green-color: #afb8a7;
   --light-yellow-color: #d8d2c5;
   --gray: #dee2e6;
+  --purple: #bd4be7;
 }
 
 button,
@@ -36,4 +37,8 @@ button,
     background-color: var(--warning-color);
     color: black;
   }
+}
+
+h2 {
+  font-size: 2em;
 }

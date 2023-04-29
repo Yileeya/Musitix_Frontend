@@ -72,5 +72,22 @@ function emitRouterChange() {
       }
     }
   }
+
+  @media (max-width: 768px) {
+    .search-bg {
+      padding: 1em 0;
+
+      .form-input {
+        .form-control {
+          height: 2.5em;
+        }
+
+        .fa-search {
+          top: 8px;
+          font-size: 26px;
+        }
+      }
+    }
+  }
 }
 </style>
