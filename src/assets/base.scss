@@ -38,3 +38,13 @@ button,
     color: black;
   }
 }
+
+.btn-purple {
+  background-color: var(--purple);
+  color: white;
+
+  &:hover {
+    background-color: var(--warning-color);
+    color: black;
+  }
+}
