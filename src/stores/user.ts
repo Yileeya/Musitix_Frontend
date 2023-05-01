@@ -8,16 +8,19 @@ export const useUserProfileStore = defineStore('userProfile', () => {
 
     watch(IsLogin, () => {        
         if (IsLogin) {            
-            Profiles().then(Response => {
-                UserProfiles.value = Response.data.data 
-                console.log(UserProfiles.value)
-            })    
+            ReloadUserProfiles()  
         }
     },{immediate:true})
     function SetIsLogin(isLogin:boolean){
         IsLogin.value = isLogin
     }
-    return { IsLogin, UserProfiles ,SetIsLogin}
+    function ReloadUserProfiles(){
+        Profiles().then(Response => {
+            UserProfiles.value = Response.data.data 
+            console.log(UserProfiles.value)
+        }) 
+    }
+    return { IsLogin, UserProfiles ,SetIsLogin,ReloadUserProfiles}
 })
 
 export interface UserProfile {
