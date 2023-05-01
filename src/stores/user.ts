@@ -6,8 +6,9 @@ export const useUserProfileStore = defineStore('userProfile', () => {
     const IsLogin = ref(localStorage.getItem("Token") !== null)
     const UserProfiles= ref<null|UserProfile>(null)
 
-    watch(IsLogin, () => {        
-        if (IsLogin) {            
+    watch(IsLogin, () => {  
+        console.log(IsLogin.value)      
+        if (IsLogin.value) {            
             ReloadUserProfiles()  
         }
     },{immediate:true})

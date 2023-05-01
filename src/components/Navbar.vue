@@ -13,12 +13,19 @@
           </li>
         </ul>
         <div class="user-control-area d-flex">
-          <div class="user" v-if="isLogin">
-            <circle-user-svg />
-            <span class="name"> 南部聽團仔 </span>
+          <div class="user" v-if="userProfile.IsLogin">
+            <template v-if="userProfile.UserProfiles != null && userProfile.UserProfiles?.picture != ''">
+              <img :src="userProfile.UserProfiles?.picture" class="user-img" alt="">
+            </template>
+            <template v-else>
+<circle-user-svg />
+            </template>    
+            
+           
+            <span class="name"> {{userProfile.UserProfiles?.username}} </span>
           </div>
           <button class="btn login-btn btn-black" type="button" @click.prevent="LoginRoute">
-            {{ isLogin ? '登出' : '登入' }}
+            {{ userProfile.IsLogin ? '登出' : '登入' }}
           </button>
         </div>
       </div>
@@ -27,7 +34,7 @@
           class="nav-icon"
           v-for="navItem in showIconNavItems"
           :key="'icon' + navItem.link"
-          @click.prevent="navItem.name === 'user' && (isLogin = !isLogin)"
+          @click.prevent="navItem.name === 'user' && LoginRoute"
         >
           <RouterLink :to="navItem.link">
             <component class="nav-icon" :is="navItem.icon" />
@@ -95,15 +102,15 @@ const userProfile = useUserProfileStore()
 const isLogin = userProfile.IsLogin
 const router = useRouter();
 const showNavItems = computed(() => {
-  return navItems.value.slice(0, isLogin ? 3 : -1)
+  return navItems.value.slice(0, userProfile.IsLogin ? 3 : -1)
 })
 const showIconNavItems = computed(() => {
-  return iconNavItems.value.filter((item) => (isLogin ? item : item.name !== 'people'))
+  return iconNavItems.value.filter((item) => (userProfile.IsLogin ? item : item.name !== 'people'))
 })
 function LoginRoute(){
-  console.log(isLogin)
-  if(isLogin){
-    Logout()
+  console.log(userProfile.IsLogin)
+  if(userProfile.IsLogin){
+    //Logout()
     localStorage.removeItem("Token")
     userProfile.SetIsLogin(false)
   }else{
@@ -148,6 +155,13 @@ function LoginRoute(){
       .user {
         display: flex;
         align-items: center;
+        .user-img{
+          border-radius: 50%;
+          overflow: hidden;
+          height: 38px;
+          width: 38px;
+
+        }
         .name {
           margin: 0 2em 0 1em;
           max-width: 10em;
