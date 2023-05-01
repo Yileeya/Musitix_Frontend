@@ -15,6 +15,21 @@ const routes: RouteRecordRaw[] = [
     path: '/news',
     name: 'news',
     component: () => import('@/views/newMessage/NewMessageLayout.vue')
+  },
+  {
+    path: '/member',
+    component: () => import('@/views/member/MemberLayout.vue'),
+    children: [
+      {
+        path: '/account',
+        name: 'member',
+        component: () => import('@/views/member/Account.vue'),
+      },
+      {
+        path: "/:pathMatch(.*)*",
+        redirect: '/account'
+      }
+    ]
   }
 ]
 export default routes
