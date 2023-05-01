@@ -48,9 +48,11 @@ import { computed, reactive, ref, watch, watchEffect } from 'vue'
 import { useForm,useField } from 'vee-validate';
 import { Regist, } from '../../apis/regist'
 import { useRoute, useRouter } from 'vue-router'
+import { useUserProfileStore } from '@/stores/user';
 
 //登入
 const router = useRouter();
+const userProfile = useUserProfileStore()
 let errorMessage:string
 
 // Create a form context with the validation schema
@@ -102,6 +104,7 @@ const RegistSubmit = handleSubmit(async(values) => {
     errorMessage = ""
     alert(response.data.message)
     localStorage.setItem("Token",response.data.user.token)
+    userProfile.SetIsLogin(true)
     router.push("/")
   })
   .catch(error=>{

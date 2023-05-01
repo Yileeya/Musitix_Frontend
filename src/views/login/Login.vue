@@ -38,8 +38,10 @@
 import { useForm,useField } from 'vee-validate'
 import { Login, } from '../../apis/login'
 import { useRoute, useRouter } from 'vue-router'
+import { useUserProfileStore } from '@/stores/user';
 
 const router = useRouter();
+const userProfile = useUserProfileStore()
 //登入
 let errorMessage:string
 const simpleSchema = {
@@ -72,6 +74,7 @@ const LoginSubmit = handleSubmit(async(values) => {
   .then(response=>{    
     console.log(response)
     localStorage.setItem("Token",response.data.user.token)
+    userProfile.SetIsLogin(true)
     router.push("/")
   })
   .catch(error=>{

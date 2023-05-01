@@ -40,6 +40,7 @@
 <script setup lang="ts">
 import { RouterLink,useRouter } from 'vue-router'
 import { ref, computed, markRaw } from 'vue'
+import { useUserProfileStore } from '@/stores/user'
 import MusitixIconSvg from '@/components/icons/MusitixIconSvg.vue'
 import CircleUserSvg from '@/components/icons/CircleUserSvg.vue'
 import HomeSvg from '@/components/icons/HomeSvg.vue'
@@ -89,21 +90,22 @@ const iconNavItems = ref([
     link: '/'
   }
 ])
-const Token = localStorage.getItem("Token")
-const isLogin = ref(Token != undefined)
+
+const userProfile = useUserProfileStore()
+const isLogin = userProfile.IsLogin
 const router = useRouter();
 const showNavItems = computed(() => {
-  return navItems.value.slice(0, isLogin.value ? 3 : -1)
+  return navItems.value.slice(0, isLogin ? 3 : -1)
 })
 const showIconNavItems = computed(() => {
-  return iconNavItems.value.filter((item) => (isLogin.value ? item : item.name !== 'people'))
+  return iconNavItems.value.filter((item) => (isLogin ? item : item.name !== 'people'))
 })
 function LoginRoute(){
-  console.log(isLogin.value)
-  if(isLogin.value){
+  console.log(isLogin)
+  if(isLogin){
     Logout()
     localStorage.removeItem("Token")
-    isLogin.value = false
+    userProfile.SetIsLogin(false)
   }else{
     router.push('/Login')
   }
