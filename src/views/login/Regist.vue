@@ -46,7 +46,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch, watchEffect } from 'vue'
 import { useForm,useField } from 'vee-validate';
-import { Regist, } from '../../apis/regist'
+import { postRegist } from '../../apis/users/login'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserProfileStore } from '@/stores/user';
 
@@ -98,7 +98,7 @@ const { errorMessage:passwordErrorMessage,value:password } = useField(() => 'pas
 const { errorMessage:confirmPasswordErrorMessage,value:confirmPassword } = useField(() => 'confirmPassword');
 
 const RegistSubmit = handleSubmit(async(values) => {
-  await Regist(values.username,values.email,values.password,values.confirmPassword)
+  await postRegist(values.username,values.email,values.password,values.confirmPassword)
   .then(response=>{
     console.log(response)
     errorMessage = ""

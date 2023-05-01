@@ -54,7 +54,7 @@ import HomeSvg from '@/components/icons/HomeSvg.vue'
 import SearchSvg from '@/components/icons/SearchSvg.vue'
 import NewsSvg from '@/components/icons/NewsSvg.vue'
 import PeopleSvg from '@/components/icons/PeopleSvg.vue'
-import { Logout } from '../apis/logout'
+import { postLogin } from '../apis/users/login'
 
 const navItems = ref([
   {
