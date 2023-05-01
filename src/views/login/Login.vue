@@ -36,7 +36,7 @@
 <script setup lang="ts">
 
 import { useForm,useField } from 'vee-validate'
-import { Login, } from '../../apis/login'
+import { postLogin } from '../../apis/users/login'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserProfileStore } from '@/stores/user';
 
@@ -70,7 +70,7 @@ const { handleSubmit, isSubmitting,errors } = useForm({
 const { errorMessage: emailErrorMessage, value:email } = useField(() => 'email');
 const { errorMessage:passwordErrorMessage,value:password } = useField(() => 'password');
 const LoginSubmit = handleSubmit(async(values) => {
-  await Login(values.email,values.password)
+  await postLogin(values.email,values.password)
   .then(response=>{    
     console.log(response)
     localStorage.setItem("Token",response.data.user.token)

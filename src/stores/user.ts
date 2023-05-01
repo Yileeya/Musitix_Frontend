@@ -1,6 +1,6 @@
 import { ref, computed, warn, watch, reactive } from 'vue'
 import { defineStore } from 'pinia'
-import { Profiles } from '@/apis/userProfile'
+import { getProfiles } from '@/apis/users/profile'
 
 export const useUserProfileStore = defineStore('userProfile', () => {
     const IsLogin = ref(localStorage.getItem("Token") !== null)
@@ -16,7 +16,7 @@ export const useUserProfileStore = defineStore('userProfile', () => {
         IsLogin.value = isLogin
     }
     function ReloadUserProfiles(){
-        Profiles().then(Response => {
+        getProfiles().then(Response => {
             UserProfiles.value = Response.data.data 
             console.log(UserProfiles.value)
         }) 
