@@ -7,14 +7,14 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/home/HomeLayout.vue')
   },
   {
-    path: '/Login',
+    path: '/login',
     name: 'login',
     component: () => import('@/views/login/LoginLayout.vue')
   },
   {
     path: '/news',
     name: 'news',
-    component: () => import('@/views/new_message/NewMessageLayout.vue')
+    component: () => import('@/views/newMessage/NewMessageLayout.vue')
   }
 ]
 export default routes

@@ -17,7 +17,7 @@
             <circle-user-svg />
             <span class="name"> 南部聽團仔 </span>
           </div>
-          <button class="btn login-btn btn-black" type="button" @click.prevent="isLogin = !isLogin">
+          <button class="btn login-btn btn-black" type="button" @click.prevent="LoginRoute">
             {{ isLogin ? '登出' : '登入' }}
           </button>
         </div>
@@ -38,7 +38,7 @@
   </nav>
 </template>
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink,useRouter } from 'vue-router'
 import { ref, computed, markRaw } from 'vue'
 import MusitixIconSvg from '@/components/icons/MusitixIconSvg.vue'
 import CircleUserSvg from '@/components/icons/CircleUserSvg.vue'
@@ -46,6 +46,7 @@ import HomeSvg from '@/components/icons/HomeSvg.vue'
 import SearchSvg from '@/components/icons/SearchSvg.vue'
 import NewsSvg from '@/components/icons/NewsSvg.vue'
 import PeopleSvg from '@/components/icons/PeopleSvg.vue'
+import { Logout } from '../apis/logout'
 
 const navItems = ref([
   {
@@ -54,11 +55,11 @@ const navItems = ref([
   },
   {
     name: '最新消息',
-    link: '/todo'
+    link: '/news'
   },
   {
     name: '會員專區',
-    link: '/todo'
+    link: '/member'
   }
 ])
 const iconNavItems = ref([
@@ -88,13 +89,27 @@ const iconNavItems = ref([
     link: '/'
   }
 ])
-const isLogin = ref(false)
+const Token = localStorage.getItem("Token")
+const isLogin = ref(Token != undefined)
+const router = useRouter();
 const showNavItems = computed(() => {
   return navItems.value.slice(0, isLogin.value ? 3 : -1)
 })
 const showIconNavItems = computed(() => {
   return iconNavItems.value.filter((item) => (isLogin.value ? item : item.name !== 'people'))
 })
+function LoginRoute(){
+  console.log(isLogin.value)
+  if(isLogin.value){
+    Logout()
+    localStorage.removeItem("Token")
+    isLogin.value = false
+  }else{
+    router.push('/Login')
+  }
+}
+
+
 </script>
 <style scoped lang="scss">
 .navbar {
