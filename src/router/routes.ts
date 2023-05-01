@@ -12,8 +12,8 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/login/LoginLayout.vue')
   },
   {
-    path: '/message',
-    name: 'message',
+    path: '/news',
+    name: 'news',
     component: () => import('@/views/new_message/NewMessageLayout.vue')
   }
 ]
