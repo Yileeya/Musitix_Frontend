@@ -2,17 +2,19 @@
   <div>
     <h4>會員專區</h4>
     <div class="container">
-      <div class="col-3">
-        <ul>
-          <li v-for="member in  memberSide">
-          <RouterLink :to="member.link">
-            {{member.name}}
-          </RouterLink>           
-          </li>
-        </ul>
-      </div>
-      <div class="col-9">
-        <RouterView></RouterView>
+      <div class="row">
+        <div class="col-3 border">
+          <ul>
+            <li v-for="member in  memberSide">
+              <RouterLink :to="member.link">
+                {{ member.name }}
+              </RouterLink>
+            </li>
+          </ul>
+        </div>
+        <div class="col-9">
+          <RouterView></RouterView>
+        </div>
       </div>
     </div>
   </div>
@@ -46,6 +48,4 @@ const memberSide = ref([
 
 
 </script>
-<style scoped lang="scss">
-
-</style >
+<style scoped lang="scss"></style >

@@ -18,16 +18,17 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/member',
-    component: () => import('@/views/member/MemberLayout.vue'),
+    component: () => import('@/views/member/MemberLayout.vue'),   
+    meta: { requiresAuth: true },
     children: [
       {
-        path: '/account',
-        name: 'member',
+        path: 'account',
+        name: 'account',
         component: () => import('@/views/member/Account.vue'),
       },
       {
-        path: "/:pathMatch(.*)*",
-        redirect: '/account'
+        path: ":pathMatch(.*)*",
+        redirect: 'account'
       }
     ]
   }

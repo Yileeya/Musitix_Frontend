@@ -32,7 +32,7 @@ const Route = useRoute()
 const region = ref(Route.query.action ?? 'login')
 watch(region, (newValue, oldValue) => {
   if (newValue !== oldValue) {
-    Router.push({ query: { action: newValue } })
+    Router.replace({ query: { action: newValue } })
   }
 }, { immediate: true })
 

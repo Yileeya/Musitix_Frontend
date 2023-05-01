@@ -108,6 +108,9 @@ function LoginRoute() {
     //Logout()
     localStorage.removeItem("Token")
     userProfile.SetIsLogin(false)
+    if(router.currentRoute.value.meta.requiresAuth){
+      router.push('/')
+    }
   } else {
     router.push('/Login')
   }
