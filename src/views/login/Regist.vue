@@ -99,8 +99,7 @@ const { errorMessage:confirmPasswordErrorMessage,value:confirmPassword } = useFi
 
 const RegistSubmit = handleSubmit(async(values) => {
   await postRegist(values.username,values.email,values.password,values.confirmPassword)
-  .then(response=>{
-    console.log(response)
+  .then(response=>{   
     errorMessage = ""
     alert(response.data.message)
     localStorage.setItem("Token",response.data.user.token)
@@ -108,9 +107,7 @@ const RegistSubmit = handleSubmit(async(values) => {
     router.push("/")
   })
   .catch(error=>{
-    console.log(error)
-    errorMessage = error.response.data.message
-    
+    errorMessage = error.response.data.message    
   })
 
 });

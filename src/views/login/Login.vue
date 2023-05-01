@@ -71,14 +71,12 @@ const { errorMessage: emailErrorMessage, value:email } = useField(() => 'email')
 const { errorMessage:passwordErrorMessage,value:password } = useField(() => 'password');
 const LoginSubmit = handleSubmit(async(values) => {
   await postLogin(values.email,values.password)
-  .then(response=>{    
-    console.log(response)
+  .then(response=>{       
     localStorage.setItem("Token",response.data.user.token)
     userProfile.SetIsLogin(true)
     router.push("/")
   })
-  .catch(error=>{
-    console.log(error)
+  .catch(error=>{   
     errorMessage = error.response.data.message
     
   })

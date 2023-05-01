@@ -13,16 +13,16 @@
           </li>
         </ul>
         <div class="user-control-area d-flex">
-          <div class="user" v-if="userProfile.IsLogin">
+          <div class="user" v-if="userProfile.IsLogin && userProfile.UserProfiles != null">
             <template v-if="userProfile.UserProfiles != null && userProfile.UserProfiles?.picture != ''">
               <img :src="userProfile.UserProfiles?.picture" class="user-img" alt="">
             </template>
             <template v-else>
-<circle-user-svg />
-            </template>    
-            
-           
-            <span class="name"> {{userProfile.UserProfiles?.username}} </span>
+              <circle-user-svg />
+            </template>
+
+
+            <span class="name"> {{ userProfile.UserProfiles?.username }} </span>
           </div>
           <button class="btn login-btn btn-black" type="button" @click.prevent="LoginRoute">
             {{ userProfile.IsLogin ? '登出' : '登入' }}
@@ -30,12 +30,8 @@
         </div>
       </div>
       <div class="navbar-collapse-show">
-        <div
-          class="nav-icon"
-          v-for="navItem in showIconNavItems"
-          :key="'icon' + navItem.link"
-          @click.prevent="navItem.name === 'user' && LoginRoute"
-        >
+        <div class="nav-icon" v-for="navItem in showIconNavItems" :key="'icon' + navItem.link"
+          @click.prevent="navItem.name === 'user' && LoginRoute">
           <RouterLink :to="navItem.link">
             <component class="nav-icon" :is="navItem.icon" />
           </RouterLink>
@@ -45,7 +41,7 @@
   </nav>
 </template>
 <script setup lang="ts">
-import { RouterLink,useRouter } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { ref, computed, markRaw } from 'vue'
 import { useUserProfileStore } from '@/stores/user'
 import MusitixIconSvg from '@/components/icons/MusitixIconSvg.vue'
@@ -84,12 +80,12 @@ const iconNavItems = ref([
   {
     name: 'news',
     icon: markRaw(NewsSvg),
-    link: '/'
+    link: '/news'
   },
   {
     name: 'people',
     icon: markRaw(PeopleSvg),
-    link: '/'
+    link: '/member'
   },
   {
     name: 'user',
@@ -107,13 +103,12 @@ const showNavItems = computed(() => {
 const showIconNavItems = computed(() => {
   return iconNavItems.value.filter((item) => (userProfile.IsLogin ? item : item.name !== 'people'))
 })
-function LoginRoute(){
-  console.log(userProfile.IsLogin)
-  if(userProfile.IsLogin){
+function LoginRoute() { 
+  if (userProfile.IsLogin) {
     //Logout()
     localStorage.removeItem("Token")
     userProfile.SetIsLogin(false)
-  }else{
+  } else {
     router.push('/Login')
   }
 }
@@ -123,8 +118,10 @@ function LoginRoute(){
 <style scoped lang="scss">
 .navbar {
   background-color: white !important;
+
   .container-fluid {
     max-width: 1300px;
+
     .nav-item a {
       color: black;
       font-size: 20px;
@@ -132,6 +129,7 @@ function LoginRoute(){
       text-decoration: none;
       margin: 0 1em;
       position: relative;
+
       &::after {
         content: '';
         position: absolute;
@@ -142,26 +140,32 @@ function LoginRoute(){
         background-color: var(--primary-color);
         transition: all 0.3s ease-out;
       }
+
       &:hover {
         color: var(--primary-color);
+
         &::after {
           left: 0;
           width: 100%;
         }
       }
     }
+
     .user-control-area {
       align-items: center;
+
       .user {
         display: flex;
         align-items: center;
-        .user-img{
+
+        .user-img {
           border-radius: 50%;
           overflow: hidden;
           height: 38px;
           width: 38px;
 
         }
+
         .name {
           margin: 0 2em 0 1em;
           max-width: 10em;
@@ -171,10 +175,12 @@ function LoginRoute(){
           -webkit-box-orient: vertical;
           white-space: normal;
           display: -webkit-box;
+
           &:hover {
             cursor: default;
           }
         }
+
         .login-btn {
           font-size: 16px;
           width: 80px;
@@ -182,20 +188,23 @@ function LoginRoute(){
         }
       }
     }
+
     .navbar-collapse-show {
       display: none;
     }
   }
+
   @media (max-width: 992px) {
     padding: 0.5em 0;
+
     .navbar-brand {
       padding: 0;
       margin: auto;
       text-align: center;
+
       svg {
         max-width: 50%;
       }
     }
   }
-}
-</style>
+}</style>

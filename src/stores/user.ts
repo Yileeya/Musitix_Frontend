@@ -6,8 +6,7 @@ export const useUserProfileStore = defineStore('userProfile', () => {
     const IsLogin = ref(localStorage.getItem("Token") !== null)
     const UserProfiles= ref<null|UserProfile>(null)
 
-    watch(IsLogin, () => {  
-        console.log(IsLogin.value)      
+    watch(IsLogin, () => {               
         if (IsLogin.value) {            
             ReloadUserProfiles()  
         }
@@ -17,8 +16,7 @@ export const useUserProfileStore = defineStore('userProfile', () => {
     }
     function ReloadUserProfiles(){
         getProfiles().then(Response => {
-            UserProfiles.value = Response.data.data 
-            console.log(UserProfiles.value)
+            UserProfiles.value = Response.data.data
         }) 
     }
     return { IsLogin, UserProfiles ,SetIsLogin,ReloadUserProfiles}

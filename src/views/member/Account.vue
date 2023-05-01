@@ -58,14 +58,12 @@ const { handleSubmit, isSubmitting,errors } = useForm();
 const {value:username } = useField(() => 'username');
 const LoginSubmit = handleSubmit(async(values) => {
   // await Login(values.email,values.password)
-  // .then(response=>{    
-  //   console.log(response)
+  // .then(response=>{      
   //   localStorage.setItem("Token",response.data.user.token)
   //   userProfile.SetIsLogin(true)
   //   router.push("/")
   // })
   // .catch(error=>{
-  //   console.log(error)
   //   errorMessage = error.response.data.message
     
   // })
