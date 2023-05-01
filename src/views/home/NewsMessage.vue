@@ -56,6 +56,9 @@ const openWindow = (href: string) => {
     bottom: -5em;
     right: -6em;
     z-index: -1;
+    @media (max-width: 1350px) {
+      right: 0;
+    }
   }
 
   .area-title {
