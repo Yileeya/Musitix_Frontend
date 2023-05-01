@@ -13,12 +13,19 @@
           </li>
         </ul>
         <div class="user-control-area d-flex">
-          <div class="user" v-if="isLogin">
-            <circle-user-svg />
-            <span class="name"> 南部聽團仔 </span>
+          <div class="user" v-if="userProfile.IsLogin">
+            <template v-if="userProfile.UserProfiles != null && userProfile.UserProfiles?.picture != ''">
+              <img :src="userProfile.UserProfiles?.picture" class="user-img" alt="">
+            </template>
+            <template v-else>
+<circle-user-svg />
+            </template>    
+            
+           
+            <span class="name"> {{userProfile.UserProfiles?.username}} </span>
           </div>
-          <button class="btn login-btn btn-black" type="button" @click.prevent="isLogin = !isLogin">
-            {{ isLogin ? '登出' : '登入' }}
+          <button class="btn login-btn btn-black" type="button" @click.prevent="LoginRoute">
+            {{ userProfile.IsLogin ? '登出' : '登入' }}
           </button>
         </div>
       </div>
@@ -27,7 +34,7 @@
           class="nav-icon"
           v-for="navItem in showIconNavItems"
           :key="'icon' + navItem.link"
-          @click.prevent="navItem.name === 'user' && (isLogin = !isLogin)"
+          @click.prevent="navItem.name === 'user' && LoginRoute"
         >
           <RouterLink :to="navItem.link">
             <component class="nav-icon" :is="navItem.icon" />
@@ -38,14 +45,16 @@
   </nav>
 </template>
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink,useRouter } from 'vue-router'
 import { ref, computed, markRaw } from 'vue'
+import { useUserProfileStore } from '@/stores/user'
 import MusitixIconSvg from '@/components/icons/MusitixIconSvg.vue'
 import CircleUserSvg from '@/components/icons/CircleUserSvg.vue'
 import HomeSvg from '@/components/icons/HomeSvg.vue'
 import SearchSvg from '@/components/icons/SearchSvg.vue'
 import NewsSvg from '@/components/icons/NewsSvg.vue'
 import PeopleSvg from '@/components/icons/PeopleSvg.vue'
+import { Logout } from '../apis/logout'
 
 const navItems = ref([
   {
@@ -54,11 +63,11 @@ const navItems = ref([
   },
   {
     name: '最新消息',
-    link: '/todo'
+    link: '/news'
   },
   {
     name: '會員專區',
-    link: '/todo'
+    link: '/member'
   }
 ])
 const iconNavItems = ref([
@@ -88,13 +97,28 @@ const iconNavItems = ref([
     link: '/'
   }
 ])
-const isLogin = ref(false)
+
+const userProfile = useUserProfileStore()
+const isLogin = userProfile.IsLogin
+const router = useRouter();
 const showNavItems = computed(() => {
-  return navItems.value.slice(0, isLogin.value ? 3 : -1)
+  return navItems.value.slice(0, userProfile.IsLogin ? 3 : -1)
 })
 const showIconNavItems = computed(() => {
-  return iconNavItems.value.filter((item) => (isLogin.value ? item : item.name !== 'people'))
+  return iconNavItems.value.filter((item) => (userProfile.IsLogin ? item : item.name !== 'people'))
 })
+function LoginRoute(){
+  console.log(userProfile.IsLogin)
+  if(userProfile.IsLogin){
+    //Logout()
+    localStorage.removeItem("Token")
+    userProfile.SetIsLogin(false)
+  }else{
+    router.push('/Login')
+  }
+}
+
+
 </script>
 <style scoped lang="scss">
 .navbar {
@@ -131,6 +155,13 @@ const showIconNavItems = computed(() => {
       .user {
         display: flex;
         align-items: center;
+        .user-img{
+          border-radius: 50%;
+          overflow: hidden;
+          height: 38px;
+          width: 38px;
+
+        }
         .name {
           margin: 0 2em 0 1em;
           max-width: 10em;
