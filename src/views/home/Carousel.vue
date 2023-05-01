@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
 export interface CarouselItems {
   id: number | string
   title: string

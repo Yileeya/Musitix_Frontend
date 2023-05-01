@@ -18,9 +18,12 @@ body {
   --dark-green-color: #198754;
   --gray-green-color: #afb8a7;
   --light-yellow-color: #d8d2c5;
+  --gray: #dee2e6;
+  --purple: #bd4be7;
 }
 
-button {
+button,
+.form-control {
   &:focus {
     box-shadow: none !important;
   }
@@ -29,6 +32,17 @@ button {
 .btn-black {
   background-color: black;
   color: white;
+
+  &:hover {
+    background-color: var(--warning-color);
+    color: black;
+  }
+}
+
+.btn-purple {
+  background-color: var(--purple);
+  color: white;
+
   &:hover {
     background-color: var(--warning-color);
     color: black;
