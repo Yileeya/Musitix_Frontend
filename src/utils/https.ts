@@ -6,7 +6,7 @@ const https = axios.create({
 })
 
 https.interceptors.request.use((config) => {
-    const token = ''
+    const token = localStorage.getItem("Token")
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
     }
@@ -15,7 +15,7 @@ https.interceptors.request.use((config) => {
 
 https.interceptors.response.use(
     (response) => {
-        return response.data
+        return response
     },
     (error) => {
         return Promise.reject(error)
