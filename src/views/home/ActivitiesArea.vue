@@ -3,7 +3,7 @@
     <div class="container">
       <div class="title-area">
         <h2 :style="{ color: titleColor }">{{ title }}</h2>
-        <button type="button" class="btn" :class="[buttonClass]">More　+</button>
+        <button type="button" class="btn more-btn computer" :class="[buttonClass]">More　+</button>
       </div>
       <div class="activities">
         <activity-card
@@ -13,6 +13,7 @@
           :activity-items="activity"
         />
       </div>
+      <button type="button" class="btn more-btn phone" :class="[buttonClass]">More　+</button>
     </div>
   </section>
 </template>
@@ -33,6 +34,14 @@ defineProps<{
 .activities-area {
   padding: 4em 0;
 
+  .more-btn {
+    padding: 8px 4em;
+
+    &.phone {
+      display: none;
+    }
+  }
+
   .title-area {
     display: flex;
     align-items: center;
@@ -42,22 +51,37 @@ defineProps<{
     h2 {
       font-weight: bold;
     }
-
-    .btn {
-      padding: 8px 4em;
-    }
   }
+
   .activities {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+
     .activity-card {
       min-width: 420px;
       width: 30%;
       margin: 1em 0;
     }
   }
+
   @media (max-width: 1260px) {
+    padding: 2em 0;
+    .more-btn {
+      &.computer {
+        display: none;
+      }
+
+      &.phone {
+        display: block !important;
+        width: 100%;
+        margin-top: 1.5em;
+      }
+    }
+    .title-area {
+      justify-content: center;
+      margin-bottom: 1em;
+    }
     .activity-card {
       min-width: auto !important;
       width: 100% !important;

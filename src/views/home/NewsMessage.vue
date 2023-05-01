@@ -53,7 +53,7 @@ const openWindow = (href: string) => {
   .bg-img {
     max-width: 100%;
     position: absolute;
-    bottom: -4em;
+    bottom: -5em;
     right: -6em;
     z-index: -1;
   }

@@ -63,14 +63,28 @@ activitiesDemo.value = Array.from({ length: 6 }, (_, index) => ({
 <style scoped lang="scss">
 .activities-area {
   background-repeat: no-repeat;
+
   &.popular {
     background-color: var(--primary-color);
   }
+
   &.coming-soon {
     background-image: url(@/assets/img/home_coming_soon_bg.png);
   }
+
   &.recently {
     background-image: url(@/assets/img/home_recently_bg.png);
+  }
+
+  @media (max-width: 1260px) {
+    &.coming-soon {
+      background-image: url(@/assets/img/home_coming_soon_phone_bg.png);
+    }
+    &.recently {
+      background-image: url(/src/assets/img/home_recently_phone_bg.png);
+      background-size: 100%;
+      background-color: black;
+    }
   }
 }
 </style>
