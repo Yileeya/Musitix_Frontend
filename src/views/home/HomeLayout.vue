@@ -11,6 +11,7 @@
     :class="activityAreaItem.bgClass"
     :activities="activitiesDemo"
   />
+  <about />
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
@@ -23,6 +24,7 @@ import NewsMessage from '@/views/home/NewsMessage.vue'
 import ActivitiesArea from '@/views/home/ActivitiesArea.vue'
 import type { Activity } from '@/components/ActivityCard.vue'
 import activitiesJson from '@/demoData/home/activitiesJson'
+import About from '@/views/home/About.vue'
 
 const carouselItems: CarouselItems[] = reactive(carouselJson)
 
@@ -63,14 +65,37 @@ activitiesDemo.value = Array.from({ length: 6 }, (_, index) => ({
 <style scoped lang="scss">
 .activities-area {
   background-repeat: no-repeat;
+
   &.popular {
     background-color: var(--primary-color);
   }
+
   &.coming-soon {
     background-image: url(@/assets/img/home_coming_soon_bg.png);
   }
+
   &.recently {
     background-image: url(@/assets/img/home_recently_bg.png);
+    background-color: black;
+  }
+
+  @media (max-width: 1260px) {
+    &.coming-soon {
+      background-image: url(@/assets/img/home_coming_soon_phone_bg.png);
+    }
+    &.recently {
+      background-image: url(/src/assets/img/home_recently_phone_bg.png);
+      background-size: 100%;
+    }
+  }
+}
+
+.about-area {
+  background-repeat: no-repeat;
+  background-image: url(@/assets/img/home_about_bg.png);
+  @media (max-width: 992px) {
+    background-image: url(@/assets/img/home_about_phone_bg.png);
+    background-position: center;
   }
 }
 </style>
