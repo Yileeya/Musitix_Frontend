@@ -22,14 +22,15 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true },
     children: [
       {
+        path: "",
+        redirect: { name: 'account' }
+      },
+      {
         path: 'account',
         name: 'account',
         component: () => import('@/views/member/Account.vue'),
-      },
-      {
-        path: ":pathMatch(.*)*",
-        redirect: 'account'
       }
+     
     ]
   }
 ]

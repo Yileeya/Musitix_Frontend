@@ -45,6 +45,8 @@ const memberSide = ref([
     link: '/member/password'
   }
 ])
+console.log(Route)
+
 
 
 </script>
