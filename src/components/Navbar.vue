@@ -14,14 +14,14 @@
         </ul>
         <div class="user-control-area d-flex">
           <div class="user" v-if="userProfile.IsLogin && userProfile.UserProfiles != null">
-            <template v-if="userProfile.UserProfiles != null && userProfile.UserProfiles?.picture != ''">
-              <img :src="userProfile.UserProfiles?.picture" class="user-img" alt="">
+            <template
+              v-if="userProfile.UserProfiles != null && userProfile.UserProfiles?.picture != ''"
+            >
+              <img :src="userProfile.UserProfiles?.picture" class="user-img" alt="user-img" />
             </template>
             <template v-else>
               <circle-user-svg />
             </template>
-
-
             <span class="name"> {{ userProfile.UserProfiles?.username }} </span>
           </div>
           <button class="btn login-btn btn-black" type="button" @click.prevent="LoginRoute">
@@ -30,11 +30,18 @@
         </div>
       </div>
       <div class="navbar-collapse-show">
-        <div class="nav-icon" v-for="navItem in showIconNavItems" :key="'icon' + navItem.link"
-          @click.prevent="navItem.name === 'user' && LoginRoute">
+        <div class="nav-icon" v-for="navItem in showIconNavItems" :key="'icon' + navItem.link">
           <RouterLink :to="navItem.link">
             <component class="nav-icon" :is="navItem.icon" />
           </RouterLink>
+        </div>
+        <div class="nav-icon" @click.prevent="LoginRoute">
+          <circle-user-svg
+            v-if="
+              !userProfile.IsLogin || !userProfile.UserProfiles || !userProfile.UserProfiles.picture
+            "
+          />
+          <img v-else :src="userProfile.UserProfiles?.picture" class="user-img" alt="user-img" />
         </div>
       </div>
     </div>
@@ -50,12 +57,11 @@ import HomeSvg from '@/components/icons/HomeSvg.vue'
 import SearchSvg from '@/components/icons/SearchSvg.vue'
 import NewsSvg from '@/components/icons/NewsSvg.vue'
 import PeopleSvg from '@/components/icons/PeopleSvg.vue'
-import { postLogin } from '../apis/users/login'
 
 const navItems = ref([
   {
     name: '活動搜尋',
-    link: '/'
+    link: '/search'
   },
   {
     name: '最新消息',
@@ -75,7 +81,7 @@ const iconNavItems = ref([
   {
     name: 'search',
     icon: markRaw(SearchSvg),
-    link: '/'
+    link: '/search'
   },
   {
     name: 'news',
@@ -86,37 +92,30 @@ const iconNavItems = ref([
     name: 'people',
     icon: markRaw(PeopleSvg),
     link: '/member'
-  },
-  {
-    name: 'user',
-    icon: markRaw(CircleUserSvg),
-    link: '/'
   }
 ])
 
 const userProfile = useUserProfileStore()
-const isLogin = userProfile.IsLogin
-const router = useRouter();
+const router = useRouter()
 const showNavItems = computed(() => {
   return navItems.value.slice(0, userProfile.IsLogin ? 3 : -1)
 })
 const showIconNavItems = computed(() => {
   return iconNavItems.value.filter((item) => (userProfile.IsLogin ? item : item.name !== 'people'))
 })
-function LoginRoute() { 
+
+function LoginRoute() {
   if (userProfile.IsLogin) {
     //Logout()
-    localStorage.removeItem("Token")
+    localStorage.removeItem('Token')
     userProfile.SetIsLogin(false)
-    if(router.currentRoute.value.meta.requiresAuth){
+    if (router.currentRoute.value.meta.requiresAuth) {
       router.push('/')
     }
   } else {
     router.push('/Login')
   }
 }
-
-
 </script>
 <style scoped lang="scss">
 .navbar {
@@ -144,7 +143,8 @@ function LoginRoute() {
         transition: all 0.3s ease-out;
       }
 
-      &:hover {
+      &:hover,
+      &.router-link-active {
         color: var(--primary-color);
 
         &::after {
@@ -166,7 +166,6 @@ function LoginRoute() {
           overflow: hidden;
           height: 38px;
           width: 38px;
-
         }
 
         .name {
@@ -195,11 +194,17 @@ function LoginRoute() {
     .navbar-collapse-show {
       display: none;
     }
+
+    .user-img {
+      border-radius: 50%;
+      overflow: hidden;
+      height: 38px;
+      width: 38px;
+    }
   }
 
   @media (max-width: 992px) {
     padding: 0.5em 0;
-
     .navbar-brand {
       padding: 0;
       margin: auto;
@@ -209,5 +214,15 @@ function LoginRoute() {
         max-width: 50%;
       }
     }
+    .navbar-collapse-show {
+      .nav-icon {
+        color: black;
+      }
+
+      .router-link-active .nav-icon {
+        color: #141c75;
+      }
+    }
   }
-}</style>
+}
+</style>
