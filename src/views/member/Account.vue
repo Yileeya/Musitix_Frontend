@@ -91,13 +91,10 @@ function FileUpload(){
   let btn = fileInput.value as HTMLInputElement
   if(btn && btn.files){
     postUserPicture(btn.files[0])
-    .then(Response=>{     
-      console.log(Response.data)
+    .then(Response=>{          
       pictureUrl.value = Response.data.data
-
     })
-    .catch(error=>{
-      
+    .catch(error=>{      
       FileErrorMessage.value = error.response.data.message 
 
 

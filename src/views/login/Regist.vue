@@ -53,7 +53,7 @@ import { useUserProfileStore } from '@/stores/user';
 //登入
 const router = useRouter();
 const userProfile = useUserProfileStore()
-let errorMessage:string
+let errorMessage = ref("")
 
 // Create a form context with the validation schema
 const simpleSchema = {
@@ -100,14 +100,13 @@ const { errorMessage:confirmPasswordErrorMessage,value:confirmPassword } = useFi
 const RegistSubmit = handleSubmit(async(values) => {
   await postRegist(values.username,values.email,values.password,values.confirmPassword)
   .then(response=>{   
-    errorMessage = ""
-    alert(response.data.message)
-    localStorage.setItem("Token",response.data.user.token)
-    userProfile.SetIsLogin(true)
-    router.push("/")
+    errorMessage.value = ""    
+    alert(response.data.data)
+    router.push({path: "/login",force:true})
+    router.go(0)
   })
   .catch(error=>{
-    errorMessage = error.response.data.message    
+    errorMessage.value = error.response.data.message    
   })
 
 });
