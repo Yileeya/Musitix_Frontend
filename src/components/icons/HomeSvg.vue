@@ -6,11 +6,3 @@
     />
   </svg>
 </template>
-
-<script>
-export default {
-  name: 'homeSvg'
-}
-</script>
-
-<style scoped></style>

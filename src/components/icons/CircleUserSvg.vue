@@ -7,11 +7,3 @@
     />
   </svg>
 </template>
-
-<script>
-export default {
-  name: 'circleUserSvg'
-}
-</script>
-
-<style scoped></style>

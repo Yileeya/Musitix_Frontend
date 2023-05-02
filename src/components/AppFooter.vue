@@ -32,6 +32,7 @@ import MusitixIconSvg from '@/components/icons/MusitixIconSvg.vue'
 import Facebook from '@/components/icons/Facebook.vue'
 import Instagram from '@/components/icons/Instagram.vue'
 import { ref, markRaw } from 'vue'
+
 const copyRight = ref('Copyright © 2023 consulation ｜ All Rights Reserved')
 const footerItems = ref([
   {
@@ -40,18 +41,22 @@ const footerItems = ref([
     items: [
       {
         title: '個人資料',
+        icon: '',
         link: '/'
       },
       {
         title: '訂票紀錄',
+        icon: '',
         link: '/'
       },
       {
         title: '加入會員',
+        icon: '',
         link: '/'
       },
       {
         title: '最新活動',
+        icon: '',
         link: '/'
       }
     ]
@@ -62,14 +67,17 @@ const footerItems = ref([
     items: [
       {
         title: '註冊認證',
+        icon: '',
         link: '/'
       },
       {
         title: '付款相關',
+        icon: '',
         link: '/'
       },
       {
         title: '退票相關',
+        icon: '',
         link: '/'
       }
     ]
@@ -97,6 +105,7 @@ $secondary: #6c757d;
 .footer {
   background-color: white;
   padding: 1em;
+
   .footer-content {
     max-width: 1300px;
     margin: auto;
@@ -131,14 +140,17 @@ $secondary: #6c757d;
       }
     }
   }
+
   @media (max-width: 992px) {
     padding: 0 1em;
     .footer-content {
       flex-direction: column-reverse;
+
       .icon-col {
         text-align: center;
         padding: 2em 0 1em;
       }
+
       .footer-items {
         flex-direction: column;
       }

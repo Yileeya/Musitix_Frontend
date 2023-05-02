@@ -13,11 +13,3 @@
     </defs>
   </svg>
 </template>
-
-<script>
-export default {
-  name: 'instagram'
-}
-</script>
-
-<style scoped></style>

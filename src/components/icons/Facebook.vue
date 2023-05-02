@@ -13,11 +13,3 @@
     </defs>
   </svg>
 </template>
-
-<script>
-export default {
-  name: 'facebook'
-}
-</script>
-
-<style scoped></style>

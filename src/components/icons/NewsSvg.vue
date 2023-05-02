@@ -22,11 +22,3 @@
     />
   </svg>
 </template>
-
-<script>
-export default {
-  name: 'newsSvg'
-}
-</script>
-
-<style scoped></style>

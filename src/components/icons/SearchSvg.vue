@@ -6,11 +6,3 @@
     />
   </svg>
 </template>
-
-<script>
-export default {
-  name: 'searchSvg'
-}
-</script>
-
-<style scoped></style>
