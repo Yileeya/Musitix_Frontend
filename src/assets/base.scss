@@ -23,7 +23,8 @@ body {
 }
 
 button,
-.form-control {
+.form-control,
+.form-select {
   &:focus {
     box-shadow: none !important;
   }

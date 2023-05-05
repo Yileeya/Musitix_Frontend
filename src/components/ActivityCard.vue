@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 export interface Activity {
+  id?: number
   imgHref: string
   title: string
   content: string
