@@ -24,7 +24,7 @@ const emit = defineEmits<{
 
 function emitRouterChange() {
   if (!search.value) return
-  emit('changeRouterPath', '/search')
+  emit('changeRouterPath', `/search?subject=${search.value}`)
 }
 </script>
 

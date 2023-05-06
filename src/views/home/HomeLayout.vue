@@ -10,6 +10,7 @@
     :button-class="activityAreaItem.buttonClass"
     :class="activityAreaItem.bgClass"
     :activities="activitiesDemo"
+    @change-router-path="changeRouterPath"
   />
   <about />
 </template>

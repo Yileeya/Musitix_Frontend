@@ -3,7 +3,6 @@
     <div class="container">
       <div class="title-area">
         <h2 :style="{ color: titleColor }">{{ title }}</h2>
-        <button type="button" class="btn more-btn computer" :class="[buttonClass]">More　+</button>
       </div>
       <div class="activities">
         <activity-card
@@ -13,7 +12,14 @@
           :activity-items="activity"
         />
       </div>
-      <button type="button" class="btn more-btn phone" :class="[buttonClass]">More　+</button>
+      <button
+        type="button"
+        class="btn more-btn"
+        :class="[buttonClass]"
+        @click.prevent="emitRouterChange"
+      >
+        More　+
+      </button>
     </div>
   </section>
 </template>
@@ -28,18 +34,29 @@ defineProps<{
   buttonClass: string
   activities: Array<Activity>
 }>()
+
+const emit = defineEmits<{
+  (e: 'changeRouterPath', path: string): void
+}>()
+
+function emitRouterChange() {
+  emit('changeRouterPath', '/search')
+}
 </script>
 
 <style scoped lang="scss">
 .activities-area {
   padding: 4em 0;
 
+  .container {
+    position: relative;
+  }
+
   .more-btn {
     padding: 8px 4em;
-
-    &.phone {
-      display: none;
-    }
+    position: absolute;
+    top: 0;
+    right: 15px;
   }
 
   .title-area {
@@ -68,15 +85,10 @@ defineProps<{
   @media (max-width: 1260px) {
     padding: 2em 0;
     .more-btn {
-      &.computer {
-        display: none;
-      }
-
-      &.phone {
-        display: block !important;
-        width: 100%;
-        margin-top: 1.5em;
-      }
+      position: relative;
+      width: 100%;
+      margin-top: 1.5em;
+      right: 0;
     }
     .title-area {
       justify-content: center;
