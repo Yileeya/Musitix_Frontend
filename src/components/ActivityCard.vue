@@ -12,9 +12,14 @@
       </div>
     </div>
     <div class="card-body">
-      <span class="card-text date">
-        {{ activityItems.date }}
-      </span>
+      <div>
+        <div class="card-text date">
+          {{ activityItems.date }}
+        </div>
+        <div class="card-text price">
+          {{ activityItems.price }}
+        </div>
+      </div>
       <button class="btn btn-black-border" @click.prevent="openWindow(activityItems.activityHref)">
         前往購票
       </button>
@@ -30,6 +35,8 @@ export interface Activity {
   content: string
   date: string
   activityHref: string
+  price?: string
+
   [key: string]: any
 }
 
@@ -118,8 +125,13 @@ const openWindow = (href: string) => {
     justify-content: space-between;
     flex-wrap: wrap;
 
-    .date {
+    .date,
+    .price {
       color: #6c757d;
+
+      &.price {
+        margin-top: 5px;
+      }
     }
 
     .btn-black-border {

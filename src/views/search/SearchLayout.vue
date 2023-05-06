@@ -29,6 +29,7 @@ import _ from 'lodash'
 const activitiesDemo = ref<Activity[]>([])
 activitiesDemo.value = Array.from({ length: 15 }, (_, index) => ({
   id: index + 1,
+  price: '$1000 - $2000',
   ...activitiesJson[0]
 }))
 
