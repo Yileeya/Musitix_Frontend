@@ -15,4 +15,5 @@ export function beforeEach(to: { matched: any[] }, from: any, next: any) {
     // 如果不需要驗證權限，直接前往目標路由
     next()
   }
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
