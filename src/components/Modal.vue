@@ -16,7 +16,7 @@
           <button type="button" class="btn-close" aria-label="Close" @click="close"></button>
         </div>
         <div class="modal-body">
-          <slot />
+          <slot></slot>
         </div>
         <div class="modal-footer" v-if="!hideFooter">
           <slot name="footer">
@@ -88,7 +88,7 @@ function save() {
   close()
 }
 
-function handleBackgroundClick(event: { target: HTMLElement | null }) {
+function handleBackgroundClick(event: MouseEvent | { target: HTMLElement | null }) {
   if (props.backdropDisabled) return
   if (event.target === modalRef.value) {
     close()
