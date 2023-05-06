@@ -1,6 +1,10 @@
 <template>
   <div class="search-layout">
-    <search-section class="container" @emit-search-query="fetchSearchQuery" />
+    <search-section
+      class="container"
+      @emit-search-query="fetchSearchQuery"
+      :route-query-key-word="route.query.subject as string | undefined ?? ''"
+    />
     <div class="activities container">
       <activity-card
         class="activity-card"
@@ -35,6 +39,7 @@ if (!_.isEmpty(route.query)) {
     path: '/search'
   })
 }
+
 const fetchSearchQuery = (query: SearchQuery) => {
   router.replace({
     path: '/search',

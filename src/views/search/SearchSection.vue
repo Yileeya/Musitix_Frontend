@@ -22,11 +22,15 @@
 import { ref, reactive } from 'vue'
 import dayjs from 'dayjs'
 
+const props = defineProps<{
+  routeQueryKeyWord?: string
+}>()
+
 const emits = defineEmits({
   'emit-search-query': (searchQuery: SearchQuery) => true
 })
 
-const keyword = ref<string>('')
+const keyword = ref<string>(props.routeQueryKeyWord ?? '')
 
 const priceItems = reactive([
   {
