@@ -22,6 +22,14 @@
 import { ref, reactive } from 'vue'
 import dayjs from 'dayjs'
 
+interface SearchQuery {
+  subject: string
+  minPrice: number | null
+  maxPrice: number | null
+  eventStartDate: string
+  eventEndDate: string
+}
+
 const props = defineProps<{
   routeQueryKeyWord?: string
 }>()
@@ -75,14 +83,6 @@ const dateRangeItems = reactive([
   }
 ])
 const dateRange = ref<string>('month')
-
-export interface SearchQuery {
-  subject: string
-  minPrice: number | null
-  maxPrice: number | null
-  eventStartDate: string
-  eventEndDate: string
-}
 
 const submit = () => {
   let dateRangeFormat: string[] = []
