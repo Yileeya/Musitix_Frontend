@@ -18,7 +18,6 @@
 
 <script setup lang="ts">
 import SearchSection from '@/views/search/SearchSection.vue'
-import type { SearchQuery } from '@/views/search/SearchSection.vue'
 import { useRoute, useRouter } from 'vue-router'
 import ActivityCard from '@/components/ActivityCard.vue'
 import activitiesJson from '@/demoData/home/activitiesJson'
@@ -41,7 +40,7 @@ if (!_.isEmpty(route.query)) {
   })
 }
 
-const fetchSearchQuery = (query: SearchQuery) => {
+const fetchSearchQuery = (query: any) => {
   router.replace({
     path: '/search',
     query: query
