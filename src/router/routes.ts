@@ -22,6 +22,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/newMessage/NewMessageLayout.vue')
   },
   {
+    path: '/activity/:id',
+    name: 'activity',
+    component: () => import('@/views/activity/ActivityLayout.vue')
+  },
+  {
     path: '/member',
     component: () => import('@/views/member/MemberLayout.vue'),
     meta: { requiresAuth: true },
