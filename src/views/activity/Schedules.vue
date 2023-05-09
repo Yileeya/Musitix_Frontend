@@ -10,8 +10,8 @@
             <div class="flex-th width-250"></div>
           </div>
         </div>
-        <div class="flex-tbody">
-          <div class="flex-tr" v-for="item in schedules">
+        <div class="flex-tbody" v-if="schedules.length">
+          <div class="flex-tr" v-for="item in schedules" :key="item.date">
             <div class="flex-td width-250">
               <calendar-svg class="icon" />
               {{ dateFormatUTC(item.date, 'YYYY/MM/DD (dd)') }}
@@ -37,9 +37,9 @@
 <script setup lang="ts">
 import { dateFormatUTC } from '@/utils/dateFormat'
 import CalendarSvg from '@/components/icons/CalendarSvg.vue'
-defineProps({
-  schedules: Array
-})
+defineProps<{
+    schedules: any
+}>()
 </script>
 
 <style scoped lang="scss">
