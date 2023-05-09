@@ -18,5 +18,6 @@ defineProps<{
 <style scoped lang="scss">
 iframe {
   width: 100%;
+  margin-bottom: -5px;
 }
 </style>

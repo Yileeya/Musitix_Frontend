@@ -38,7 +38,7 @@
 import { dateFormatUTC } from '@/utils/dateFormat'
 import CalendarSvg from '@/components/icons/CalendarSvg.vue'
 defineProps<{
-    schedules: any
+  schedules: any
 }>()
 </script>
 
