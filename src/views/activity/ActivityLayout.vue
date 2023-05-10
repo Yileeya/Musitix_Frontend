@@ -9,7 +9,7 @@
     <html-content :html="activity.HtmlContent" />
   </div>
   <activity-map :map-url="activity.mapUrl" />
-  <schedules :schedules="activity.schedules" />
+  <schedules :schedules="activity.schedules" id="ByTickets"/>
   <html-content :html="activity.HtmlNotice" />
 </template>
 <script setup lang="ts">
@@ -34,6 +34,7 @@ const activity = ref(activityJson)
     background-repeat: no-repeat;
     position: absolute;
     z-index: -1;
+    max-width: 100%;
   }
   &::before {
     background-image: url(/src/assets/img/yellow_circle.png);
@@ -48,6 +49,11 @@ const activity = ref(activityJson)
     height: 275px;
     bottom: 0;
     right: 0;
+  }
+  @media (max-width: 768px) {
+    &::after {
+      background-image: none;
+    }
   }
 }
 </style>

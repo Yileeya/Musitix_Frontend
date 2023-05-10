@@ -9,8 +9,9 @@
         <component class="icon" :is="infoTitleItems[infoTitle].icon" />
         <h5>{{ infoTitleItems[infoTitle].name }}</h5>
       </div>
-      <button type="button" class="btn-purple btn">
-        <span>立即購票</span><ticket-svg class="icon" />
+      <button type="button" class="btn-purple btn" @click.prevent="scrollToByTickets">
+        <span>立即購票</span>
+        <ticket-svg class="icon" />
       </button>
     </div>
   </section>
@@ -51,6 +52,14 @@ const infoTitleItems: Record<string, InfoTitleItem> = ref({
     icon: markRaw(MusitixIconSmSvg)
   }
 }).value
+
+const scrollToByTickets = () => {
+  const element = document.getElementById('ByTickets')
+  if (element) {
+    const targetScrollTop = element.offsetTop - 50
+    window.scrollTo({ top: targetScrollTop, behavior: 'smooth' })
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -59,36 +68,45 @@ const infoTitleItems: Record<string, InfoTitleItem> = ref({
   overflow-y: hidden;
   display: flex;
   align-items: center;
+
   img {
     width: 100%;
   }
+
   @media (max-width: 992px) {
     max-height: 45vh;
   }
 }
+
 .info-section {
   background: var(--primary-color);
   padding: 3.5em 0;
   color: white;
+
   .container {
     position: relative;
+
     h2 {
       font-weight: bold;
       margin-bottom: 1em;
     }
+
     .title-content {
       display: flex;
       align-items: center;
       margin-top: 1em;
+
       .icon {
         margin-right: 1em;
       }
+
       h5 {
         margin: 0;
       }
     }
   }
 }
+
 .btn-purple {
   display: flex;
   position: absolute;
@@ -97,11 +115,13 @@ const infoTitleItems: Record<string, InfoTitleItem> = ref({
   width: 200px;
   align-items: center;
   justify-content: center;
+
   .icon {
     margin: 1px 0.5em 0;
     width: 24px;
     height: 24px;
   }
+
   @media (max-width: 768px) {
     position: relative;
     width: 100%;
