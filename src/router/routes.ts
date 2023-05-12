@@ -41,6 +41,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/member/Account.vue')
       }
     ]
+  },
+  {
+    path: '/booking',
+    name: 'booking',
+    meta: { requiresAuth: true },
+    component: () => import('@/views/booking/BookingLayout.vue')
   }
 ]
 export default routes
