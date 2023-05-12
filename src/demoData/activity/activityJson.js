@@ -17,7 +17,7 @@ const activityJson = {
   schedules: [
     {
       scheduleName: '場次一',
-      date: '2023-04-01T09:00:00.000Z',
+      date: '2023-07-01T09:00:00.000+08:00',
       ticketCategories: [
         {
           categoryName: '單人票',
@@ -31,25 +31,43 @@ const activityJson = {
           totalQuantity: 25,
           remainingQuantity: 25
         }
-      ]
+      ],
+      startTime: '2023-07-01T09:00:00.000+08:00',
+      endTime: '2023-07-01T12:00:00.000+08:00',
+      saleStartTime: '2023-05-01T00:00:00.000+08:00',
+      saleEndTime: '2023-06-30T00:00:00.000+08:00'
     },
     {
       scheduleName: '場次二',
-      date: '2023-04-02T17:00:00.000Z',
+      date: '2023-07-01T00:00:00.000+08:00',
+      ticketCategories: [
+        {
+          categoryName: '單人票',
+          price: 1500,
+          totalQuantity: 50,
+          remainingQuantity: 0
+        }
+      ],
+      startTime: '2023-07-15T16:00:00.000+08:00',
+      endTime: '2023-07-15T20:00:00.000+08:00',
+      saleStartTime: '2023-05-01T00:00:00.000+08:00',
+      saleEndTime: '2023-07-31T23:59:00.000+08:00'
+    },
+    {
+      scheduleName: '場次三',
+      date: '2023-08-01T00:00:00.000+08:00',
       ticketCategories: [
         {
           categoryName: '單人票',
           price: 1500,
           totalQuantity: 50,
           remainingQuantity: 50
-        },
-        {
-          categoryName: '雙人票',
-          price: 2800,
-          totalQuantity: 25,
-          remainingQuantity: 25
         }
-      ]
+      ],
+      startTime: '2023-08-01T16:00:00.000+08:00',
+      endTime: '2023-08-01T20:00:00.000+08:00',
+      saleStartTime: '2023-07-01T00:00:00.000+08:00',
+      saleEndTime: '2023-07-31T23:59:00.000+08:00'
     }
   ]
 }

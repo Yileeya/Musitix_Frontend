@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="flex-tbody" v-if="schedules.length">
-          <div class="flex-tr" v-for="item in schedules" :key="item.date">
+          <div class="flex-tr" v-for="(item, index) in schedules" :key="item.date">
             <div class="flex-td width-250">
               <calendar-svg class="icon" />
               {{ dateFormatUTC(item.date, 'YYYY/MM/DD (dd)') }}
@@ -19,13 +19,15 @@
             <div class="flex-td">
               <i class="fa fa-clock-o fa-lg icon"></i>
               <div class="date-range">
-                <span>{{ dateFormatUTC(item.date, 'YYYY/MM/DD (dd) HH:mm') }}</span>
+                <span>{{ dateFormatUTC(item.saleStartTime, 'YYYY/MM/DD (dd) HH:mm') }}</span>
                 <span class="separator"></span>
-                <span>{{ dateFormatUTC(item.date, 'YYYY/MM/DD (dd) HH:mm') }}</span>
+                <span>{{ dateFormatUTC(item.saleEndTime, 'YYYY/MM/DD (dd) HH:mm') }}</span>
               </div>
             </div>
             <div class="flex-td width-250 btn-block">
-              <button type="button" class="btn btn-black">購票</button>
+              <button type="button" class="btn" :class="[showTicketResult(index).css]">
+                {{ showTicketResult(index).text }}
+              </button>
             </div>
           </div>
         </div>
@@ -37,9 +39,48 @@
 <script setup lang="ts">
 import { dateFormatUTC } from '@/utils/dateFormat'
 import CalendarSvg from '@/components/icons/CalendarSvg.vue'
-defineProps<{
+import dayjs from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
+dayjs.extend(isBetween)
+
+const props = defineProps<{
   schedules: any
 }>()
+
+interface TicketResult {
+  status: number
+  css: string
+  text: string
+}
+
+const showTicketResult = (scheduleIndex: number): TicketResult => {
+  const schedule = props.schedules[scheduleIndex]
+
+  //判斷是否為售票時間
+  const today = dayjs()
+  const isDateInRange = today.isBetween(schedule.saleStartTime, schedule.saleEndTime, 'day', '[]')
+  if (!isDateInRange)
+    return {
+      status: -1,
+      css: 'event-disabled',
+      text: '非售票時間'
+    }
+
+  //判斷票數餘額
+  const isSoldOut = schedule.ticketCategories.every((item: any) => item.remainingQuantity === 0)
+  if (isSoldOut)
+    return {
+      status: -1,
+      css: 'event-disabled btn-black',
+      text: '售罄'
+    }
+
+  return {
+    status: 0,
+    css: 'btn-black',
+    text: '購票'
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -115,6 +156,19 @@ defineProps<{
     .btn-black {
       width: 200px;
       text-align: center;
+    }
+  }
+  .event-disabled {
+    pointer-events: none;
+    &.btn-black {
+      background-color: #d5d5d5;
+      color: black;
+      opacity: 0.5;
+      pointer-events: auto !important;
+      &:hover {
+        cursor: not-allowed;
+        border-color: transparent;
+      }
     }
   }
   @media (max-width: 1440px) {
