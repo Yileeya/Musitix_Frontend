@@ -25,9 +25,9 @@
           <div class="side-bar">
             <ol>
               <li v-for="member in  memberSide" class="member-pagelink-item"
-                :class="member.name == pathName ? 'active' : ''">                              
+                :class="member.name == pathName ? 'active' : ''">
                 <RouterLink :to="member.link">
-                  <component :is="member.icon" class="item-icon" />  
+                  <component :is="member.icon" class="item-icon" />
                   {{ member.name }}
                 </RouterLink>
               </li>
@@ -42,13 +42,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref, watch, watchEffect,markRaw } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, watch, markRaw } from 'vue'
+import { useRoute } from 'vue-router'
 import AccountIcon from '../../components/icons/Member_Account.vue'
 import PersonInfoIcon from '../../components/icons/Member_PersonInfo.vue'
 import TicketIcon from '../../components/icons/Member_Ticket.vue'
 
-const Router = useRouter()
 const Route = useRoute()
 
 const memberSide = ref([
@@ -76,13 +75,7 @@ const memberSide = ref([
 const pathName = ref(memberSide.value.find(x => Route.path.includes(x.link))?.name)
 watch(() => Route.path, () => {
   pathName.value = memberSide.value.find(x => Route.path.includes(x.link))?.name
-
 }, { immediate: true })
-
-console.log(Route.path)
-
-
-
 </script>
 <style scoped lang="scss">
 .member-container {
@@ -125,7 +118,8 @@ console.log(Route.path)
     align-items: center;
     margin-bottom: 16px;
     position: relative;
-    &:last-child{
+
+    &:last-child {
       margin-bottom: 0;
     }
 
@@ -138,13 +132,14 @@ console.log(Route.path)
       left: 0;
       width: 100%;
     }
-    .item-icon{
+
+    .item-icon {
       position: absolute;
-      left:12px;
-      top:8px;  
+      left: 12px;
+      top: 8px;
       width: 40px;
       height: 28px;
-      padding-right: 12px;    
+      padding-right: 12px;
     }
 
 
@@ -153,16 +148,18 @@ console.log(Route.path)
       color: black;
       text-align: center;
       width: 100%;
-      &:hover{
+
+      &:hover {
         color: var(--primary-color);
-        
+
       }
     }
 
     &.active {
-      .item-icon{
+      .item-icon {
         color: var(--primary-color);
       }
+
       a {
         color: var(--primary-color);
         font-weight: 700;
@@ -181,5 +178,4 @@ console.log(Route.path)
     justify-content: center;
     padding: 16px;
   }
-}
-</style >
+}</style >

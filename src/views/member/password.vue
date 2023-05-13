@@ -1,66 +1,66 @@
 <template>
   <div class="container account-body">
-      <form @submit="PasswordSubmit">         
-            
-            <div class="mb-3 row">
-              <label for="password" class="col-auto col-form-label">原密碼:</label>
-              <div class="col">
-                <input type="password" class="form-control" name="password" v-model="password"/>
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label for="newPassword" class="col-auto col-form-label">新密碼:</label>
-              <div class="col">
-                <input type="password" class="form-control" name="newPassword" v-model="newPassword" />
-
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label for="confirmPassword" class="col-auto col-form-label">新密碼確認:</label>
-              <div class="col">
-                <input type="password" class="form-control" name="confirmPassword" v-model="confirmPassword" />
-
-              </div>
-            </div>
-            <p v-if="errorMessage != ''" class="text-danger text-center">{{ errorMessage }}</p>
-            <div class="row mt-4">
-              <div class="col-12 text-center">
-                <button type="submit" class="btn save-btn" :disabled="isSubmitting">修改</button>
-              </div>
-            </div>
-      </form>
+    <form @submit="PasswordSubmit">
+      <div class="mb-3 row">
+        <label for="password" class="col-auto col-form-label">原密碼:</label>
+        <div class="col">
+          <input type="password" class="form-control" name="password" v-model="password" />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="newPassword" class="col-auto col-form-label">新密碼:</label>
+        <div class="col">
+          <input type="password" class="form-control" name="newPassword" v-model="newPassword" />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="confirmPassword" class="col-auto col-form-label">新密碼確認:</label>
+        <div class="col">
+          <input type="password" class="form-control" name="confirmPassword" v-model="confirmPassword" />
+        </div>
+      </div>
+      <p v-if="errorMessage != ''" class="text-danger text-center">{{ errorMessage }}</p>
+      <div class="row mt-4">
+        <div class="col-12 text-center">
+          <button type="submit" class="btn save-btn" :disabled="isSubmitting">修改</button>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref, watch, watchEffect } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useUserProfileStore } from '@/stores/user'
+import { ref, watch } from 'vue'
 import { useField, useForm } from 'vee-validate'
-import CircleUserSvg from '@/components/icons/CircleUserSvg.vue'
 import { patchPassword } from '@/apis/users/profile'
+import { useToast } from 'vue-toastification'
 
-const Router = useRouter()
-const Route = useRoute()
+const Toast = useToast()
 const errorMessage = ref("")
-
-
-const { handleSubmit, isSubmitting, errors } = useForm();
+const simpleSchema = {
+  confirmPassword(value: string) {
+    if (value != newPassword.value) {
+      return '確認密碼與新密碼不相符';
+    }
+    return true
+  }
+};
+const { handleSubmit, isSubmitting, errors } = useForm({ validationSchema: simpleSchema });
 const { value: password } = useField(() => 'password');
 const { value: newPassword } = useField(() => 'newPassword');
-const { value: confirmPassword } = useField(() => 'confirmPassword');
+const { errorMessage: passwordErrorMessage, value: confirmPassword } = useField(() => 'confirmPassword');
 
+watch(() => passwordErrorMessage.value, () => {
+  errorMessage.value = passwordErrorMessage.value ?? ""
+})
 
 const PasswordSubmit = handleSubmit(async (values) => {
- 
-  await patchPassword(password.value as string,newPassword.value as string,confirmPassword.value as string)
+  await patchPassword(values.password, values.newPassword, values.confirmPassword)
     .then(response => {
-      alert(response.data.data)      
+      Toast.success("密碼修改成功");
     })
     .catch(error => {
       errorMessage.value = error.response.data.message
-
     })
-
 });
 
 
@@ -74,6 +74,7 @@ const PasswordSubmit = handleSubmit(async (values) => {
   border-radius: 48px;
   margin-bottom: 20px;
 }
+
 .save-btn {
   color: #FFFFFF;
   background-color: var(--primary-color);
@@ -86,6 +87,7 @@ const PasswordSubmit = handleSubmit(async (values) => {
   }
 
 }
+
 .col-form-label {
   min-width: 110px;
 }

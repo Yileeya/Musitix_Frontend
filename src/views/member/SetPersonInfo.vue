@@ -1,79 +1,92 @@
 <template>
-  <div class="container account-body">  
-      <form @submit="SetPreFilledInfo">
-          <div class="" v-if="GetValue">
-            <div class="mb-3 row">
-              <label for="buyer" class="col-auto col-form-label">訂購人姓名:</label>
-              <div class="col">
-                <input type="text" class="form-control" name="buyer" v-model="buyer" />
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label for="cellPhone" class="col-auto col-form-label">手機電話:</label>
-              <div class="col">
-                <input type="text" class="form-control" name="cellPhone" v-model="cellPhone" />
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label for="email" class="col-auto col-form-label">信箱:</label>
-              <div class="col">
-                <input type="text" class="form-control" name="email" v-model="email" />
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label for="address" class="col-auto col-form-label">地址:</label>
-              <div class="col">
-                <input type="text" class="form-control" name="address" v-model="address" />
-              </div>
-            </div>
-            <p v-if="errorMessage != ''" class="text-danger text-center">{{ errorMessage }}</p>
-            <div class="row mt-4">
-              <div class="col-12 text-center">
-                <button type="submit" class="btn save-btn" :disabled="isSubmitting">儲存</button>
-              </div>
-            </div>
-          </div>      
-      </form>
+  <div class="container account-body">
+    <form @submit="SetPreFilledInfo">
+      <div class="" v-if="GetValue">
+        <div class="mb-3 row">
+          <label for="buyer" class="col-auto col-form-label">訂購人姓名:</label>
+          <div class="col">
+            <input type="text" class="form-control" name="buyer" v-model="buyer" />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="cellPhone" class="col-auto col-form-label">手機電話:</label>
+          <div class="col">
+            <input type="text" class="form-control" name="cellPhone" v-model="cellPhone" />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="email" class="col-auto col-form-label">信箱:</label>
+          <div class="col">
+            <input type="text" class="form-control" name="email" v-model="email" />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="address" class="col-auto col-form-label">地址:</label>
+          <div class="col">
+            <input type="text" class="form-control" name="address" v-model="address" />
+          </div>
+        </div>
+        <p v-if="errorMessage != ''" class="text-danger text-center">{{ errorMessage }}</p>
+        <div class="row mt-4">
+          <div class="col-12 text-center">
+            <button type="submit" class="btn save-btn" :disabled="isSubmitting">儲存</button>
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref, watch, watchEffect } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useUserProfileStore } from '@/stores/user'
+import { ref, watch } from 'vue'
 import { useField, useForm } from 'vee-validate'
-import CircleUserSvg from '@/components/icons/CircleUserSvg.vue'
 import { getPreFilledInfo, putPreFilledInfo } from '@/apis/users/preFilledInfo'
-import type {PreFilledInfo} from '@/apis/users/preFilledInfo'
+import type { PreFilledInfo } from '@/apis/users/preFilledInfo'
+import { useToast } from 'vue-toastification'
 
-const Router = useRouter()
-const Route = useRoute()
+const Toast = useToast()
 const errorMessage = ref("")
-
-const { handleSubmit, isSubmitting, errors } = useForm();
+const simpleSchema = {
+  email(value: string) {
+    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+    if (value && !regex.test(value)) {
+      return '信箱格式錯誤';
+    }
+    return true
+  }
+};
+const { handleSubmit, isSubmitting, errors } = useForm(
+  { validationSchema: simpleSchema }
+);
 const { value: buyer } = useField(() => 'buyer');
-const { value: email } = useField(() => 'email');
+const { errorMessage: emailErrorMessage, value: email } = useField(() => 'email',);
 const { value: cellPhone } = useField(() => 'cellPhone');
 const { value: address } = useField(() => 'address');
-const GetValue = ref(true)
-getPreFilledInfo().then(response=>{
-    console.log(response)
-    buyer.value = response.data.buyer
-    email.value = response.data.email
-    cellPhone.value = response.data.cellPhone
-    address.value = response.data.address
-    GetValue.value = true
+const GetValue = ref(false)
+
+watch(() => emailErrorMessage.value, () => {
+  errorMessage.value = emailErrorMessage.value ?? ""
+
 })
 
-const SetPreFilledInfo = handleSubmit(async (values) => { 
-  const PreFilledInfoValue:PreFilledInfo = {
-    buyer : values.buyer,
-    email : values.email,
-    cellPhone : values.cellPhone,
-    address : values.address
+getPreFilledInfo().then(response => {
+  const data = response.data.data
+  buyer.value = data.buyer
+  email.value = data.email
+  cellPhone.value = data.cellPhone
+  address.value = data.address
+  GetValue.value = true
+})
+
+const SetPreFilledInfo = handleSubmit(async (values) => {
+  const PreFilledInfoValue: PreFilledInfo = {
+    buyer: values.buyer,
+    email: values.email,
+    cellPhone: values.cellPhone,
+    address: values.address
   }
   await putPreFilledInfo(PreFilledInfoValue)
     .then(response => {
-      alert(response.data.data)      
+      Toast.success("預填資料儲存成功");
     })
     .catch(error => {
       errorMessage.value = error.response.data.message
@@ -92,6 +105,7 @@ const SetPreFilledInfo = handleSubmit(async (values) => {
   border-radius: 48px;
   margin-bottom: 20px;
 }
+
 .save-btn {
   color: #FFFFFF;
   background-color: var(--primary-color);
@@ -104,6 +118,7 @@ const SetPreFilledInfo = handleSubmit(async (values) => {
   }
 
 }
+
 .col-form-label {
   min-width: 110px;
 }

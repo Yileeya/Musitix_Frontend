@@ -15,10 +15,8 @@
               <button class="btn upload-btn" type="button" @click="FileInputClick"><i class="fa fa-camera"></i></button>
               <input type="file" hidden ref="fileInput" accept="image/*" @change="FileUpload">
             </div>
-
           </div>
           <div class="col-12 col-lg">
-
             <div class="mb-3 row">
               <label for="email" class="col-auto col-form-label">信箱:</label>
               <div class="col">
@@ -29,10 +27,8 @@
               <label for="username" class="col-auto col-form-label">使用者名稱:</label>
               <div class="col">
                 <input type="text" class="form-control" name="username" v-model="username" />
-
               </div>
             </div>
-
           </div>
           <div class="col-12">
             <p v-if="errorMessage != ''" class="text-danger text-center">{{ errorMessage }}</p>
@@ -43,30 +39,26 @@
             </div>
           </div>
         </div>
-
       </div>
     </form>
   </div>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref, watch, watchEffect } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
 import { useUserProfileStore } from '@/stores/user'
 import { useField, useForm } from 'vee-validate'
 import CircleUserSvg from '@/components/icons/CircleUserSvg.vue'
 import { patchProfiles, postUserPicture } from '@/apis/users/profile'
+import { useToast } from 'vue-toastification'
 
-const Router = useRouter()
-const Route = useRoute()
+const Toast = useToast()
 const userProfile = useUserProfileStore()
 const fileInput = ref<HTMLInputElement | null>(null);
 const errorMessage = ref("")
 const pictureUrl = ref(userProfile.UserProfiles?.picture)
-
-
 const { handleSubmit, isSubmitting, errors } = useForm();
 const { value: username } = useField(() => 'username');
-// console.log(userProfile.UserProfiles?.username)
+
 watch(() => userProfile.UserProfiles, () => {
   username.value = userProfile.UserProfiles?.username
   pictureUrl.value = userProfile.UserProfiles?.picture
@@ -74,17 +66,14 @@ watch(() => userProfile.UserProfiles, () => {
 }, { immediate: true })
 
 const LoginSubmit = handleSubmit(async (values) => {
-
   await patchProfiles(values.username, pictureUrl.value ?? "")
     .then(response => {
-      alert(response.data.data)
+      Toast.success("帳號資訊儲存成功");
       userProfile.ReloadUserProfiles()
     })
     .catch(error => {
       errorMessage.value = error.response.data.message
-
     })
-
 });
 function FileInputClick() {
   let btn = fileInput.value as HTMLInputElement
@@ -96,20 +85,13 @@ function FileUpload() {
     postUserPicture(btn.files[0])
       .then(Response => {
         pictureUrl.value = Response.data.data
+        Toast.success("圖片上傳成功，請儲存帳號資訊");
       })
       .catch(error => {
         errorMessage.value = error.response.data.message
-
-
       })
   }
-
 }
-
-
-
-
-
 </script>
 <style scoped lang="scss">
 .account-body {
@@ -119,56 +101,60 @@ function FileUpload() {
   border-radius: 48px;
   margin-bottom: 20px;
 }
-.account-img-div{
-position: relative;
- 
-  .account-img ,.account-img-hover{
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-  cursor: pointer;
-  >* {
-    width: 100%;
-    height: 100%;
+
+.account-img-div {
+  position: relative;
+
+  .account-img,
+  .account-img-hover {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+
+    >* {
+      width: 100%;
+      height: 100%;
+    }
   }
-}
-.account-img-hover{
+
+  .account-img-hover {
     display: none;
     position: absolute;
-    top:0;
-    left:0;
+    top: 0;
+    left: 0;
     z-index: 5;
-    background-color:rgba(black,0.5);
-    color: #FFFFFF;    
+    background-color: rgba(black, 0.5);
+    color: #FFFFFF;
     justify-content: center;
     align-items: center;
   }
+
   .upload-btn {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #FFFFFF;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  border-color: var(--gray);
-  padding: 0;  
-  z-index: 6;
-}
-  &:hover{
-    .account-img-hover{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border-color: var(--gray);
+    padding: 0;
+    z-index: 6;
+  }
+
+  &:hover {
+    .account-img-hover {
       display: flex;
     }
+
     .upload-btn {
       border-color: var(--primary-color);
       color: var(--primary-color);
     }
   }
 }
-
-
-
 
 .save-btn {
   color: #FFFFFF;
