@@ -44,9 +44,9 @@
 <script setup lang="ts">
 import { ref, watch, markRaw } from 'vue'
 import { useRoute } from 'vue-router'
-import AccountIcon from '../../components/icons/Member_Account.vue'
-import PersonInfoIcon from '../../components/icons/Member_PersonInfo.vue'
-import TicketIcon from '../../components/icons/Member_Ticket.vue'
+import AccountIcon from '../../components/icons/MemberAccount.vue'
+import PersonInfoIcon from '../../components/icons/MemberPersonInfo.vue'
+import TicketIcon from '../../components/icons/MemberTicket.vue'
 
 const Route = useRoute()
 
@@ -81,7 +81,7 @@ watch(() => Route.path, () => {
 .member-container {
   padding-top: 40px;
   min-height: 470px;
-  background-image: url('../../assets/img/member_bg.png');
+  background-image: url('../../assets/img/bg_lg.png');
   background-repeat: no-repeat;
   background-size: cover;
 }

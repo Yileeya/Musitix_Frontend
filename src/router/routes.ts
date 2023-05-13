@@ -48,12 +48,12 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'password',
         name: 'password',
-        component: () => import('@/views/member/password.vue')
+        component: () => import('@/views/member/Password.vue')
       },
       {
         path: 'ticket',
         name: 'ticket',
-        component: () => import('@/views/member/ticket.vue')
+        component: () => import('@/views/member/Ticket.vue')
       }
     ]
   },
