@@ -34,6 +34,21 @@ const routes: RouteRecordRaw[] = [
         path: 'account',
         name: 'account',
         component: () => import('@/views/member/Account.vue')
+      },
+      {
+        path: 'setPersonInfo',
+        name: 'setPersonInfo',
+        component: () => import('@/views/member/SetPersonInfo.vue')
+      },
+      {
+        path: 'password',
+        name: 'password',
+        component: () => import('@/views/member/password.vue')
+      },
+      {
+        path: 'ticket',
+        name: 'ticket',
+        component: () => import('@/views/member/ticket.vue')
       }
     ]
   }

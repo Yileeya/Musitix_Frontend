@@ -1,24 +1,24 @@
 <template>
-  <div>
-    <h5>帳號管理</h5>
-    <div>
-      <form @submit="LoginSubmit">
-        <div class="p-4">
-
-          <div class="container" v-if="userProfile.UserProfiles != null">
-            <div class="mb-3 row">
-              <div class="col-12 d-flex">
-                <div class="account-img mx-auto">
-                  <img :src="pictureUrl" alt="" v-if="pictureUrl != ''">
-                  <circle-user-svg v-else />
-                </div>
+  <div class="container account-body">
+    <form @submit="LoginSubmit">
+      <div class="container" v-if="userProfile.UserProfiles != null">
+        <div class="row">
+          <div class="col-lg-auto col-12">
+            <div class="account-img-div">
+              <div class="account-img">
+                <img :src="pictureUrl" alt="" v-if="pictureUrl">
+                <circle-user-svg v-else />
               </div>
-              <div class="col-auto mx-auto mt-2">
-                <button class="btn btn-primary " type="button" @click="FileInputClick">上傳會員圖片</button>
-                <input type="file" hidden ref="fileInput" accept="image/*" @change="FileUpload">
+              <div class="account-img-hover">
+                上傳大頭貼
               </div>
-              <p class="text-danger text-center col-12">{{FileErrorMessage}}</p>
+              <button class="btn upload-btn" type="button" @click="FileInputClick"><i class="fa fa-camera"></i></button>
+              <input type="file" hidden ref="fileInput" accept="image/*" @change="FileUpload">
             </div>
+
+          </div>
+          <div class="col-12 col-lg">
+
             <div class="mb-3 row">
               <label for="email" class="col-auto col-form-label">信箱:</label>
               <div class="col">
@@ -32,17 +32,20 @@
 
               </div>
             </div>
+
+          </div>
+          <div class="col-12">
             <p v-if="errorMessage != ''" class="text-danger text-center">{{ errorMessage }}</p>
-            <div class="row">
-              <div class="col-6 mx-auto">
-                <button type="submit" class="btn btn-primary w-100" :disabled="isSubmitting">儲存</button>
+            <div class="row mt-4">
+              <div class="col-12 text-center">
+                <button type="submit" class="btn save-btn" :disabled="isSubmitting">儲存</button>
               </div>
             </div>
           </div>
         </div>
-      </form>
-    </div>
 
+      </div>
+    </form>
   </div>
 </template>
 <script setup lang="ts">
@@ -56,8 +59,7 @@ import { patchProfiles, postUserPicture } from '@/apis/users/profile'
 const Router = useRouter()
 const Route = useRoute()
 const userProfile = useUserProfileStore()
-const FileErrorMessage = ref("")
-const fileInput = ref<HTMLInputElement|null>(null);
+const fileInput = ref<HTMLInputElement | null>(null);
 const errorMessage = ref("")
 const pictureUrl = ref(userProfile.UserProfiles?.picture)
 
@@ -67,11 +69,12 @@ const { value: username } = useField(() => 'username');
 // console.log(userProfile.UserProfiles?.username)
 watch(() => userProfile.UserProfiles, () => {
   username.value = userProfile.UserProfiles?.username
- 
+  pictureUrl.value = userProfile.UserProfiles?.picture
+
 }, { immediate: true })
 
 const LoginSubmit = handleSubmit(async (values) => {
-  console.log(pictureUrl.value)
+
   await patchProfiles(values.username, pictureUrl.value ?? "")
     .then(response => {
       alert(response.data.data)
@@ -83,24 +86,24 @@ const LoginSubmit = handleSubmit(async (values) => {
     })
 
 });
-function FileInputClick(){
+function FileInputClick() {
   let btn = fileInput.value as HTMLInputElement
   btn.click()
 }
-function FileUpload(){  
+function FileUpload() {
   let btn = fileInput.value as HTMLInputElement
-  if(btn && btn.files){
+  if (btn && btn.files) {
     postUserPicture(btn.files[0])
-    .then(Response=>{          
-      pictureUrl.value = Response.data.data
-    })
-    .catch(error=>{      
-      FileErrorMessage.value = error.response.data.message 
+      .then(Response => {
+        pictureUrl.value = Response.data.data
+      })
+      .catch(error => {
+        errorMessage.value = error.response.data.message
 
 
-    })
+      })
   }
-  
+
 }
 
 
@@ -109,15 +112,78 @@ function FileUpload(){
 
 </script>
 <style scoped lang="scss">
-.account-img {
+.account-body {
+  padding: 40px;
+  background: #FFFFFF;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+  border-radius: 48px;
+  margin-bottom: 20px;
+}
+.account-img-div{
+position: relative;
+ 
+  .account-img ,.account-img-hover{
   width: 100px;
   height: 100px;
   border-radius: 50%;
   overflow: hidden;
-
+  cursor: pointer;
   >* {
     width: 100%;
     height: 100%;
   }
+}
+.account-img-hover{
+    display: none;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: 5;
+    background-color:rgba(black,0.5);
+    color: #FFFFFF;    
+    justify-content: center;
+    align-items: center;
+  }
+  .upload-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  border-color: var(--gray);
+  padding: 0;  
+  z-index: 6;
+}
+  &:hover{
+    .account-img-hover{
+      display: flex;
+    }
+    .upload-btn {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+  }
+}
+
+
+
+
+.save-btn {
+  color: #FFFFFF;
+  background-color: var(--primary-color);
+  padding: 8px 68px;
+
+  &:hover {
+    color: black;
+    background-color: var(--warning-color);
+
+  }
+
+}
+
+.col-form-label {
+  min-width: 110px;
 }
 </style >
