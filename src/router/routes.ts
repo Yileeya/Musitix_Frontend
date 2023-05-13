@@ -22,6 +22,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/newMessage/NewMessageLayout.vue')
   },
   {
+    path: '/activity/:id',
+    name: 'activity',
+    component: () => import('@/views/activity/ActivityLayout.vue')
+  },
+  {
     path: '/member',
     component: () => import('@/views/member/MemberLayout.vue'),
     meta: { requiresAuth: true },
@@ -51,6 +56,12 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@/views/member/ticket.vue')
       }
     ]
+  },
+  {
+    path: '/booking',
+    name: 'booking',
+    meta: { requiresAuth: true },
+    component: () => import('@/views/booking/BookingLayout.vue')
   }
 ]
 export default routes

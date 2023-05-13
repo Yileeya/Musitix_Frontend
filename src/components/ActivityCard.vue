@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-img-body" @click.prevent="openWindow(activityItems.activityHref)">
+    <div class="card-img-body" @click.prevent="changeRouterPath">
       <img :src="activityItems.imgHref" :alt="activityItems.title" />
       <div class="card-img-overlay">
         <h4 class="card-title">
@@ -20,14 +20,14 @@
           {{ activityItems.price }}
         </div>
       </div>
-      <button class="btn btn-black-border" @click.prevent="openWindow(activityItems.activityHref)">
-        前往購票
-      </button>
+      <button class="btn btn-black-border" @click.prevent="changeRouterPath">前往購票</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+
 export interface Activity {
   id?: number
   imgHref: string
@@ -40,12 +40,13 @@ export interface Activity {
   [key: string]: any
 }
 
-defineProps<{
+const props = defineProps<{
   activityItems: Activity
 }>()
 
-const openWindow = (href: string) => {
-  window.open(href)
+const router = useRouter()
+const changeRouterPath = () => {
+  router.push(`/activity/${props.activityItems.id}`)
 }
 </script>
 

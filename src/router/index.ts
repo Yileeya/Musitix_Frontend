@@ -12,7 +12,10 @@ const allRoutes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: allRoutes
+  routes: allRoutes,
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0, behavior: 'smooth' }
+  }
 })
 
 // 設定導航守衛

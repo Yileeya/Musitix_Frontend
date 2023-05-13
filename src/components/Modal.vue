@@ -95,3 +95,27 @@ function handleBackgroundClick(event: MouseEvent | { target: HTMLElement | null 
   }
 }
 </script>
+
+<style scoped>
+.modal {
+  background: rgba(187, 187, 187, 0.1);
+  .modal-content {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 48px;
+
+    .modal-header {
+      padding: 40px 40px 0;
+      border-bottom: transparent;
+    }
+
+    .modal-body {
+      padding: 40px;
+    }
+
+    .modal-footer {
+      padding: 0 40px 20px;
+      border-top: transparent;
+    }
+  }
+}
+</style>
