@@ -4,7 +4,7 @@
       <div class="mb-3 row">
         <label for="password" class="col-auto col-form-label">原密碼:</label>
         <div class="col">
-          <input type="password" class="form-control" name="password" v-model="password" />
+          <input type="password" class="form-control" name="password" v-model="Password" />
         </div>
       </div>
       <div class="mb-3 row">
@@ -45,7 +45,7 @@ const simpleSchema = {
   }
 };
 const { handleSubmit, isSubmitting, errors } = useForm({ validationSchema: simpleSchema });
-const { value: password } = useField(() => 'password');
+const { value: password } = useField(() => 'Password.vue');
 const { value: newPassword } = useField(() => 'newPassword');
 const { errorMessage: passwordErrorMessage, value: confirmPassword } = useField(() => 'confirmPassword');
 
