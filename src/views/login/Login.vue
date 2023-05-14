@@ -42,8 +42,10 @@ import { useForm,useField } from 'vee-validate'
 import { postLogin } from '../../apis/users/login'
 import { useRoute, useRouter  } from 'vue-router'
 import { useUserProfileStore } from '@/stores/user';
+import { useToast } from 'vue-toastification';
 
 const router = useRouter();
+const Toast = useToast()
 const userProfile = useUserProfileStore()
 //登入
 let errorMessage:string
@@ -75,13 +77,14 @@ const { errorMessage:passwordErrorMessage,value:password } = useField(() => 'pas
 const LoginSubmit = handleSubmit(async(values) => {
   await postLogin(values.email,values.password)
   .then(response=>{       
+    Toast.success("登入成功") 
     localStorage.setItem("Token",response.data.user.token)
     userProfile.SetIsLogin(true)
     router.push("/")
   })
   .catch(error=>{   
     errorMessage = error.response.data.message
-    
+    Toast.error(error.response.data.message) 
   })
 
 });

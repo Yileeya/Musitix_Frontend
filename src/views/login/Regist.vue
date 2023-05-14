@@ -55,10 +55,12 @@ import { useForm,useField } from 'vee-validate';
 import { postRegist } from '../../apis/users/login'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserProfileStore } from '@/stores/user';
+import { useToast } from 'vue-toastification';
 
 //登入
 const router = useRouter();
 const userProfile = useUserProfileStore()
+const Toast = useToast()
 let errorMessage = ref("")
 
 // Create a form context with the validation schema
@@ -106,13 +108,14 @@ const { errorMessage:confirmPasswordErrorMessage,value:confirmPassword } = useFi
 const RegistSubmit = handleSubmit(async(values) => {
   await postRegist(values.username,values.email,values.password,values.confirmPassword)
   .then(response=>{   
-    errorMessage.value = ""    
-    alert(response.data.data)
+    errorMessage.value = ""   
+    Toast.success("註冊成功") 
     router.push({path: "/login",force:true})
     router.go(0)
   })
   .catch(error=>{
     errorMessage.value = error.response.data.message    
+    Toast.error("error.response.data.message")
   })
 
 });
