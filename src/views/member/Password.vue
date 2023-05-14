@@ -45,7 +45,7 @@ const simpleSchema = {
   }
 };
 const { handleSubmit, isSubmitting, errors } = useForm({ validationSchema: simpleSchema });
-const { value: password } = useField(() => 'Password.vue');
+const { value: password } = useField(() => 'password');
 const { value: newPassword } = useField(() => 'newPassword');
 const { errorMessage: passwordErrorMessage, value: confirmPassword } = useField(() => 'confirmPassword');
 
