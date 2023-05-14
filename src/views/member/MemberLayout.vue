@@ -1,4 +1,5 @@
 <template>
+  <div class="bg">
   <div class="container member-container">
     <div class="row">
       <div class="col-12 col-lg-auto">
@@ -40,6 +41,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 <script setup lang="ts">
 import { ref, watch, markRaw } from 'vue'
@@ -78,12 +80,16 @@ watch(() => Route.path, () => {
 }, { immediate: true })
 </script>
 <style scoped lang="scss">
-.member-container {
-  padding-top: 40px;
-  min-height: 470px;
+.bg{
+  min-height: inherit;
   background-image: url('../../assets/img/bg_lg.png');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position-y:40% ;
+}
+.member-container {
+  padding-top: 40px;
+  
 }
 
 .breadcrumb {

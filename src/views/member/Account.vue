@@ -1,6 +1,11 @@
 <template>
   <div class="container account-body">
     <form @submit="LoginSubmit">
+      <div v-if="!userProfile.UserProfiles" class="d-flex">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
       <div class="container" v-if="userProfile.UserProfiles != null">
         <div class="row">
           <div class="col-lg-auto col-12">
@@ -88,6 +93,7 @@ function FileUpload() {
         Toast.success("圖片上傳成功，請儲存帳號資訊");
       })
       .catch(error => {
+        Toast.error(error.response.data.message)
         errorMessage.value = error.response.data.message
       })
   }
@@ -100,6 +106,11 @@ function FileUpload() {
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
   border-radius: 48px;
   margin-bottom: 20px;
+}
+
+.spinner-border {
+  color: var(--primary-color);
+  margin: auto;
 }
 
 .account-img-div {

@@ -1,7 +1,9 @@
 <template>
+  <div class="bg">
+  <div class="container container-body ">
           <form @submit="LoginSubmit">
             <div class="p-4">
-              <h6 class="text-center mb-3">會員登入</h6>
+              <h2 class="title">會員登入</h2>
               <p class="text-danger text-center mb-2">{{ errorMessage }}</p>
              
               <div class="container">
@@ -16,28 +18,29 @@
                   <label for="password" class="col-auto col-form-label">密碼:</label>
                   <div class="col">
                     <input type="password" class="form-control" name="password" v-model="password" />
+                    <a href="" class=" forget-password-link">忘記密碼</a>
                     <span class="text-danger">{{ passwordErrorMessage}}</span>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-6">
-                    <a href="">忘記密碼</a>
+                <div class="row">                 
+                  <div class="col-12 text-center">
+                    <button type="submit" class="btn login-btn" :disabled="isSubmitting">登入</button>
                   </div>
-
-                  <div class="col-6">
-                    <button type="submit" class="btn btn-primary w-100" :disabled="isSubmitting">登入</button>
+                  <div class="col-12 text-center mt-2">
+                     <RouterLink :to="'/regist'" class="regist-link" >註冊會員</RouterLink> 
                   </div>
                 </div>
               </div>
             </div>
           </form>
-       
+        </div>
+        </div>
 </template>
 <script setup lang="ts">
 
 import { useForm,useField } from 'vee-validate'
 import { postLogin } from '../../apis/users/login'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter  } from 'vue-router'
 import { useUserProfileStore } from '@/stores/user';
 
 const router = useRouter();
@@ -86,5 +89,53 @@ const LoginSubmit = handleSubmit(async(values) => {
 
 </script>
 <style scoped lang="scss">
+.title{
+  color: var(--primary-color);
+margin-bottom: 32px;
+font-weight: bold;
+}
+  .bg{
+    background-color: var(--primary-color);
+    min-height: inherit;   
+    margin: 0;     
+    display: flex;
+  }
+  .container-body{
+    background: #FFFFFF;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+  border-radius: 48px;
+  
+  overflow: hidden;
+  width: 40%;
+    min-width: 600px;
+    margin: auto;
+  }
+  .forget-password-link{
+    display: block;
+    text-align: end;
+    text-decoration: none;
+    color: var(--primary-color);
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  .login-btn{
+    color: #FFFFFF;
+  background-color: var(--primary-color);
+  padding: 8px 68px;
 
+  &:hover {
+    color: black;
+    background-color: var(--warning-color);
+
+  }
+  }
+  .regist-link{
+    display: block;    
+    text-decoration: none;
+    color: var(--primary-color);
+    &:hover{
+      text-decoration: underline;
+    }
+  }
 </style >

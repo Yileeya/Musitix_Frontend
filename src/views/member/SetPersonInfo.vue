@@ -1,6 +1,11 @@
 <template>
   <div class="container account-body">
     <form @submit="SetPreFilledInfo">
+      <div v-if="!GetValue" class="d-flex">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
       <div class="" v-if="GetValue">
         <div class="mb-3 row">
           <label for="buyer" class="col-auto col-form-label">訂購人姓名:</label>
@@ -89,6 +94,7 @@ const SetPreFilledInfo = handleSubmit(async (values) => {
       Toast.success("預填資料儲存成功");
     })
     .catch(error => {
+      Toast.error(error.response.data.message)
       errorMessage.value = error.response.data.message
     })
 });
@@ -105,7 +111,10 @@ const SetPreFilledInfo = handleSubmit(async (values) => {
   border-radius: 48px;
   margin-bottom: 20px;
 }
-
+.spinner-border {
+  color: var(--primary-color);
+  margin: auto;
+}
 .save-btn {
   color: #FFFFFF;
   background-color: var(--primary-color);

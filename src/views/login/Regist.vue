@@ -1,7 +1,9 @@
 <template>
+  <div class="bg">
+  <div class="container container-body ">
     <form @submit="RegistSubmit">
           <div class="p-4">
-            <h6 class="text-center">會員註冊</h6>
+            <h2 class="title">會員註冊</h2>          
             <p class="text-danger text-center mb-2">{{ errorMessage }}</p>
              
               <div class="container">
@@ -34,14 +36,18 @@
                   </div>
                 </div>
                 <div class="row">                  
-
-                  <div class="col-6 mx-auto">
-                    <button type="submit" class="btn btn-primary w-100" :disabled="isSubmitting">註冊</button>
+                  <div class="col-12 text-center mt-3">
+                    <button type="submit" class="btn regist-btn" :disabled="isSubmitting">註冊</button>
                   </div>
+                  <div class="col-12 text-center mt-2">
+                     <RouterLink :to="'/login'" class="login-link" >登入會員</RouterLink> 
+                  </div>                  
                 </div>
               </div>
           </div> 
-        </form>      
+        </form>    
+      </div>
+    </div>  
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref, watch, watchEffect } from 'vue'
@@ -117,4 +123,44 @@ const RegistSubmit = handleSubmit(async(values) => {
 .col-form-label{
   min-width: 100px;
 }
+.title{
+  color: var(--primary-color);
+margin-bottom: 32px;
+font-weight: bold;
+}
+  .bg{
+    background-color: var(--primary-color);
+    min-height: inherit;   
+    margin: 0;     
+    display: flex;
+  }
+  .container-body{
+    background: #FFFFFF;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+  border-radius: 48px;
+  
+  overflow: hidden;
+  width: 40%;
+    min-width: 600px;
+    margin: auto;
+  }
+  .regist-btn{
+    color: #FFFFFF;
+  background-color: var(--primary-color);
+  padding: 8px 68px;
+
+  &:hover {
+    color: black;
+    background-color: var(--warning-color);
+
+  }
+  }
+  .login-link{
+    display: block;    
+    text-decoration: none;
+    color: var(--primary-color);
+    &:hover{
+      text-decoration: underline;
+    }
+  }
 </style >

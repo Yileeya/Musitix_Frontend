@@ -59,6 +59,7 @@ const PasswordSubmit = handleSubmit(async (values) => {
       Toast.success("密碼修改成功");
     })
     .catch(error => {
+      Toast.error(error.response.data.message)
       errorMessage.value = error.response.data.message
     })
 });
