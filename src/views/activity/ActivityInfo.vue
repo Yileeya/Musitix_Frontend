@@ -11,7 +11,7 @@
       </div>
       <button type="button" class="btn-purple btn" @click.prevent="scrollToByTickets">
         <span>立即購票</span>
-        <ticket-svg class="icon" />
+        <member-ticket class="icon" />
       </button>
     </div>
   </section>
@@ -22,7 +22,7 @@ import CalendarSvg from '@/components/icons/CalendarSvg.vue'
 import MusitixIconSmSvg from '@/components/icons/MusitixIconSmSvg.vue'
 import { ref, markRaw, computed } from 'vue'
 import { dateFormatUTC } from '@/utils/dateFormat'
-import TicketSvg from '@/components/icons/TicketSvg.vue'
+import MemberTicket from '@/components/icons/MemberTicket.vue'
 
 const props = defineProps<{
   mainImageUrl: string
