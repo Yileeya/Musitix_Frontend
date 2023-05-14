@@ -4,7 +4,7 @@
       <div class="mb-3 row">
         <label for="password" class="col-auto col-form-label">原密碼:</label>
         <div class="col">
-          <input type="password" class="form-control" name="password" v-model="Password" />
+          <input type="password" class="form-control" name="password" v-model="password" />
         </div>
       </div>
       <div class="mb-3 row">
