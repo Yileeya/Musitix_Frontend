@@ -1,7 +1,11 @@
 <template>
-  <div class="card">
+  <div class="card" :class="[{ 'image-error': imageError }]">
     <div class="card-img-body" @click.prevent="changeRouterPath">
-      <img :src="activityItems.mainImageUrl" :alt="activityItems.title" />
+      <img
+        :src="activityItems.mainImageUrl"
+        :alt="activityItems.title"
+        @error="imageError = true"
+      />
       <div class="card-img-overlay">
         <h4 class="card-title">
           {{ activityItems.title }}
@@ -29,11 +33,14 @@
 import { useRouter } from 'vue-router'
 import type { Activity } from '@/types/activity/activity'
 import { dateFormatUTC } from '@/utils/dateFormat'
+import { ref } from 'vue'
 
 const props = defineProps<{
   activityItems: Activity
   isHidePrice?: Boolean
 }>()
+
+const imageError = ref(false)
 
 const router = useRouter()
 const changeRouterPath = () => {
@@ -142,6 +149,21 @@ const showDateFormatText = (startDate: string, endDate: string) => {
         border-color: var(--primary-color);
       }
     }
+  }
+}
+
+.image-error {
+  display: flex;
+  justify-content: flex-end;
+
+  .card-body {
+    flex: 0 1 auto;
+  }
+
+  .card-img-body {
+    flex: 1;
+    background: darkgray;
+    min-height: 250px;
   }
 }
 </style>
