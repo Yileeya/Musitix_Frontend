@@ -9,7 +9,7 @@
     :title-color="activityAreaItem.titleColor"
     :button-class="activityAreaItem.buttonClass"
     :class="activityAreaItem.bgClass"
-    :activities="activitiesDemo"
+    :activities="activityAreaItem.data"
     @change-router-path="changeRouterPath"
   />
   <about />
@@ -23,9 +23,9 @@ import carouselJson from '@/demoData/home/carouselJson'
 import SearchBar from '@/views/home/SearchBar.vue'
 import NewsMessage from '@/views/home/NewsMessage.vue'
 import ActivitiesArea from '@/views/home/ActivitiesArea.vue'
-import type { Activity } from '@/components/ActivityCard.vue'
-import activitiesJson from '@/demoData/home/activitiesJson'
+import type { Activity } from '@/types/activity/activity'
 import About from '@/views/home/About.vue'
+import { getActivities } from '@/apis/activities/activities'
 
 const carouselItems: CarouselItems[] = reactive(carouselJson)
 
@@ -33,45 +33,63 @@ const router = useRouter()
 const changeRouterPath = (path: string) => {
   router.push(path)
 }
+
+//獲取活動內容
+const hotActivities = ref<Array<Activity>>([])
+const upcomingActivities = ref<Array<Activity>>([])
+const recentActivities = ref<Array<Activity>>([])
+
+async function fetchActivities() {
+  try {
+    let res = await getActivities()
+    if (res.status === 200) {
+      res = res.data
+      hotActivities.value = res.data.hotActivities
+      upcomingActivities.value = res.data.upcomingActivities
+      recentActivities.value = res.data.recentActivities
+    }
+  } catch (error) {}
+}
+fetchActivities()
+
+//首頁活動類別
 const activitiesAreaItem = reactive([
   {
-    tag: 'popular',
+    tag: 'hot',
     title: '熱門活動',
     titleColor: 'white',
     buttonClass: 'btn-purple',
-    bgClass: ['popular']
+    bgClass: ['hot'],
+    data: hotActivities
   },
   {
-    tag: 'coming-soon',
+    tag: 'up-coming',
     title: '即將開賣',
     titleColor: 'var(--primary-color)',
     buttonClass: 'btn-black',
-    bgClass: ['coming-soon']
+    bgClass: ['up-coming'],
+    data: upcomingActivities
   },
   {
     tag: 'recently',
     title: '近期活動',
     titleColor: 'white',
     buttonClass: 'btn-purple',
-    bgClass: ['recently']
+    bgClass: ['recently'],
+    data: recentActivities
   }
 ])
-const activitiesDemo = ref<Array<Activity>>([])
-activitiesDemo.value = Array.from({ length: 6 }, (_, index) => ({
-  id: index + 1,
-  ...activitiesJson[0]
-}))
 </script>
 
 <style scoped lang="scss">
 .activities-area {
   background-repeat: no-repeat;
 
-  &.popular {
+  &.hot {
     background-color: var(--primary-color);
   }
 
-  &.coming-soon {
+  &.up-coming {
     background-image: url(@/assets/img/home_coming_soon_bg.png);
   }
 
@@ -81,7 +99,7 @@ activitiesDemo.value = Array.from({ length: 6 }, (_, index) => ({
   }
 
   @media (max-width: 1260px) {
-    &.coming-soon {
+    &.up-coming {
       background-image: url(@/assets/img/home_coming_soon_phone_bg.png);
     }
     &.recently {

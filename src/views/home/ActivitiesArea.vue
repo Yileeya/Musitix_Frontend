@@ -6,6 +6,7 @@
       </div>
       <div class="activities">
         <activity-card
+          :is-hide-price="true"
           class="activity-card"
           v-for="activity in activities"
           :key="activity.id"
@@ -26,7 +27,7 @@
 
 <script setup lang="ts">
 import ActivityCard from '@/components/ActivityCard.vue'
-import type { Activity } from '@/components/ActivityCard.vue'
+import type { Activity } from '@/types/activity/activity'
 
 defineProps<{
   title: string
