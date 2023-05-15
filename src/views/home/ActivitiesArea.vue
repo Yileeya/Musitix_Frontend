@@ -72,18 +72,19 @@ function emitRouterChange() {
   }
 
   .activities {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-
-    .activity-card {
-      min-width: 420px;
-      width: 30%;
-      margin: 1em 0;
+    display: grid;
+    grid-row-gap: 2em;
+    grid-column-gap: 1em;
+    grid-template-columns: repeat(3, 1fr);
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 992px) {
+      grid-template-columns: repeat(1, 1fr);
     }
   }
 
-  @media (max-width: 1260px) {
+  @media (max-width: 992px) {
     padding: 2em 0;
     .more-btn {
       position: relative;
@@ -94,10 +95,6 @@ function emitRouterChange() {
     .title-area {
       justify-content: center;
       margin-bottom: 1em;
-    }
-    .activity-card {
-      min-width: auto !important;
-      width: 100% !important;
     }
   }
 }
