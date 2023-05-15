@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-img-body" @click.prevent="changeRouterPath">
-      <img :src="activityItems.imgHref" :alt="activityItems.title" />
+      <img :src="activityItems.mainImageUrl" :alt="activityItems.title" />
       <div class="card-img-overlay">
         <h4 class="card-title">
           {{ activityItems.title }}
@@ -14,10 +14,10 @@
     <div class="card-body">
       <div>
         <div class="card-text date">
-          {{ activityItems.date }}
+          {{ showDateFormatText(activityItems.startDate, activityItems.endDate) }}
         </div>
-        <div class="card-text price">
-          {{ activityItems.price }}
+        <div class="card-text price" v-if="!isHidePrice">
+          ${{ activityItems.minPrice }} - ${{ activityItems.maxPrice }}
         </div>
       </div>
       <button class="btn btn-black-border" @click.prevent="changeRouterPath">前往購票</button>
@@ -27,26 +27,24 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-
-export interface Activity {
-  id?: number
-  imgHref: string
-  title: string
-  content: string
-  date: string
-  activityHref: string
-  price?: string
-
-  [key: string]: any
-}
+import type { Activity } from '@/types/activity/activity'
+import { dateFormatUTC } from '@/utils/dateFormat'
 
 const props = defineProps<{
   activityItems: Activity
+  isHidePrice?: Boolean
 }>()
 
 const router = useRouter()
 const changeRouterPath = () => {
   router.push(`/activity/${props.activityItems.id}`)
+}
+
+const showDateFormatText = (startDate: string, endDate: string) => {
+  const startDateFormat = dateFormatUTC(startDate, 'YYYY-MM-DD')
+  const endDateFormat = dateFormatUTC(endDate, 'YYYY-MM-DD')
+  if (startDateFormat === endDateFormat) return startDateFormat
+  else return startDateFormat + '  至  ' + endDateFormat
 }
 </script>
 
@@ -137,7 +135,7 @@ const changeRouterPath = () => {
 
     .btn-black-border {
       border: 1px solid;
-      padding: 0.5em 2.5em;
+      padding: 0.5em 2em;
 
       &:hover {
         color: var(--primary-color);
