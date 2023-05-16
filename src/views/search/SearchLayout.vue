@@ -9,7 +9,7 @@
       <activity-card
         class="activity-card"
         v-for="activity in activitiesDemo"
-        :key="activity.id"
+        :key="activity._id"
         :activity-items="activity"
       />
     </div>
@@ -20,17 +20,11 @@
 import SearchSection from '@/views/search/SearchSection.vue'
 import { useRoute, useRouter } from 'vue-router'
 import ActivityCard from '@/components/ActivityCard.vue'
-import activitiesJson from '@/demoData/home/activitiesJson'
-import type { Activity } from '@/components/ActivityCard.vue'
+import type { Activity } from '@/types/activity/activity'
 import { ref } from 'vue'
 import _ from 'lodash'
 
 const activitiesDemo = ref<Activity[]>([])
-activitiesDemo.value = Array.from({ length: 15 }, (_, index) => ({
-  id: index + 1,
-  price: '$1000 - $2000',
-  ...activitiesJson[0]
-}))
 
 const route = useRoute()
 const router = useRouter()
