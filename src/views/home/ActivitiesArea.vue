@@ -9,7 +9,7 @@
           :is-hide-price="true"
           class="activity-card"
           v-for="activity in activities"
-          :key="activity.id"
+          :key="activity._id"
           :activity-items="activity"
         />
       </div>

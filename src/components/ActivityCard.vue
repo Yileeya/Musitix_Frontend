@@ -44,7 +44,7 @@ const imageError = ref(false)
 
 const router = useRouter()
 const changeRouterPath = () => {
-  router.push(`/activity/${props.activityItems.id}`)
+  router.push(`/activity/${props.activityItems._id}`)
 }
 
 const showDateFormatText = (startDate: string, endDate: string) => {

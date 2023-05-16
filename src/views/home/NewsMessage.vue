@@ -2,15 +2,10 @@
   <section class="news-message">
     <div class="area-title">
       <h2>最新消息</h2>
-      <button type="button" class="btn btn-black">More　+</button>
+      <!--      <button type="button" class="btn btn-black">More　+</button>-->
     </div>
     <section class="news-message-area">
-      <div
-        v-for="item in news"
-        :key="'news' + item.id"
-        class="news-content"
-        @click.prevent="openWindow(item.newsUrl)"
-      >
+      <div v-for="item in news" :key="'news' + item.id" class="news-content">
         <div class="tag">
           {{ item.tag }}
         </div>
@@ -36,9 +31,6 @@ interface NewsMessage {
 }
 
 const news: NewsMessage[] = reactive(newsMessage)
-const openWindow = (href: string) => {
-  window.open(href)
-}
 </script>
 
 <style scoped lang="scss">

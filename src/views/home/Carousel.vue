@@ -17,7 +17,6 @@
         :key="'img' + item.id"
         class="carousel-item"
         :class="[{ active: index === 0 }]"
-        @click.prevent="openHrefLink(item.activityUrl)"
       >
         <img :src="item.imageUrl" class="w-100" :alt="item.title" />
       </div>
@@ -51,10 +50,6 @@ export interface CarouselItems {
 defineProps<{
   carouselItems: CarouselItems[]
 }>()
-
-const openHrefLink = (href: string) => {
-  window.open(href, '_blank')
-}
 </script>
 
 <style scoped lang="scss">
