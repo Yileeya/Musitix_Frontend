@@ -26,6 +26,9 @@ import ActivitiesArea from '@/views/home/ActivitiesArea.vue'
 import type { Activity } from '@/types/activity/activity'
 import About from '@/views/home/About.vue'
 import { getActivities } from '@/apis/activities/activities'
+import { useToast } from 'vue-toastification'
+
+const Toast = useToast()
 
 const carouselItems: CarouselItems[] = reactive(carouselJson)
 
@@ -38,19 +41,6 @@ const changeRouterPath = (path: string) => {
 const hotActivities = ref<Array<Activity>>([])
 const upcomingActivities = ref<Array<Activity>>([])
 const recentActivities = ref<Array<Activity>>([])
-
-async function fetchActivities() {
-  try {
-    let res = await getActivities()
-    if (res.status === 200) {
-      res = res.data
-      hotActivities.value = res.data.hotActivities
-      upcomingActivities.value = res.data.upcomingActivities
-      recentActivities.value = res.data.recentActivities
-    }
-  } catch (error) {}
-}
-fetchActivities()
 
 //首頁活動類別
 const activitiesAreaItem = reactive([
@@ -79,6 +69,23 @@ const activitiesAreaItem = reactive([
     data: recentActivities
   }
 ])
+
+async function fetchData() {
+  try {
+    const [activities] = await Promise.all([getActivities()])
+
+    if (activities.status === 200) {
+      let res = activities.data.data
+      hotActivities.value = res.hotActivities
+      upcomingActivities.value = res.upcomingActivities
+      recentActivities.value = res.recentActivities
+    }
+  } catch (err: any) {
+    Toast.error(err.response.data.message)
+  }
+}
+
+fetchData()
 </script>
 
 <style scoped lang="scss">
