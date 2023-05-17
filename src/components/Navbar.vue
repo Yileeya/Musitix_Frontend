@@ -63,10 +63,10 @@ const navItems = ref([
     name: '活動搜尋',
     link: '/search'
   },
-  {
-    name: '最新消息',
-    link: '/news'
-  },
+  // {
+  //   name: '最新消息',
+  //   link: '/news'
+  // },
   {
     name: '會員專區',
     link: '/member'
@@ -83,11 +83,11 @@ const iconNavItems = ref([
     icon: markRaw(SearchSvg),
     link: '/search'
   },
-  {
-    name: 'news',
-    icon: markRaw(NewsSvg),
-    link: '/news'
-  },
+  // {
+  //   name: 'news',
+  //   icon: markRaw(NewsSvg),
+  //   link: '/news'
+  // },
   {
     name: 'people',
     icon: markRaw(PeopleSvg),
@@ -123,6 +123,10 @@ function LoginRoute() {
 
   .container-fluid {
     max-width: 1300px;
+
+    .navbar-brand svg {
+      color: black;
+    }
 
     .nav-item a {
       color: black;
