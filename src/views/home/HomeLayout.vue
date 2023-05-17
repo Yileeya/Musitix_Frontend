@@ -26,11 +26,11 @@ import ActivitiesArea from '@/views/home/ActivitiesArea.vue'
 import type { Activity } from '@/types/activity/activity'
 import About from '@/views/home/About.vue'
 import { getActivities } from '@/apis/activities/activities'
-
+import { pageLoadingStore } from '@/stores/pageLoading'
 import { useToast } from 'vue-toastification'
+
 const Toast = useToast()
 
-import { pageLoadingStore } from '@/stores/pageLoading'
 const pageLoading = pageLoadingStore()
 pageLoading.changeLoadingStatus(true)
 
