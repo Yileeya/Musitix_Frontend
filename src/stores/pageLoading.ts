@@ -12,10 +12,10 @@ export const pageLoadingStore = defineStore('pageLoading', () => {
       loading.value = true
     } else {
       const elapsedTime = Date.now() - (loadingStartTime || 0)
-      const minimumDelay = 3000 // 需最少維持三秒
+      const minimumDelay = 1500 // 最少維持秒數
 
       if (elapsedTime < minimumDelay) {
-        //未滿三秒，延遲處理
+        //未滿秒數，延遲處理
         const remainingTime = minimumDelay - elapsedTime
 
         setTimeout(() => {
