@@ -10,6 +10,11 @@ body {
   display: flex;
   flex-direction: column;
 
+  .is-page-loading {
+    max-height: 100vh;
+    overflow: hidden;
+  }
+
   .navbar {
     height: 85px;
   }
