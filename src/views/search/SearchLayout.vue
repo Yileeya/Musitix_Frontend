@@ -2,13 +2,18 @@
   <div class="search-layout">
     <search-section
       class="container"
-      @emit-search-query="fetchSearchQuery"
       :route-query-key-word="route.query.subject as string | undefined ?? ''"
+      :is-loading="loading"
+      @emit-search-query="fetchSearch"
     />
+    <div class="text-center" v-if="!searchActivitiesResult.length && !loading">
+      無活動符合搜尋條件
+    </div>
+    <loading-spinner class="loading-spinner" v-if="loading" />
     <div class="activities container">
       <activity-card
         class="activity-card"
-        v-for="activity in activitiesDemo"
+        v-for="activity in searchActivitiesResult"
         :key="activity._id"
         :activity-items="activity"
       />
@@ -18,13 +23,20 @@
 
 <script setup lang="ts">
 import SearchSection from '@/views/search/SearchSection.vue'
-import { useRoute, useRouter } from 'vue-router'
 import ActivityCard from '@/components/ActivityCard.vue'
-import type { Activity } from '@/types/activity/activity'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import _ from 'lodash'
+import type { Activity } from '@/types/activity/activity'
+import type { SearchActivityQuery } from '@/types/activity/searchActivityQuery'
+import { getSearchActivities } from '@/apis/activities/activities'
+import { useToast } from 'vue-toastification'
 
-const activitiesDemo = ref<Activity[]>([])
+const Toast = useToast()
+
+const searchActivitiesResult = ref<Activity[]>([])
+const loading = ref<boolean>(true)
 
 const route = useRoute()
 const router = useRouter()
@@ -34,22 +46,28 @@ if (!_.isEmpty(route.query)) {
   })
 }
 
-const fetchSearchQuery = (query: any) => {
-  router.replace({
-    path: '/search',
-    query: query
-  })
+const fetchSearch = async (query: SearchActivityQuery) => {
+  loading.value = true
+  try {
+    let res = await getSearchActivities(query)
+    if (res.status === 200) {
+      searchActivitiesResult.value = res.data.data
+    }
+  } catch (error:any) {
+    Toast.error(error.response.data.message)
+    searchActivitiesResult.value = []
+  }
+  loading.value = false
 }
 </script>
 
 <style scoped lang="scss">
 .search-layout {
   position: relative;
-
   &::before {
     content: '';
     position: absolute;
-    bottom: calc(100% - 270px);
+    top: calc(-100% + 200px);
     left: 0;
     width: 100%;
     height: 100%;
@@ -58,7 +76,6 @@ const fetchSearchQuery = (query: any) => {
     transform: scaleY(-1) scaleX(-1);
     z-index: -1;
   }
-
   .search-section {
     padding: 3em 0;
   }
@@ -81,6 +98,9 @@ const fetchSearchQuery = (query: any) => {
     @media (max-width: 768px) {
       grid-template-columns: repeat(1, 1fr);
     }
+  }
+  .loading-spinner {
+    color: var(--primary-color);
   }
 }
 </style>

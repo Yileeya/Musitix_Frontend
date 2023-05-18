@@ -15,34 +15,32 @@
         {{ dateRangeItem.name }}
       </option>
     </select>
-    <button type="button" class="btn btn-black" @click.prevent="submit">搜尋</button>
+    <button type="button" class="btn btn-black" @click.prevent="submit" :disabled="isLoading">
+      搜尋
+    </button>
   </section>
 </template>
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import dayjs from 'dayjs'
-
-interface SearchQuery {
-  subject: string
-  minPrice: number | null
-  maxPrice: number | null
-  eventStartDate: string
-  eventEndDate: string
-}
+import type { SearchActivityQuery } from '@/types/activity/searchActivityQuery'
 
 const props = defineProps<{
   routeQueryKeyWord?: string
+  isLoading: boolean
 }>()
 
 const emits = defineEmits({
-  'emit-search-query': (searchQuery: SearchQuery) => true
+  'emit-search-query': (searchQuery: SearchActivityQuery) => true
 })
 
+// 關鍵字搜尋
 const keyword = ref<string>(props.routeQueryKeyWord ?? '')
 
+// 價位選單
 const priceItems = reactive([
   {
-    value: [null, null],
+    value: ['', ''],
     name: '不限價位'
   },
   {
@@ -58,12 +56,13 @@ const priceItems = reactive([
     name: '1000 - 2000'
   },
   {
-    value: [2000, null],
+    value: [2000, ''],
     name: '2000以上'
   }
 ])
-const price = ref<Array<number | null>>(priceItems[0].value)
+const price = ref<Array<number | string>>(priceItems[0].value)
 
+// 日期區間選擇
 const dateRangeItems = reactive([
   {
     value: 'today',
@@ -84,33 +83,37 @@ const dateRangeItems = reactive([
 ])
 const dateRange = ref<string>('month')
 
+// 點擊搜尋
 const submit = () => {
-  let dateRangeFormat: string[] = []
+  let dateRangeToISOString: string[] = []
   const today = dayjs()
-  const todayFormat = today.format('YYYY/MM/DD')
+
   if (dateRange.value === 'today') {
-    dateRangeFormat = [todayFormat, todayFormat]
+    dateRangeToISOString = [today.toISOString(), today.toISOString()]
   } else if (dateRange.value === 'week') {
     const nextWeek = today.add(7, 'day')
-    dateRangeFormat = [todayFormat, nextWeek.format('YYYY/MM/DD')]
+    dateRangeToISOString = [today.toISOString(), nextWeek.toISOString()]
   } else if (dateRange.value === 'month') {
     const nextMonth = today.add(1, 'month')
-    dateRangeFormat = [todayFormat, nextMonth.format('YYYY/MM/DD')]
+    dateRangeToISOString = [today.toISOString(), nextMonth.toISOString()]
   } else if (dateRange.value === 'twoMonth') {
     const nextMonth = today.add(2, 'month')
-    dateRangeFormat = [todayFormat, nextMonth.format('YYYY/MM/DD')]
+    dateRangeToISOString = [today.toISOString(), nextMonth.toISOString()]
   }
 
-  const searchQuery: SearchQuery = {
+  const searchQuery: SearchActivityQuery = {
     subject: keyword.value,
     minPrice: price.value[0],
     maxPrice: price.value[1],
-    eventStartDate: dateRangeFormat[0],
-    eventEndDate: dateRangeFormat[1]
+    eventStartDate: dateRangeToISOString[0],
+    eventEndDate: dateRangeToISOString[1]
   }
 
   emits('emit-search-query', searchQuery)
 }
+
+//預先載入活動
+submit()
 </script>
 <style scoped lang="scss">
 .search-section {
@@ -140,6 +143,10 @@ const submit = () => {
   .btn-black {
     width: 5em;
     margin-left: 1em;
+    &:disabled {
+      pointer-events: auto;
+      background-color: transparent;
+    }
   }
 
   @media (max-width: 1100px) {
