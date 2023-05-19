@@ -5,3 +5,9 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+.spinner-border {
+  color: var(--primary-color);
+}
+</style>

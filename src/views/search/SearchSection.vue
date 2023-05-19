@@ -105,8 +105,8 @@ const submit = () => {
     subject: keyword.value,
     minPrice: price.value[0],
     maxPrice: price.value[1],
-    eventStartDate: dateRangeToISOString[0],
-    eventEndDate: dateRangeToISOString[1]
+    startDate: dateRangeToISOString[0],
+    endDate: dateRangeToISOString[1]
   }
 
   emits('emit-search-query', searchQuery)
@@ -151,7 +151,7 @@ submit()
 
   @media (max-width: 1100px) {
     flex-wrap: wrap;
-    row-gap: 8px;
+    gap: 8px;
     .keyword {
       flex: 1 1 100% !important;
     }

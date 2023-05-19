@@ -9,15 +9,17 @@
     <div class="text-center" v-if="!searchActivitiesResult.length && !loading">
       無活動符合搜尋條件
     </div>
-    <loading-spinner class="loading-spinner" v-if="loading" />
-    <div class="activities container">
-      <activity-card
-        class="activity-card"
-        v-for="activity in searchActivitiesResult"
-        :key="activity._id"
-        :activity-items="activity"
-      />
-    </div>
+    <section>
+      <loading-spinner class="loading-spinner" v-if="loading" />
+      <div class="activities container" v-else>
+        <activity-card
+          class="activity-card"
+          v-for="activity in searchActivitiesResult"
+          :key="activity._id"
+          :activity-items="activity"
+        />
+      </div>
+    </section>
   </div>
 </template>
 
@@ -51,9 +53,19 @@ const fetchSearch = async (query: SearchActivityQuery) => {
   try {
     let res = await getSearchActivities(query)
     if (res.status === 200) {
-      searchActivitiesResult.value = res.data.data
+      searchActivitiesResult.value = res.data.data.map((activity: Activity) =>
+        _.pick(activity, [
+          '_id',
+          'title',
+          'mainImageUrl',
+          'minPrice',
+          'maxPrice',
+          'startDate',
+          'endDate'
+        ])
+      )
     }
-  } catch (error:any) {
+  } catch (error: any) {
     Toast.error(error.response.data.message)
     searchActivitiesResult.value = []
   }
@@ -75,6 +87,9 @@ const fetchSearch = async (query: SearchActivityQuery) => {
     background-image: url(/src/assets/img/home_news_bg.png);
     transform: scaleY(-1) scaleX(-1);
     z-index: -1;
+    @media (max-width: 992px) {
+      background-image: none;
+    }
   }
   .search-section {
     padding: 3em 0;
@@ -100,7 +115,7 @@ const fetchSearch = async (query: SearchActivityQuery) => {
     }
   }
   .loading-spinner {
-    color: var(--primary-color);
+    margin: 20px;
   }
 }
 </style>
