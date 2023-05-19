@@ -15,7 +15,7 @@
         <activity-card
           class="activity-card"
           v-for="activity in searchActivitiesResult"
-          :key="activity._id"
+          :key="activity.id"
           :activity-items="activity"
         />
       </div>
@@ -55,7 +55,7 @@ const fetchSearch = async (query: SearchActivityQuery) => {
     if (res.status === 200) {
       searchActivitiesResult.value = res.data.data.map((activity: Activity) =>
         _.pick(activity, [
-          '_id',
+          'id',
           'title',
           'mainImageUrl',
           'minPrice',
