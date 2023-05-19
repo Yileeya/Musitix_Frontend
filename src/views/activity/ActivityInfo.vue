@@ -18,17 +18,20 @@
 </template>
 
 <script setup lang="ts">
-import CalendarSvg from '@/components/icons/CalendarSvg.vue'
-import MusitixIconSmSvg from '@/components/icons/MusitixIconSmSvg.vue'
 import { ref, markRaw, computed } from 'vue'
 import { dateFormatUTC } from '@/utils/dateFormat'
+import CalendarSvg from '@/components/icons/CalendarSvg.vue'
+import MusitixIconSmSvg from '@/components/icons/MusitixIconSmSvg.vue'
 import MemberTicket from '@/components/icons/MemberTicket.vue'
+import MapLocationSvg from '@/components/icons/MapLocationSvg.vue'
 
 const props = defineProps<{
   mainImageUrl: string
   title: string
   dateRange: Array<string>
   sponsorName: string
+  location: string
+  address: string
 }>()
 
 interface InfoTitleItem {
@@ -46,6 +49,12 @@ const infoTitleItems: Record<string, InfoTitleItem> = ref({
       return format.join(' — ')
     }),
     icon: markRaw(CalendarSvg)
+  },
+  location: {
+    name: computed(() => {
+      return props.address + (props.location ? ` (${props.location})` : '')
+    }),
+    icon: markRaw(MapLocationSvg)
   },
   sponsor: {
     name: props.sponsorName,

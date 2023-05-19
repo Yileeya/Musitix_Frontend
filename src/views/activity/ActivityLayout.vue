@@ -1,28 +1,65 @@
 <template>
-  <activity-info
-    :main-image-url="activity.mainImageUrl"
-    :title="activity.title"
-    :date-range="[activity.startDate, activity.endDate]"
-    :sponsor-name="activity.sponsorName"
-  />
-  <div class="activity-intro">
-    <html-content :html="activity.HtmlContent" />
+  <div v-if="activity">
+    <activity-info
+      :main-image-url="activity.mainImageUrl"
+      :title="activity.title"
+      :date-range="[activity.startDate, activity.endDate]"
+      :sponsor-name="activity.sponsorName"
+      :location="activity.location"
+      :address="activity.address"
+    />
+    <div class="activity-intro">
+      <html-content :html="activity.HtmlContent" />
+    </div>
+    <activity-map :map-url="activity.mapUrl" />
+    <schedules :schedules="activity.schedules" id="ByTickets" />
+    <html-content :html="activity.HtmlNotice" />
   </div>
-  <activity-map :map-url="activity.mapUrl" />
-  <schedules :schedules="activity.schedules" id="ByTickets"/>
-  <html-content :html="activity.HtmlNotice" />
 </template>
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
-import activityJson from '@/demoData/activity/activityJson'
+import type { Ref } from 'vue'
+import { useToast } from 'vue-toastification'
 import ActivityInfo from '@/views/activity/ActivityInfo.vue'
 import HtmlContent from '@/components/HtmlContent.vue'
 import ActivityMap from '@/views/activity/ActivityMap.vue'
 import Schedules from '@/views/activity/Schedules.vue'
+import { getActivity } from '@/apis/activities/activities'
+import type { Activity } from '@/types/activity/activity'
+import { pageLoadingStore } from '@/stores/pageLoading'
+
+const pageLoading = pageLoadingStore()
+pageLoading.changeLoadingStatus(true)
+
 const route = useRoute()
-//若無此activityId，則回到首頁
-const activity = ref(activityJson)
+const router = useRouter()
+const routeParamsId = route.params.id.toString()
+
+const activity: Ref<Activity | null> = ref<Activity | null>(null)
+
+const Toast = useToast()
+const handleFetchError = () => {
+  Toast.error('活動獲取錯誤，跳轉回首頁。')
+  activity.value = null
+  router.push('/')
+}
+
+const fetchActivity = async () => {
+  try {
+    let res = await getActivity(routeParamsId)
+    if (res.status === 200) {
+      activity.value = res.data.data
+    } else {
+      handleFetchError()
+    }
+  } catch (error) {
+    handleFetchError()
+  }
+  pageLoading.changeLoadingStatus(false)
+}
+
+fetchActivity()
 </script>
 
 <style scoped lang="scss">

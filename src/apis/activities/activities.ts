@@ -12,3 +12,8 @@ export const getSearchActivities = async (searchQuery: SearchActivityQuery) => {
     params: searchQuery
   })
 }
+
+//取得單一活動內容
+export const getActivity = async (id: string) => {
+  return await https.get(`/api/activities/${id}`)
+}
