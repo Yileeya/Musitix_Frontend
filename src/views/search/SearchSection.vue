@@ -65,6 +65,10 @@ const price = ref<Array<number | string>>(priceItems[0].value)
 // 日期區間選擇
 const dateRangeItems = reactive([
   {
+    value: 'any',
+    name: '不限時間'
+  },
+  {
     value: 'today',
     name: '今天'
   },
@@ -81,14 +85,16 @@ const dateRangeItems = reactive([
     name: '二個月內'
   }
 ])
-const dateRange = ref<string>('month')
+const dateRange = ref<string>('any')
 
 // 點擊搜尋
 const submit = () => {
   let dateRangeToISOString: string[] = []
   const today = dayjs()
 
-  if (dateRange.value === 'today') {
+  if (dateRange.value === 'any') {
+    dateRangeToISOString = ['', '']
+  } else if (dateRange.value === 'today') {
     dateRangeToISOString = [today.toISOString(), today.toISOString()]
   } else if (dateRange.value === 'week') {
     const nextWeek = today.add(7, 'day')
