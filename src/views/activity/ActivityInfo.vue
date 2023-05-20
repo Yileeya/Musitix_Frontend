@@ -107,6 +107,7 @@ const scrollToByTickets = () => {
 
       .icon {
         margin-right: 1em;
+        min-width: 32px;
       }
 
       h5 {
