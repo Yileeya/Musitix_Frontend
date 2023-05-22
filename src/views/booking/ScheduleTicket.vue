@@ -99,14 +99,18 @@ const validate = async () => {
 }
 
 //票數變更邏輯處理
-const changeTicketNumberValue = (number: number, ticketsIndex: number) => {
+const changeTicketNumberValue = async (number: number, ticketsIndex: number) => {
   let resultNumber = number
   //0-4之間
   if (number < 0) resultNumber = 0
   else if (number > 4) resultNumber = 4
 
   tickets.value[ticketsIndex].buyNumber = Number(resultNumber)
-  countTotalPrice()
+  await ticketForm.value?.setFieldValue(
+    `number${tickets.value[ticketsIndex]._id}`,
+    Number(resultNumber)
+  )
+  await countTotalPrice()
 }
 
 //計算總價
