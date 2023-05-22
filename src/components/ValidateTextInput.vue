@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRef, watch } from 'vue'
+import { toRef } from 'vue'
 import { useField } from 'vee-validate'
 
 const props = defineProps({
@@ -40,14 +40,6 @@ const {
 } = useField(name, undefined, {
   initialValue: props.value
 })
-
-//使用於父層value同步
-watch(
-  () => props.value,
-  (value) => {
-    if (inputValue.value !== value) inputValue.value = value
-  }
-)
 </script>
 
 <template>
