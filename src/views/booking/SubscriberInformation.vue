@@ -9,7 +9,7 @@
           id="autoFilledData"
           v-model="autoFilledDataCheckBox"
         />
-        <label class="form-check-label" for="autoFilledData">帶入預填資料</label>
+        <label class="form-check-label" for="autoFilledData"><span>帶入預填資料</span></label>
       </div>
     </div>
     <div class="input-area">
@@ -201,6 +201,86 @@ defineExpose({
 
       .label-name {
         margin-bottom: 5px;
+      }
+    }
+  }
+
+  @media (max-width: 992px) {
+    .title {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      text-align: center;
+
+      .check-group {
+        justify-content: center;
+      }
+    }
+    .input-area {
+      .width-half {
+        width: 100% !important;
+        padding: 0 !important;
+      }
+    }
+    .check-group {
+      position: relative;
+      width: 32px;
+      height: 16px;
+      margin: 20px auto 0 calc(50% - 5em);
+
+      input {
+        display: none;
+      }
+
+      input:checked + label {
+        background-color: black;
+      }
+
+      label {
+        display: block;
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transition: background-color 0.2s;
+        border-radius: 34px;
+
+        background-color: white;
+        border: 1px solid black;
+
+        span {
+          display: none;
+        }
+
+        &:before {
+          position: absolute;
+          content: '';
+          height: 12px;
+          width: 12px;
+          left: 2px;
+          bottom: 1px;
+          background-color: white;
+          transition: transform 0.2s;
+          border-radius: 50%;
+        }
+      }
+
+      input:checked + label:before {
+        transform: translateX(16px);
+      }
+
+      input:not(:checked) + label:before {
+        background-color: #6c757d;
+      }
+
+      label:after {
+        content: '帶入預填資料';
+        position: absolute;
+        left: 45px;
+        top: -6px;
+        width: 6em;
       }
     }
   }
