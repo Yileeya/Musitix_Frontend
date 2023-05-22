@@ -9,14 +9,27 @@
         :address="scheduleDemo.address"
         :location="scheduleDemo.location"
       />
+      <schedule-ticket
+        ref="scheduleTicket"
+        :props-tickets="scheduleDemo.schedule.ticketCategories"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import StepsTitle from '@/views/booking/StepsTitle.vue'
+import { ref, defineComponent, toRef } from 'vue'
 import scheduleDemo from '@/demoData/scheduleDemo'
+import StepsTitle from '@/views/booking/StepsTitle.vue'
 import ActivityInfoTitle from '@/views/booking/ActivityInfoTitle.vue'
+import ScheduleTicket from '@/views/booking/ScheduleTicket.vue'
+
+//設定子層項目，為能獲取子層function
+defineComponent({
+  components: { 'schedule-ticket': ScheduleTicket }
+})
+const scheduleTicket = ref(null)
+const scheduleTicketInstance = toRef(scheduleTicket, 'value')
 </script>
 
 <style scoped lang="scss">

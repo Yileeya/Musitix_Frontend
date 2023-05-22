@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRef } from 'vue'
+import { toRef, watch } from 'vue'
 import { useField } from 'vee-validate'
 
 const props = defineProps({
@@ -17,7 +17,7 @@ const props = defineProps({
   },
   label: {
     type: String,
-    required: true
+    default: ''
   },
   successMessage: {
     type: String,
@@ -40,13 +40,22 @@ const {
 } = useField(name, undefined, {
   initialValue: props.value
 })
+
+//使用於父層value同步
+watch(
+  () => props.value,
+  (value) => {
+    if (inputValue.value !== value) inputValue.value = value
+  }
+)
 </script>
 
 <template>
   <div :class="{ 'has-error': !!errorMessage, success: meta.valid }">
-    <label :for="name">{{ label }}</label>
+    <label v-if="label" :for="name">{{ label }}</label>
     <input
       class="form-control"
+      :class="[{ 'error-input': !!errorMessage }]"
       :name="name"
       :id="name"
       :type="type"
@@ -55,8 +64,27 @@ const {
       @input="handleChange"
       @blur="handleBlur"
     />
-    <p class="help-message" v-show="errorMessage || meta.valid">
+    <p class="text-danger" v-if="errorMessage || (meta.valid && successMessage)">
       {{ errorMessage || successMessage }}
     </p>
   </div>
 </template>
+
+<style scoped lang="scss">
+.has-error {
+  .error-input {
+    border-color: var(--danger-color);
+  }
+
+  .text-danger {
+    font-size: 16px;
+    margin: 0;
+  }
+}
+
+.form-control {
+  &:focus {
+    border-color: var(--primary-color);
+  }
+}
+</style>
