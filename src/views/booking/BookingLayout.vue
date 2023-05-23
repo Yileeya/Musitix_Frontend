@@ -57,9 +57,7 @@ defineComponent({
 })
 
 const scheduleTicket = ref(null)
-const scheduleTicketInstance = toRef(scheduleTicket, 'value')
 const subscriberInformation = ref(null)
-const subscriberInformationInstance = toRef(subscriberInformation, 'value')
 
 const route = useRoute()
 const router = useRouter()
@@ -77,9 +75,9 @@ const reBack = () => {
 // 確定
 const bookingTicket = bookingTicketStore()
 const submitForm = async () => {
-  const scheduleTicketValidateResult = await (scheduleTicketInstance.value as any)?.validate()
+  const scheduleTicketValidateResult = await (scheduleTicket.value as any)?.validate()
   const subscriberInformationValidateResult = await (
-    subscriberInformationInstance.value as any
+    subscriberInformation.value as any
   )?.validate()
   if (!scheduleTicketValidateResult || !subscriberInformationValidateResult) return
 
