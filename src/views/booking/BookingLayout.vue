@@ -21,6 +21,11 @@
         :props-pre-filled-info="preFilledInfoDemo"
       />
     </div>
+    <check-privacy-policy class="text-center" v-model="checkPrivacy" />
+    <div class="text-center btn-area container">
+      <button class="btn btn-purple" @click="reBack">取消</button>
+      <button class="btn btn-purple" @click="submitForm" :disabled="!checkPrivacy">確認</button>
+    </div>
   </div>
 </template>
 
@@ -32,6 +37,8 @@ import StepsTitle from '@/views/booking/StepsTitle.vue'
 import ActivityInfoTitle from '@/views/booking/ActivityInfoTitle.vue'
 import ScheduleTicket from '@/views/booking/ScheduleTicket.vue'
 import SubscriberInformation from '@/views/booking/SubscriberInformation.vue'
+import { useRouter } from 'vue-router'
+import CheckPrivacyPolicy from '@/views/booking/CheckPrivacyPolicy.vue'
 
 //設定子層項目，為能獲取子層function
 defineComponent({
@@ -46,11 +53,23 @@ const scheduleTicketInstance = toRef(scheduleTicket, 'value')
 const subscriberInformation = ref(null)
 const subscriberInformationInstance = toRef(subscriberInformation, 'value')
 
+//隱私權checkbox
+const checkPrivacy = ref<boolean>(false)
+
+// 取消，回上一頁
+const router = useRouter()
+const reBack = () => {
+  router.go(-1)
+}
+
+// 確定
 const submitForm = async () => {
   const scheduleTicketValidateResult = await (scheduleTicketInstance.value as any)?.validate()
   const subscriberInformationValidateResult = await (
     subscriberInformationInstance.value as any
   )?.validate()
+  if (!scheduleTicketValidateResult || !subscriberInformationValidateResult) return
+  console.log('pass')
 }
 </script>
 
@@ -68,10 +87,33 @@ const submitForm = async () => {
     margin: 2.5em auto;
   }
 
+  .btn-area {
+    .btn {
+      width: 196px;
+      text-align: center;
+      margin: 0 1em;
+
+      &:active {
+        background-color: var(--warning-color);
+      }
+
+      &:disabled {
+        color: white;
+        pointer-events: auto;
+        background-color: var(--purple);
+        border-color: var(--purple);
+      }
+    }
+  }
+
   @media (max-width: 992px) {
     .white-section {
       padding: 2em;
       width: 90%;
+    }
+    .btn-area .btn {
+      width: 90%;
+      margin: 0 auto 24px auto;
     }
   }
 }

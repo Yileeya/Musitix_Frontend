@@ -90,7 +90,6 @@ const schema = Yup.object().shape({
 
 // 防呆驗證
 const validate = async () => {
-  console.log('!!!')
   let result = await preFilledInfoForm.value?.validate()
   return result.valid
 }
