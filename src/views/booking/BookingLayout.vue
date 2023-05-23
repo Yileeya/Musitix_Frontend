@@ -43,6 +43,7 @@ import { getActivitySchedule } from '@/apis/activities/activities'
 import _ from 'lodash'
 import type { ActivitySchedule } from '@/types/activity/activitySchedule'
 import { pageLoadingStore } from '@/stores/pageLoading'
+import { bookingTicketStore } from '@/stores/bookingTicket'
 
 const pageLoading = pageLoadingStore()
 pageLoading.changeLoadingStatus(true)
@@ -74,12 +75,20 @@ const reBack = () => {
 }
 
 // 確定
+const bookingTicket = bookingTicketStore()
 const submitForm = async () => {
   const scheduleTicketValidateResult = await (scheduleTicketInstance.value as any)?.validate()
   const subscriberInformationValidateResult = await (
     subscriberInformationInstance.value as any
   )?.validate()
   if (!scheduleTicketValidateResult || !subscriberInformationValidateResult) return
+
+  const bookingTicketResult = bookingTicket.ticketList
+  if (!bookingTicketResult.length) {
+    //無選擇票數
+    Toast.warning('請選擇票數！')
+    return
+  }
   console.log('pass')
 }
 

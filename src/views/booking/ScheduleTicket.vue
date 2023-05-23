@@ -58,6 +58,7 @@ import * as Yup from 'yup'
 import { Form } from 'vee-validate'
 import ValidateTextInput from '@/components/ValidateTextInput.vue'
 import type { TicketCategory } from '@/types/activity/ticketCategory'
+import { bookingTicketStore } from '@/stores/bookingTicket'
 
 const props = defineProps<{
   propsTickets: TicketCategory[]
@@ -93,8 +94,20 @@ _.forEach(tickets.value, (ticket) => {
 const schema = Yup.object().shape(validateSchemaItems)
 
 // 防呆驗證
+const bookingTicket = bookingTicketStore()
 const validate = async () => {
   let result = await ticketForm.value?.validate()
+  if (result.valid) {
+    //變更pinia
+    await bookingTicket.setTicketList(
+      tickets.value
+        .filter((ticket) => ticket.buyNumber !== 0)
+        .map((ticket) => ({
+          id: ticket._id,
+          headCount: ticket.buyNumber
+        }))
+    )
+  }
   return result.valid
 }
 
