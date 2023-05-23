@@ -11,4 +11,7 @@ export const postLogout = async () => {
 export const postRegist =  async (username:string,email:string,password:string,confirmPassword:string) =>{
     return await https.post(`/api/users/register`,{username,email,password,confirmPassword})
 }
-
+// google登入
+export const getLoginWithGoogle = async (code:string) => {
+    return await https.get(`/google/callback?code=${code}`);
+}

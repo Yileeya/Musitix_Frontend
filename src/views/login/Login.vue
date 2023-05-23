@@ -22,9 +22,12 @@
                     <span class="text-danger">{{ passwordErrorMessage}}</span>
                   </div>
                 </div>
-                <div class="row">                 
+                <div class="row">
                   <div class="col-12 text-center">
                     <button type="submit" class="btn login-btn" :disabled="isSubmitting">登入</button>
+                  </div>
+                  <div class="col-12 text-center mt-2">
+                    <a :href="API_URL+'/google'" class="google-login-link">使用Google登入</a>
                   </div>
                   <div class="col-12 text-center mt-2">
                      <RouterLink :to="'/regist'" class="regist-link" >註冊會員</RouterLink> 
@@ -39,14 +42,43 @@
 <script setup lang="ts">
 
 import { useForm,useField } from 'vee-validate'
-import { postLogin } from '../../apis/users/login'
+import { getLoginWithGoogle, postLogin } from '../../apis/users/login'
 import { useRoute, useRouter  } from 'vue-router'
 import { useUserProfileStore } from '@/stores/user';
 import { useToast } from 'vue-toastification';
+import { pageLoadingStore } from '@/stores/pageLoading';
+import { API_URL } from '@/utils/config'
+import { isString } from 'lodash';
 
+const route = useRoute();
 const router = useRouter();
 const Toast = useToast()
 const userProfile = useUserProfileStore()
+
+// 若有googleAuthCode，處理google登入
+const googleAuthCode = route.query['googleAuthCode'] as string;
+if (!!googleAuthCode && isString(googleAuthCode)) {
+  const pageLoading = pageLoadingStore();
+  pageLoading.changeLoadingStatus(true);
+
+  // 清除舊token
+  localStorage.removeItem('Token');
+  userProfile.SetIsLogin(false);
+
+  getLoginWithGoogle(googleAuthCode)
+    .then(response => {
+      Toast.success("Google登入成功")
+      localStorage.setItem("Token", response.data.user.token)
+      userProfile.SetIsLogin(true)
+      router.push("/")
+    })
+    .catch(error => {
+      pageLoading.changeLoadingStatus(true);
+      errorMessage = error.response.data.message
+      Toast.error(error.response.data.message)
+    });
+}
+
 //登入
 let errorMessage:string
 const simpleSchema = {
@@ -133,7 +165,8 @@ font-weight: bold;
 
   }
   }
-  .regist-link{
+  .regist-link,
+  .google-login-link {
     display: block;    
     text-decoration: none;
     color: var(--primary-color);
