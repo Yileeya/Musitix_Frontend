@@ -57,17 +57,17 @@ import _ from 'lodash'
 import * as Yup from 'yup'
 import { Form } from 'vee-validate'
 import ValidateTextInput from '@/components/ValidateTextInput.vue'
-import type { Ticket } from '@/types/activity/ticket'
+import type { TicketCategory } from '@/types/activity/ticketCategory'
 
 const props = defineProps<{
-  propsTickets: Ticket[]
+  propsTickets: TicketCategory[]
 }>()
 
 // 設定ref
 const ticketForm: Ref<any> = ref(null)
 
 // 重組資料格式
-const tickets = ref<Ticket[]>([])
+const tickets = ref<TicketCategory[]>([])
 tickets.value = _.map(props.propsTickets, (ticket) => {
   ticket.buyNumber = 0
   return ticket

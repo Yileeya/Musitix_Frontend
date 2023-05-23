@@ -17,3 +17,8 @@ export const getSearchActivities = async (searchQuery: SearchActivityQuery) => {
 export const getActivity = async (id: string) => {
   return await https.get(`/api/activities/${id}`)
 }
+
+//取得某活動的場次(票券)資料
+export const getActivitySchedule = async (id: string) => {
+  return await https.get(`/api/activities/schedule/${id}`)
+}

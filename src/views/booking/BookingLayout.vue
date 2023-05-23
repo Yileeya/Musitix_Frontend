@@ -2,17 +2,17 @@
   <div class="booking-layout">
     <steps-title class="container" />
     <div class="container">
-      <div class="white-section">
+      <div v-if="!_.isEmpty(activitySchedule)" class="white-section">
         <activity-info-title
-          :title="scheduleDemo.title"
-          :start-time="scheduleDemo.schedule.startTime"
-          :end-time="scheduleDemo.schedule.endTime"
-          :address="scheduleDemo.address"
-          :location="scheduleDemo.location"
+          :title="activitySchedule.title"
+          :start-time="activitySchedule.schedule.startTime"
+          :end-time="activitySchedule.schedule.endTime"
+          :address="activitySchedule.address"
+          :location="activitySchedule.location"
         />
         <schedule-ticket
           ref="scheduleTicket"
-          :props-tickets="scheduleDemo.schedule.ticketCategories"
+          :props-tickets="activitySchedule.schedule.ticketCategories"
         />
       </div>
       <subscriber-information
@@ -31,14 +31,21 @@
 
 <script setup lang="ts">
 import { ref, defineComponent, toRef } from 'vue'
-import scheduleDemo from '@/demoData/scheduleDemo'
+import { useToast } from 'vue-toastification'
 import preFilledInfoDemo from '@/demoData/preFilledInfoDemo'
 import StepsTitle from '@/views/booking/StepsTitle.vue'
 import ActivityInfoTitle from '@/views/booking/ActivityInfoTitle.vue'
 import ScheduleTicket from '@/views/booking/ScheduleTicket.vue'
 import SubscriberInformation from '@/views/booking/SubscriberInformation.vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import CheckPrivacyPolicy from '@/views/booking/CheckPrivacyPolicy.vue'
+import { getActivitySchedule } from '@/apis/activities/activities'
+import _ from 'lodash'
+import type { ActivitySchedule } from '@/types/activity/activitySchedule'
+import { pageLoadingStore } from '@/stores/pageLoading'
+
+const pageLoading = pageLoadingStore()
+pageLoading.changeLoadingStatus(true)
 
 //設定子層項目，為能獲取子層function
 defineComponent({
@@ -53,11 +60,15 @@ const scheduleTicketInstance = toRef(scheduleTicket, 'value')
 const subscriberInformation = ref(null)
 const subscriberInformationInstance = toRef(subscriberInformation, 'value')
 
-//隱私權checkbox
+const route = useRoute()
+const router = useRouter()
+const routeParamsId = route.params.id.toString()
+
+//設定資料
 const checkPrivacy = ref<boolean>(false)
+const activitySchedule = ref<ActivitySchedule>({} as ActivitySchedule)
 
 // 取消，回上一頁
-const router = useRouter()
 const reBack = () => {
   router.go(-1)
 }
@@ -71,6 +82,23 @@ const submitForm = async () => {
   if (!scheduleTicketValidateResult || !subscriberInformationValidateResult) return
   console.log('pass')
 }
+
+const Toast = useToast()
+async function fetchData() {
+  try {
+    const [activityScheduleResult] = await Promise.all([getActivitySchedule(routeParamsId)])
+    if (activityScheduleResult.status === 200) {
+      activitySchedule.value = activityScheduleResult.data.data
+    }
+  } catch (err: any) {
+    const errorMsg = `${err.response.data.message}，跳轉回首頁。`
+    Toast.error(errorMsg)
+    await router.push('/')
+  }
+  pageLoading.changeLoadingStatus(false)
+}
+
+fetchData()
 </script>
 
 <style scoped lang="scss">

@@ -29,7 +29,7 @@
                 type="button"
                 class="btn"
                 :class="[showTicketResult(index).css]"
-                @click.prevent="showTicketResult(index).status === 0 && buyTicket()"
+                @click.prevent="showTicketResult(index).status === 0 && buyTicket(item._id)"
               >
                 {{ showTicketResult(index).text }}
               </button>
@@ -107,8 +107,8 @@ const showTicketResult = (scheduleIndex: number): TicketResult => {
 const isLogin = localStorage.getItem('Token')
 const router = useRouter()
 const showLoginModal = ref(false)
-const buyTicket = () => {
-  if (isLogin) router.push('/booking')
+const buyTicket = (scheduleId: string) => {
+  if (isLogin) router.push(`/booking/${scheduleId}`)
   else showLoginModal.value = true
 }
 
