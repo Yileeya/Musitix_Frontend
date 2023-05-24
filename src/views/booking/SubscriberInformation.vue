@@ -2,7 +2,7 @@
   <section class="subscriber-info">
     <div class="title">
       <h4>訂購人資料</h4>
-      <div class="check-group" v-if="!isHideCheckBox">
+      <div class="check-group">
         <input
           class="form-check-input"
           type="checkbox"
@@ -51,7 +51,6 @@ import * as Yup from 'yup'
 import { Form } from 'vee-validate'
 import ValidateTextInput from '@/components/ValidateTextInput.vue'
 import type { PreFilledInfo } from '@/apis/users/preFilledInfo'
-import _ from 'lodash'
 import { bookingTicketStore } from '@/stores/bookingTicket'
 
 //擴展 PreFilledInfo
@@ -79,10 +78,6 @@ const autoFilledDataCheckBox = ref<boolean>(false)
 const filledInfoForm = ref<ExtendedPreFilledInfo>({
   ...props.propsPreFilledInfo,
   ...{ memo: '' }
-})
-const isHideCheckBox = computed<boolean>(() => {
-  // 若預填資料為初始值，則隱藏checkbox
-  return !_.some(props.propsPreFilledInfo, (value) => value !== '')
 })
 
 // 設定防呆規則
