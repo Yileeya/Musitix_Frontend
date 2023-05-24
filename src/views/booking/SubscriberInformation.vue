@@ -107,25 +107,28 @@ const autoFilledInfoData = async () => {
     }
   }
   //向驗證模組更新資料
-  for (const keyName of Object.keys(props.propsPreFilledInfo)) {
-    await preFilledInfoForm.value?.setFieldValue(
-      keyName as keyof PreFilledInfo,
-      filledInfoForm.value[keyName as keyof PreFilledInfo]
-    )
-  }
+  await preFilledInfoForm.value?.setValues({ ...props.propsPreFilledInfo })
 }
 // 清空資料
 const clearInfoData = async () => {
   for (const keyName of Object.keys(filledInfoForm.value)) {
     changeValue('', keyName as keyof ExtendedPreFilledInfo)
-    await preFilledInfoForm.value?.setFieldValue(keyName as keyof PreFilledInfo, '')
   }
+  await preFilledInfoForm.value?.setValues({
+    email: '',
+    buyer: '',
+    cellPhone: '',
+    address: ''
+  })
 }
 // 清空錯誤訊息
 const clearErrorMsg = async () => {
-  for (const keyName of Object.keys(props.propsPreFilledInfo)) {
-    await preFilledInfoForm.value?.setFieldError(keyName, '')
-  }
+  await preFilledInfoForm.value?.setErrors({
+    email: undefined,
+    buyer: undefined,
+    cellPhone: undefined,
+    address: undefined
+  })
 }
 
 // 帶入預填資料的checkbox

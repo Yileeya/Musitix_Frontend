@@ -1,24 +1,24 @@
 <template>
-  <div class="booking-layout">
+  <div class="booking-layout" v-if="!pageLoading.loading">
     <steps-title class="container" />
     <div class="container">
       <div class="white-section">
         <activity-info-title
-          :title="scheduleDemo.title"
-          :start-time="scheduleDemo.schedule.startTime"
-          :end-time="scheduleDemo.schedule.endTime"
-          :address="scheduleDemo.address"
-          :location="scheduleDemo.location"
+          :title="activitySchedule.title"
+          :start-time="activitySchedule.schedule.startTime"
+          :end-time="activitySchedule.schedule.endTime"
+          :address="activitySchedule.address"
+          :location="activitySchedule.location"
         />
         <schedule-ticket
           ref="scheduleTicket"
-          :props-tickets="scheduleDemo.schedule.ticketCategories"
+          :props-tickets="activitySchedule.schedule.ticketCategories"
         />
       </div>
       <subscriber-information
         class="white-section"
         ref="subscriberInformation"
-        :props-pre-filled-info="preFilledInfoDemo"
+        :props-pre-filled-info="preFilledInfo"
       />
     </div>
     <check-privacy-policy class="text-center" v-model="checkPrivacy" />
@@ -30,15 +30,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineComponent, toRef } from 'vue'
-import scheduleDemo from '@/demoData/scheduleDemo'
-import preFilledInfoDemo from '@/demoData/preFilledInfoDemo'
+import { ref, defineComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 import StepsTitle from '@/views/booking/StepsTitle.vue'
 import ActivityInfoTitle from '@/views/booking/ActivityInfoTitle.vue'
 import ScheduleTicket from '@/views/booking/ScheduleTicket.vue'
 import SubscriberInformation from '@/views/booking/SubscriberInformation.vue'
-import { useRouter } from 'vue-router'
 import CheckPrivacyPolicy from '@/views/booking/CheckPrivacyPolicy.vue'
+import { getActivitySchedule } from '@/apis/activities/activities'
+import { getPreFilledInfo } from '@/apis/users/preFilledInfo'
+import type { ActivitySchedule } from '@/types/activity/activitySchedule'
+import type { PreFilledInfo } from '@/apis/users/preFilledInfo'
+import { pageLoadingStore } from '@/stores/pageLoading'
+import { bookingTicketStore } from '@/stores/bookingTicket'
+
+const pageLoading = pageLoadingStore()
+pageLoading.changeLoadingStatus(true)
 
 //設定子層項目，為能獲取子層function
 defineComponent({
@@ -49,28 +57,60 @@ defineComponent({
 })
 
 const scheduleTicket = ref(null)
-const scheduleTicketInstance = toRef(scheduleTicket, 'value')
 const subscriberInformation = ref(null)
-const subscriberInformationInstance = toRef(subscriberInformation, 'value')
 
-//隱私權checkbox
+const route = useRoute()
+const router = useRouter()
+const routeParamsId = route.params.id.toString()
+
+//設定資料
 const checkPrivacy = ref<boolean>(false)
+const activitySchedule = ref<ActivitySchedule>({} as ActivitySchedule)
+const preFilledInfo = ref<PreFilledInfo>({} as PreFilledInfo)
 
 // 取消，回上一頁
-const router = useRouter()
 const reBack = () => {
   router.go(-1)
 }
 
 // 確定
+const bookingTicket = bookingTicketStore()
 const submitForm = async () => {
-  const scheduleTicketValidateResult = await (scheduleTicketInstance.value as any)?.validate()
-  const subscriberInformationValidateResult = await (
-    subscriberInformationInstance.value as any
-  )?.validate()
+  const scheduleTicketValidateResult = await (scheduleTicket.value as any)?.validate()
+  const subscriberInformationValidateResult = await (subscriberInformation.value as any)?.validate()
   if (!scheduleTicketValidateResult || !subscriberInformationValidateResult) return
+
+  const bookingTicketResult = bookingTicket.ticketList
+  if (!bookingTicketResult.length) {
+    //無選擇票數
+    Toast.warning('請選擇票數！')
+    return
+  }
   console.log('pass')
 }
+
+const Toast = useToast()
+async function fetchData() {
+  try {
+    const [activityScheduleResult, preFilledInfoResult] = await Promise.all([
+      getActivitySchedule(routeParamsId),
+      getPreFilledInfo()
+    ])
+    if (activityScheduleResult.status === 200) {
+      activitySchedule.value = activityScheduleResult.data.data
+    }
+    if (preFilledInfoResult.status === 200) {
+      preFilledInfo.value = preFilledInfoResult.data.data
+    }
+  } catch (err: any) {
+    const errorMsg = `${err.response.data.message}，跳轉回首頁。`
+    Toast.error(errorMsg)
+    await router.push('/')
+  }
+  pageLoading.changeLoadingStatus(false)
+}
+
+fetchData()
 </script>
 
 <style scoped lang="scss">

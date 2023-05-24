@@ -1,4 +1,4 @@
-export interface Ticket {
+export interface TicketCategory {
   categoryName: string
   price: number
   totalQuantity: number
