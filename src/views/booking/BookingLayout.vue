@@ -86,7 +86,8 @@ const submitForm = async () => {
     Toast.warning('請選擇票數！')
     return
   }
-  console.log('pass')
+  const bookingForm = bookingTicket.getBookingForm
+  console.log('pass', bookingForm)
 }
 
 const Toast = useToast()
