@@ -1,8 +1,8 @@
 <template>
-  <div class="booking-layout">
+  <div class="booking-layout" v-if="!pageLoading.loading">
     <steps-title class="container" />
     <div class="container">
-      <div v-if="!_.isEmpty(activitySchedule)" class="white-section">
+      <div class="white-section">
         <activity-info-title
           :title="activitySchedule.title"
           :start-time="activitySchedule.schedule.startTime"
@@ -18,7 +18,7 @@
       <subscriber-information
         class="white-section"
         ref="subscriberInformation"
-        :props-pre-filled-info="preFilledInfoDemo"
+        :props-pre-filled-info="preFilledInfo"
       />
     </div>
     <check-privacy-policy class="text-center" v-model="checkPrivacy" />
@@ -30,18 +30,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineComponent, toRef } from 'vue'
+import { ref, defineComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import preFilledInfoDemo from '@/demoData/preFilledInfoDemo'
 import StepsTitle from '@/views/booking/StepsTitle.vue'
 import ActivityInfoTitle from '@/views/booking/ActivityInfoTitle.vue'
 import ScheduleTicket from '@/views/booking/ScheduleTicket.vue'
 import SubscriberInformation from '@/views/booking/SubscriberInformation.vue'
-import { useRoute, useRouter } from 'vue-router'
 import CheckPrivacyPolicy from '@/views/booking/CheckPrivacyPolicy.vue'
 import { getActivitySchedule } from '@/apis/activities/activities'
-import _ from 'lodash'
+import { getPreFilledInfo } from '@/apis/users/preFilledInfo'
 import type { ActivitySchedule } from '@/types/activity/activitySchedule'
+import type { PreFilledInfo } from '@/apis/users/preFilledInfo'
 import { pageLoadingStore } from '@/stores/pageLoading'
 import { bookingTicketStore } from '@/stores/bookingTicket'
 
@@ -66,6 +66,7 @@ const routeParamsId = route.params.id.toString()
 //設定資料
 const checkPrivacy = ref<boolean>(false)
 const activitySchedule = ref<ActivitySchedule>({} as ActivitySchedule)
+const preFilledInfo = ref<PreFilledInfo>({} as PreFilledInfo)
 
 // 取消，回上一頁
 const reBack = () => {
@@ -76,9 +77,7 @@ const reBack = () => {
 const bookingTicket = bookingTicketStore()
 const submitForm = async () => {
   const scheduleTicketValidateResult = await (scheduleTicket.value as any)?.validate()
-  const subscriberInformationValidateResult = await (
-    subscriberInformation.value as any
-  )?.validate()
+  const subscriberInformationValidateResult = await (subscriberInformation.value as any)?.validate()
   if (!scheduleTicketValidateResult || !subscriberInformationValidateResult) return
 
   const bookingTicketResult = bookingTicket.ticketList
@@ -93,9 +92,15 @@ const submitForm = async () => {
 const Toast = useToast()
 async function fetchData() {
   try {
-    const [activityScheduleResult] = await Promise.all([getActivitySchedule(routeParamsId)])
+    const [activityScheduleResult, preFilledInfoResult] = await Promise.all([
+      getActivitySchedule(routeParamsId),
+      getPreFilledInfo()
+    ])
     if (activityScheduleResult.status === 200) {
       activitySchedule.value = activityScheduleResult.data.data
+    }
+    if (preFilledInfoResult.status === 200) {
+      preFilledInfo.value = preFilledInfoResult.data.data
     }
   } catch (err: any) {
     const errorMsg = `${err.response.data.message}，跳轉回首頁。`
