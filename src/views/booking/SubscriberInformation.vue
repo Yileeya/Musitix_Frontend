@@ -2,7 +2,7 @@
   <section class="subscriber-info">
     <div class="title">
       <h4>訂購人資料</h4>
-      <div class="check-group">
+      <div class="check-group" v-if="!isHideCheckBox">
         <input
           class="form-check-input"
           type="checkbox"
@@ -24,8 +24,8 @@
             {{ correspondPreFilledInfo[keyName as keyof ExtendedPreFilledInfo] }}
           </div>
           <textarea
-            v-if="keyName === 'remark'"
-            v-model="filledInfoForm.remark"
+            v-if="keyName === 'memo'"
+            v-model="filledInfoForm.memo"
             class="form-control"
             rows="2"
           />
@@ -46,15 +46,17 @@
 
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import * as Yup from 'yup'
 import { Form } from 'vee-validate'
 import ValidateTextInput from '@/components/ValidateTextInput.vue'
 import type { PreFilledInfo } from '@/apis/users/preFilledInfo'
+import _ from 'lodash'
+import { bookingTicketStore } from '@/stores/bookingTicket'
 
 //擴展 PreFilledInfo
 type ExtendedPreFilledInfo = PreFilledInfo & {
-  remark: string
+  memo: string
 }
 const props = defineProps<{
   propsPreFilledInfo: PreFilledInfo
@@ -66,7 +68,7 @@ const correspondPreFilledInfo = {
   buyer: '訂購人姓名',
   cellPhone: '手機電話',
   address: '聯絡地址',
-  remark: '備註'
+  memo: '備註'
 }
 
 // 設定ref
@@ -76,7 +78,11 @@ const preFilledInfoForm: Ref<any> = ref(null)
 const autoFilledDataCheckBox = ref<boolean>(false)
 const filledInfoForm = ref<ExtendedPreFilledInfo>({
   ...props.propsPreFilledInfo,
-  ...{ remark: '' }
+  ...{ memo: '' }
+})
+const isHideCheckBox = computed<boolean>(() => {
+  // 若預填資料為初始值，則隱藏checkbox
+  return !_.some(props.propsPreFilledInfo, (value) => value !== '')
 })
 
 // 設定防呆規則
@@ -89,8 +95,13 @@ const schema = Yup.object().shape({
 })
 
 // 防呆驗證
+const bookingTicket = bookingTicketStore()
 const validate = async () => {
   let result = await preFilledInfoForm.value?.validate()
+  if (result.valid) {
+    //變更pinia
+    await bookingTicket.setBuyerInfo(filledInfoForm.value)
+  }
   return result.valid
 }
 
@@ -103,7 +114,7 @@ const autoFilledInfoData = async () => {
   filledInfoForm.value = {
     ...props.propsPreFilledInfo,
     ...{
-      remark: ''
+      memo: ''
     }
   }
   //向驗證模組更新資料
@@ -135,6 +146,7 @@ const clearErrorMsg = async () => {
 watch(
   () => autoFilledDataCheckBox.value,
   async (value) => {
+    await preFilledInfoForm.value?.resetForm()
     //帶入預填資料
     if (value) await autoFilledInfoData()
     else await clearInfoData()
