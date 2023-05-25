@@ -1,5 +1,6 @@
 import https from '@/utils/https'
 import type { SearchActivityQuery } from '@/types/activity/searchActivityQuery'
+import type { BookingForm } from '@/stores/bookingTicket'
 
 //取得首頁資料(熱門/近期/即將開賣活動)
 export const getActivities = async () => {
@@ -21,4 +22,9 @@ export const getActivity = async (id: string) => {
 //取得某活動的場次(票券)資料
 export const getActivitySchedule = async (id: string) => {
   return await https.get(`/api/activities/schedule/${id}`)
+}
+
+//訂票
+export const postBooking = async (activityId: string, bookingForm: BookingForm) => {
+  return await https.post(`/api/activities/${activityId}/booking`, bookingForm)
 }

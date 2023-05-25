@@ -32,3 +32,8 @@ export const bookingTicketStore = defineStore('bookingTicket', {
     }
   }
 })
+
+export interface BookingForm {
+  ticketList: TicketList[]
+  [key: string]: ExtendedPreFilledInfo[keyof ExtendedPreFilledInfo] | TicketList[]
+}

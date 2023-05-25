@@ -38,7 +38,7 @@ import ActivityInfoTitle from '@/views/booking/ActivityInfoTitle.vue'
 import ScheduleTicket from '@/views/booking/ScheduleTicket.vue'
 import SubscriberInformation from '@/views/booking/SubscriberInformation.vue'
 import CheckPrivacyPolicy from '@/views/booking/CheckPrivacyPolicy.vue'
-import { getActivitySchedule } from '@/apis/activities/activities'
+import { getActivitySchedule, postBooking } from '@/apis/activities/activities'
 import { getPreFilledInfo } from '@/apis/users/preFilledInfo'
 import type { ActivitySchedule } from '@/types/activity/activitySchedule'
 import type { PreFilledInfo } from '@/apis/users/preFilledInfo'
@@ -73,7 +73,14 @@ const reBack = () => {
   router.go(-1)
 }
 
-// 確定
+// 失敗，路由跳轉
+const Toast = useToast()
+const handleFetchError = (errorMsg: string, routerTo: string) => {
+  Toast.error(errorMsg)
+  router.push(routerTo)
+}
+
+// 確認訂票
 const bookingTicket = bookingTicketStore()
 const submitForm = async () => {
   const scheduleTicketValidateResult = await (scheduleTicket.value as any)?.validate()
@@ -86,11 +93,25 @@ const submitForm = async () => {
     Toast.warning('請選擇票數！')
     return
   }
+
   const bookingForm = bookingTicket.getBookingForm
-  console.log('pass', bookingForm)
+  const errorMsg = '訂票失敗，跳轉回活動頁。'
+  const activityId = activitySchedule.value.activityId
+  pageLoading.changeLoadingStatus(true)
+  pageLoading.changeLoadingContent('訂單成立中請稍後...')
+  try {
+    let res = await postBooking(activityId, bookingForm)
+    if (res.status === 200) {
+      Toast.success('購票成功')
+    } else {
+      handleFetchError(errorMsg, `/activity/${activityId}`)
+    }
+  } catch (err: any) {
+    handleFetchError(errorMsg, `/activity/${activityId}`)
+  }
+  pageLoading.changeLoadingStatus(false)
 }
 
-const Toast = useToast()
 async function fetchData() {
   try {
     const [activityScheduleResult, preFilledInfoResult] = await Promise.all([
@@ -104,9 +125,8 @@ async function fetchData() {
       preFilledInfo.value = preFilledInfoResult.data.data
     }
   } catch (err: any) {
-    const errorMsg = `${err.response.data.message}，跳轉回首頁。`
-    Toast.error(errorMsg)
-    await router.push('/')
+    const errorMsg = '獲取錯誤，跳轉回首頁。'
+    handleFetchError(errorMsg, '/')
   }
   pageLoading.changeLoadingStatus(false)
 }
