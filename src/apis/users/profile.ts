@@ -8,6 +8,11 @@ export const patchProfiles = async (username:string,picture:string) => {
     return await https.patch(`/api/users/profiles`,{username,picture})
 }
 
+// 是否密碼存在
+export const getPasswordExisted = async () => {
+    return await https.get(`/api/users/pw_existed`);
+}
+
 //修改密碼
 export const patchPassword = async (password:string,newPassword:string,confirmPassword:string) => {
     
