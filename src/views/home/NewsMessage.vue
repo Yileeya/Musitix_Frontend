@@ -14,7 +14,7 @@
         </div>
       </div>
     </section>
-    <button type="button" class="btn phone-btn">More　+</button>
+<!--    <button type="button" class="btn phone-btn">More　+</button>-->
     <img src="@/assets/img/home_news_bg.png" class="bg-img" alt="new-bg" />
   </section>
 </template>

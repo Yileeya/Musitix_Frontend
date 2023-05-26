@@ -18,10 +18,10 @@
     <div class="card-body">
       <div>
         <div class="card-text date">
-          {{ showDateFormatText(activityItems.startDate, activityItems.endDate) }}
+          {{ showDateFormatText }}
         </div>
         <div class="card-text price" v-if="!isHidePrice">
-          ${{ activityItems.minPrice }} - ${{ activityItems.maxPrice }}
+          {{ showPriceRange }}
         </div>
       </div>
       <button class="btn btn-black-border" @click.prevent="changeRouterPath">前往購票</button>
@@ -33,7 +33,7 @@
 import { useRouter } from 'vue-router'
 import type { Activity } from '@/types/activity/activity'
 import { dateFormatUTC } from '@/utils/dateFormat'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const props = defineProps<{
   activityItems: Activity
@@ -44,15 +44,24 @@ const imageError = ref(false)
 
 const router = useRouter()
 const changeRouterPath = () => {
-  router.push(`/activity/${props.activityItems._id}`)
+  router.push(`/activity/${props.activityItems.id}`)
 }
 
-const showDateFormatText = (startDate: string, endDate: string) => {
-  const startDateFormat = dateFormatUTC(startDate, 'YYYY-MM-DD')
-  const endDateFormat = dateFormatUTC(endDate, 'YYYY-MM-DD')
+const showDateFormatText = computed(() => {
+  const activity = props.activityItems
+  const startDateFormat = dateFormatUTC(activity.startDate, 'YYYY-MM-DD')
+  const endDateFormat = dateFormatUTC(activity.endDate, 'YYYY-MM-DD')
   if (startDateFormat === endDateFormat) return startDateFormat
   else return startDateFormat + '  至  ' + endDateFormat
-}
+})
+
+const showPriceRange = computed(() => {
+  const activity = props.activityItems
+  const minPrice = activity.minPrice
+  const maxPrice = activity.maxPrice
+  if (minPrice === maxPrice) return '$' + minPrice
+  else return '$' + minPrice + '  -  ' + ('$' + maxPrice)
+})
 </script>
 
 <style scoped lang="scss">

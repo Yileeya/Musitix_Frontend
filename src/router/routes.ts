@@ -68,7 +68,7 @@ const routes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/booking',
+    path: '/booking/:id',
     name: 'booking',
     meta: { requiresAuth: true },
     component: () => import('@/views/booking/BookingLayout.vue')
