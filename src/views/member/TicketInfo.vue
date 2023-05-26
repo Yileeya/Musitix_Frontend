@@ -225,7 +225,7 @@ import { ref, watch, reactive } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { dateFormatUTC } from '@/utils/dateFormat'
 import Modal from '../../components/Modal.vue'
-import { deleteOrder } from '@/apis/users/ticket';
+import { deleteOrder, getOrderInfo } from '@/apis/users/ticket';
 import { useToast } from 'vue-toastification';
 const route = useRoute()
 const status = ref([
@@ -311,62 +311,16 @@ interface TicketInfoClass {
     "shaEncrypt": string
 }
 const TicketInfo = reactive<{ "data": TicketInfoClass | null }>({ "data": null })
+
 GetDate()
 
 function GetDate() {
-    TicketInfo.data = {
-        "buyer": "王曉明",
-        "cellPhone": "09xx",
-        "email": "xx@gmail.com",
-        "address": "台南市安平",
-        "orderNumber": "FEST2023-1684483953104-2630",
-        "orderStatus": 2,
-        "orderCreateDate": "2023-05-19T08:12:33.104Z",
-        "memo": "xx",
-        "ticketList": [
-            {
-                "scheduleName": "場次A",
-                "categoryName": "單人票",
-                "price": 1500,
-                "ticketNumber": "FEST2023-1684483953104-2630-1",
-                "ticketStatus": 1,
-                "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKlSURBVO3BQY7cQAwEwSxC//9yeo88NSBIM/bSjIg/WGMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoxRrl4qEkfJNKl4ROpUtCp3JHEr5J5YlijVKsUYo1ysXLVN6UhCdUuiScqJyovCkJbyrWKMUapVijXHxYEu5QeVMSOpU3JeEOlU8q1ijFGqVYo1z8cipdEu5IQqfymxVrlGKNUqxRLn65JHQqXRL+J8UapVijFGuUiw9T+SSVO5LwJpV/SbFGKdYoxRrl4mVJ+KYkdConKl0S7kjCv6xYoxRrlGKNEn/wH0nCicpvVqxRijVKsUaJP3ggCZ3KSRK+SeUkCScqJ0noVLok3KHyRLFGKdYoxRol/uBFSThR6ZJwonKShE6lS0Kn0iXhCZV/SbFGKdYoxRrl4sNUTlS6JHRJ+CSVLgknKnck4Q6VJ4o1SrFGKdYoFy9T6ZJwonKicpKEO5LQqZyovEnlk4o1SrFGKdYoFy9LQqdyh0qXhE7lCZVPSkKncpKETuWJYo1SrFGKNcrFy1TepPJJSehUnlDpktCpdCpvKtYoxRqlWKNcPJSEb1I5SUKn8klJOFH5pmKNUqxRijXKxctU3pSEO1TuUOmScKJyRxI6lS4JncoTxRqlWKMUa5SLD0vCHSpvSsIdKneodEnoVLokdCpvKtYoxRqlWKNcDJOETuVNSehU7lD5pGKNUqxRijXKxS+ncpKETqVLwolKp9IloVM5ScKJyhPFGqVYoxRrlIsPU/mmJJwk4USlS8KJSpeEv6lYoxRrlGKNcvGyJHxTEjqVkyScJOFEpUtCp/I3FWuUYo1SrFHiD9YYxRqlWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFG+QN/nwrcKHeDUAAAAABJRU5ErkJggg==",
-                "_id": "64672f71ef46811aaaf05ad5"
-            },
-            {
-                "scheduleName": "場次A",
-                "categoryName": "雙人票",
-                "price": 2800,
-                "ticketNumber": "FEST2023-1684483953104-2630-2",
-                "ticketStatus": 1,
-                "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKlSURBVO3BQY7cQAwEwSxC//9yeo88NSBIM/bSjIg/WGMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoxRrl4qEkfJNKl4ROpUtCp3JHEr5J5YlijVKsUYo1ysXLVN6UhCdUuiScqJyovCkJbyrWKMUapVijXHxYEu5QeVMSOpU3JeEOlU8q1ijFGqVYo1z8cipdEu5IQqfymxVrlGKNUqxRLn65JHQqXRL+J8UapVijFGuUiw9T+SSVO5LwJpV/SbFGKdYoxRrl4mVJ+KYkdConKl0S7kjCv6xYoxRrlGKNEn/wH0nCicpvVqxRijVKsUaJP3ggCZ3KSRK+SeUkCScqJ0noVLok3KHyRLFGKdYoxRol/uBFSThR6ZJwonKShE6lS0Kn0iXhCZV/SbFGKdYoxRrl4sNUTlS6JHRJ+CSVLgknKnck4Q6VJ4o1SrFGKdYoFy9T6ZJwonKicpKEO5LQqZyovEnlk4o1SrFGKdYoFy9LQqdyh0qXhE7lCZVPSkKncpKETuWJYo1SrFGKNcrFy1TepPJJSehUnlDpktCpdCpvKtYoxRqlWKNcPJSEb1I5SUKn8klJOFH5pmKNUqxRijXKxctU3pSEO1TuUOmScKJyRxI6lS4JncoTxRqlWKMUa5SLD0vCHSpvSsIdKneodEnoVLokdCpvKtYoxRqlWKNcDJOETuVNSehU7lD5pGKNUqxRijXKxS+ncpKETqVLwolKp9IloVM5ScKJyhPFGqVYoxRrlIsPU/mmJJwk4USlS8KJSpeEv6lYoxRrlGKNcvGyJHxTEjqVkyScJOFEpUtCp/I3FWuUYo1SrFHiD9YYxRqlWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFG+QN/nwrcKHeDUAAAAABJRU5ErkJggg==",
-                "_id": "64672f71ef46811aaaf05ad6"
-            },
-            {
-                "scheduleName": "場次A",
-                "categoryName": "雙人票",
-                "price": 2800,
-                "ticketNumber": "FEST2023-1684483953104-2630-3",
-                "ticketStatus": 1,
-                "qrCode": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHQAAAB0CAYAAABUmhYnAAAAAklEQVR4AewaftIAAAKlSURBVO3BQY7cQAwEwSxC//9yeo88NSBIM/bSjIg/WGMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFGKdYoxRrl4qEkfJNKl4ROpUtCp3JHEr5J5YlijVKsUYo1ysXLVN6UhCdUuiScqJyovCkJbyrWKMUapVijXHxYEu5QeVMSOpU3JeEOlU8q1ijFGqVYo1z8cipdEu5IQqfymxVrlGKNUqxRLn65JHQqXRL+J8UapVijFGuUiw9T+SSVO5LwJpV/SbFGKdYoxRrl4mVJ+KYkdConKl0S7kjCv6xYoxRrlGKNEn/wH0nCicpvVqxRijVKsUaJP3ggCZ3KSRK+SeUkCScqJ0noVLok3KHyRLFGKdYoxRol/uBFSThR6ZJwonKShE6lS0Kn0iXhCZV/SbFGKdYoxRrl4sNUTlS6JHRJ+CSVLgknKnck4Q6VJ4o1SrFGKdYoFy9T6ZJwonKicpKEO5LQqZyovEnlk4o1SrFGKdYoFy9LQqdyh0qXhE7lCZVPSkKncpKETuWJYo1SrFGKNcrFy1TepPJJSehUnlDpktCpdCpvKtYoxRqlWKNcPJSEb1I5SUKn8klJOFH5pmKNUqxRijXKxctU3pSEO1TuUOmScKJyRxI6lS4JncoTxRqlWKMUa5SLD0vCHSpvSsIdKneodEnoVLokdCpvKtYoxRqlWKNcDJOETuVNSehU7lD5pGKNUqxRijXKxS+ncpKETqVLwolKp9IloVM5ScKJyhPFGqVYoxRrlIsPU/mmJJwk4USlS8KJSpeEv6lYoxRrlGKNcvGyJHxTEjqVkyScJOFEpUtCp/I3FWuUYo1SrFHiD9YYxRqlWKMUa5RijVKsUYo1SrFGKdYoxRqlWKMUa5RijVKsUYo1SrFG+QN/nwrcKHeDUAAAAABJRU5ErkJggg==",
-                "_id": "64672f71ef46811aaaf05ad7"
-            }
-        ],
-        "activityInfo": {
-            "title": "2023 大港開唱",
-            "sponsorName": "出日音樂股份有限公司ED",
-            "location": "高雄流行音樂中心",
-            "address": "803高雄市鹽埕區真愛路1號",
-            "startDate": "2023-04-01T01:00:00.000Z",
-            "endDate": "2023-04-02T09:00:00.000Z",
-            "mainImageUrl": "https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-            "totalAmount": 4300,
-            "ticketTotalCount": 2,
-            "ticketCategories": []
-        },
-        "activityId": "6460a257bd73150dd73b4c42",
-        "__v": 1
-    }
+    console.log(route.params.id)
+    getOrderInfo(route.params.id as string).then(response=>{
+
+        TicketInfo.data = response.data.data
+    })
+
 }
 //QRCodeModal
 const QRModalShow = ref(false)
