@@ -67,15 +67,16 @@ if (!!googleAuthCode && isString(googleAuthCode)) {
 
   getLoginWithGoogle(googleAuthCode)
     .then(response => {
-      Toast.success("Google登入成功")
-      localStorage.setItem("Token", response.data.user.token)
+      localStorage.setItem("Token", response.data.user.token);
       userProfile.SetIsLogin(true)
+      Toast.success("Google登入成功");
       router.push("/")
     })
     .catch(error => {
-      pageLoading.changeLoadingStatus(true);
-      errorMessage = error.response.data.message
-      Toast.error(error.response.data.message)
+      pageLoading.changeLoadingStatus(false);
+      errorMessage = error.response.data.message;
+      Toast.error(error.response.data.message);
+      router.replace({ path: '/login' })
     });
 }
 
