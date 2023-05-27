@@ -28,3 +28,8 @@ export const getActivitySchedule = async (id: string) => {
 export const postBooking = async (activityId: string, bookingForm: BookingForm) => {
   return await https.post(`/api/activities/${activityId}/booking`, bookingForm)
 }
+
+//訂票結果+藍新編譯的亂碼資訊
+export const getNewebPayInfo = async (orderId: string) => {
+  return await https.get(`/api/activities/${orderId}/order`)
+}

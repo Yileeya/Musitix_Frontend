@@ -38,12 +38,13 @@ import ActivityInfoTitle from '@/views/booking/ActivityInfoTitle.vue'
 import ScheduleTicket from '@/views/booking/ScheduleTicket.vue'
 import SubscriberInformation from '@/views/booking/SubscriberInformation.vue'
 import CheckPrivacyPolicy from '@/views/booking/CheckPrivacyPolicy.vue'
-import { getActivitySchedule, postBooking } from '@/apis/activities/activities'
+import { getActivitySchedule, postBooking, getNewebPayInfo } from '@/apis/activities/activities'
 import { getPreFilledInfo } from '@/apis/users/preFilledInfo'
 import type { ActivitySchedule } from '@/types/activity/activitySchedule'
 import type { PreFilledInfo } from '@/apis/users/preFilledInfo'
 import { pageLoadingStore } from '@/stores/pageLoading'
 import { bookingTicketStore } from '@/stores/bookingTicket'
+import { appendNewbPaySubmitForm } from '@/utils/appendNewbPaySubmitForm'
 
 const pageLoading = pageLoadingStore()
 pageLoading.changeLoadingStatus(true)
@@ -102,7 +103,9 @@ const submitForm = async () => {
   try {
     let res = await postBooking(activityId, bookingForm)
     if (res.status === 200) {
-      Toast.success('購票成功')
+      // 藍新金流付款
+      const newebPayInfo = await getNewebPayInfo(res.data.data.orderId)
+      await appendNewbPaySubmitForm(newebPayInfo.data.data)
     } else {
       handleFetchError(errorMsg, `/activity/${activityId}`)
     }
