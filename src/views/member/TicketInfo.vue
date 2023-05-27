@@ -1,36 +1,36 @@
 <template>
     <div class="container ticket-body">
         <div v-if="TicketInfo.data">
-            <h2 class="ticket-title">{{ TicketInfo.data.activityInfo.title }}</h2>
+            <h2 class="ticket-title">{{ TicketInfo.data.order.activityInfo.title }}</h2>
             <div class="ticket-info">
                 <div class="ticket-info-region">
                     <div class="ticket-image">
-                        <img :src="TicketInfo.data.activityInfo.mainImageUrl" alt="ticket-image">
+                        <img :src="TicketInfo.data.order.activityInfo.mainImageUrl" alt="ticket-image">
                     </div>
                     <div class="d-flex">
                         <p class="name">演出時間</p>
-                        <p class="content">{{ dateFormatUTC(TicketInfo.data.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')
+                        <p class="content">{{ dateFormatUTC(TicketInfo.data.order.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')
                         }} </p>
                     </div>
                     <div class="d-flex">
                         <p class="name">地點</p>
                         <p class="content">
-                            {{ TicketInfo.data.activityInfo.location }}<br />{{ TicketInfo.data.activityInfo.address }} </p>
+                            {{ TicketInfo.data.order.activityInfo.location }}<br />{{ TicketInfo.data.order.activityInfo.address }} </p>
                     </div>
                     <div class="d-flex">
                         <p class="name">場次</p>
-                        <p class="content">{{ TicketInfo.data.ticketList[0].scheduleName }} </p>
+                        <p class="content">{{ TicketInfo.data.order.ticketList[0].scheduleName }} </p>
                     </div>
                     <div class="d-flex">
                         <p class="name">票數 </p>
-                        <p class="content">{{ TicketInfo.data.activityInfo.ticketTotalCount }} 張 </p>
+                        <p class="content">{{ TicketInfo.data.order.activityInfo.ticketTotalCount }} 張 </p>
                     </div>
                     <div class="d-flex">
                         <p class="name">總金額 </p>
-                        <p class="content">{{ TicketInfo.data.activityInfo.totalAmount }} 元</p>
+                        <p class="content">{{ TicketInfo.data.order.activityInfo.totalAmount }} 元</p>
                     </div>
                 </div>
-                <div class="ticket-action" v-if="TicketInfo.data.orderStatus == 2">
+                <div class="ticket-action" v-if="TicketInfo.data.order.orderStatus == 2">
                     <button class="btn pay-btn" @click="Pay()">立即付款</button>
                     <button class="btn cancel-btn" @click="CancelModalShow = true">取消訂票</button>
                 </div>
@@ -38,36 +38,36 @@
             <div class="order-info">
                 <div class="d-flex">
                     <p class="name">訂單編號</p>
-                    <p class="content">{{ TicketInfo.data.orderNumber }}</p>
+                    <p class="content">{{ TicketInfo.data.order.orderNumber }}</p>
                 </div>
                 <div class="d-flex">
                     <p class="name">訂單成立時間</p>
-                    <p class="content">{{ TicketInfo.data.orderCreateDate }}</p>
+                    <p class="content">{{ TicketInfo.data.order.orderCreateDate }}</p>
                 </div>
                 <div class="d-flex">
                     <p class="name">狀態</p>
-                    <p class="content" :class="status.find(x => x.status == TicketInfo.data?.orderStatus)?.class">{{
-                        status.find(x => x.status == TicketInfo.data?.orderStatus)?.title }}</p>
+                    <p class="content" :class="status.find(x => x.status == TicketInfo.data?.order.orderStatus)?.class">{{
+                        status.find(x => x.status == TicketInfo.data?.order.orderStatus)?.title }}</p>
                 </div>
                 <div class="d-flex">
                     <p class="name">訂購人</p>
-                    <p class="content">{{ TicketInfo.data.buyer }}</p>
+                    <p class="content">{{ TicketInfo.data.order.buyer }}</p>
                 </div>
                 <div class="d-flex">
                     <p class="name">手機號碼</p>
-                    <p class="content">{{ TicketInfo.data.cellPhone }}</p>
+                    <p class="content">{{ TicketInfo.data.order.cellPhone }}</p>
                 </div>
                 <div class="d-flex">
                     <p class="name">聯絡信箱</p>
-                    <p class="content">{{ TicketInfo.data.email }}</p>
+                    <p class="content">{{ TicketInfo.data.order.email }}</p>
                 </div>
                 <div class="d-flex">
                     <p class="name">地址</p>
-                    <p class="content">{{ TicketInfo.data.address }}</p>
+                    <p class="content">{{ TicketInfo.data.order.address }}</p>
                 </div>
                 <div class="d-flex">
                     <p class="name">備註</p>
-                    <p class="content">{{ TicketInfo.data.memo }}</p>
+                    <p class="content">{{ TicketInfo.data.order.memo }}</p>
                 </div>
 
             </div>
@@ -90,7 +90,7 @@
                         選單
                     </div>
                 </div>
-                <div class="tr" v-for="item in TicketInfo.data.ticketList">
+                <div class="tr" v-for="item in TicketInfo.data.order.ticketList">
                     <div class="td">
                         <span class="btn rounded-pill my-auto"
                             :class="status.find(x => x.status == item.ticketStatus)?.class">{{
@@ -128,17 +128,17 @@
                 </div>
             </div>
             <div>
-                <h2 class="ticket-title">{{ TicketInfo.data.activityInfo.title }}</h2>
+                <h2 class="ticket-title">{{ TicketInfo.data.order.activityInfo.title }}</h2>
                 <div class="d-flex">
                     <p class="name">演出時間</p>
-                    <p class="content">{{ dateFormatUTC(TicketInfo.data.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')
+                    <p class="content">{{ dateFormatUTC(TicketInfo.data.order.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')
                     }} </p>
                 </div>
                 <div class="d-flex">
                     <p class="name">地點</p>
                     <p class="content">
-                        <span class="fw-bold">{{ TicketInfo.data.activityInfo.location }}</span> <br />{{
-                            TicketInfo.data.activityInfo.address }}
+                        <span class="fw-bold">{{ TicketInfo.data.order.activityInfo.location }}</span> <br />{{
+                            TicketInfo.data.order.activityInfo.address }}
                     </p>
                 </div>
                 <div class="d-flex">
@@ -148,7 +148,7 @@
                 </div>
                 <div class="d-flex">
                     <p class="name">場次</p>
-                    <p class="content">{{ TicketInfo.data.ticketList[0].scheduleName }} </p>
+                    <p class="content">{{ TicketInfo.data.order.ticketList[0].scheduleName }} </p>
                 </div>
                 <div class="notice">
                     <h6>注意事項</h6>
@@ -163,41 +163,41 @@
     <Modal v-model="CancelModalShow" class="cancelModal" v-if="TicketInfo.data" :title="''" :backdrop-disabled="true" :is-centered="true"
         :size="'lg'" :hide-footer="true">
         <div>
-            <h2 class="ticket-title">{{ TicketInfo.data.activityInfo.title }}</h2>
+            <h2 class="ticket-title">{{ TicketInfo.data.order.activityInfo.title }}</h2>
             <div class="event-info">
                 <div class="d-flex">
                     <p class="name">演出時間</p>
-                    <p class="content">{{ dateFormatUTC(TicketInfo.data.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')
+                    <p class="content">{{ dateFormatUTC(TicketInfo.data.order.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')
                     }} </p>
                 </div>
                 <div class="d-flex">
                     <p class="name">地點</p>
                     <p class="content">
-                        <span class="fw-bold">{{ TicketInfo.data.activityInfo.location }}</span> <br />{{
-                            TicketInfo.data.activityInfo.address }}
+                        <span class="fw-bold">{{ TicketInfo.data.order.activityInfo.location }}</span> <br />{{
+                            TicketInfo.data.order.activityInfo.address }}
                     </p>
                 </div>
                 <div class="d-flex">
                     <p class="name">場次</p>
-                    <p class="content">{{ TicketInfo.data.ticketList[0].scheduleName }} </p>
+                    <p class="content">{{ TicketInfo.data.order.ticketList[0].scheduleName }} </p>
                 </div>
             </div>
             <div class="ticket-info">
             <div class="d-flex">
                 <p class="name">訂單編號</p>
-                <p class="content">{{ TicketInfo.data.orderNumber }} </p>
+                <p class="content">{{ TicketInfo.data.order.orderNumber }} </p>
             </div>           
             <div class="d-flex">
                 <p class="name">票數</p>
-                <p class="content">{{ TicketInfo.data.activityInfo.ticketTotalCount}} </p>
+                <p class="content">{{ TicketInfo.data.order.activityInfo.ticketTotalCount}} </p>
             </div>
             <div class="d-flex">
                 <p class="name">原始訂單金額</p>
-                <p class="content text-danger">{{ TicketInfo.data.activityInfo.totalAmount }} 元 </p>
+                <p class="content text-danger">{{ TicketInfo.data.order.activityInfo.totalAmount }} 元 </p>
             </div>
             <div class="d-flex">
                 <p class="name">預計退款金額</p>
-                <p class="content  text-danger">{{TicketInfo.data.activityInfo.totalAmount  }} 元 </p>
+                <p class="content  text-danger">{{TicketInfo.data.order.activityInfo.totalAmount  }} 元 </p>
             </div>
         </div>
             <div class="notice">
@@ -272,43 +272,48 @@ const status = ref([
     }
 ])
 interface TicketInfoClass {
-    "buyer": string,
-    "cellPhone": string,
-    "email": string,
-    "address": string,
-    "orderNumber": string,
-    "orderStatus": number,
-    "orderCreateDate": string,
-    "memo": string,
-    "ticketList":
-    {
-        "scheduleName": string,
-        "categoryName": string,
-        "price": number,
-        "ticketNumber": string,
-        "ticketStatus": number,
-        "qrCode": string,
-        "_id": string
-    }[]
-    ,
-    "activityInfo": {
-        "title": string,
-        "sponsorName": string,
-        "location": string,
-        "address": string,
-        "startDate": string,
-        "endDate": string,
-        "mainImageUrl": string,
-        "totalAmount": number,
-        "ticketTotalCount": number,
-        "ticketCategories": []
-    },
-    "activityId": "6460a257bd73150dd73b4c42",
-    "__v": 1,
-    "MerchantID": string,
-    "Version": "1.5",
-    "aesEncrypt": string,
-    "shaEncrypt": string
+    "order": {
+		        "_id": string,
+		        "buyer": string,
+		        "cellPhone":string,
+		        "email": string,
+		        "address": string,
+		        "orderNumber": string,
+		        "orderStatus": number,
+		        "orderCreateDate": string,
+		        "memo": string,
+		        "ticketList": 
+		            {
+		                "scheduleName": string,
+		                "categoryName": string,
+		                "price": number,
+		                "ticketNumber": string,
+		                "ticketStatus": number,
+		                "qrCode": string,
+		                "_id": string
+		            }[]		           
+		        ,
+		        "activityInfo": {
+		            "title": string,
+		            "sponsorName": string,
+		            "location": string,
+		            "address": string,
+		            "startDate": string,
+		            "endDate": string,
+		            "mainImageUrl": string,
+		            "totalAmount": number,
+		            "ticketTotalCount": number,
+		            "ticketCategories": []
+		        },
+		        "activityId": string,
+		        "userId": string,
+		        "__v": number
+				}
+				"TimeStamp": number,
+        "MerchantID": "藍新商店代號",
+        "Version": "1.5",
+        "aesEncrypt": "藍新 aesEncrypt",
+        "shaEncrypt": "藍新 shaEncrypt"
 }
 const TicketInfo = reactive<{ "data": TicketInfoClass | null }>({ "data": null })
 
@@ -317,7 +322,7 @@ GetDate()
 function GetDate() {
     console.log(route.params.id)
     getOrderInfo(route.params.id as string).then(response=>{
-
+        console.log(response.data)
         TicketInfo.data = response.data.data
     })
 
@@ -329,7 +334,7 @@ const ModalTicketStatus = ref(0)
 const ModalTicketSchedule = ref("")
 const ModalTicketPrice = ref(0)
 function ShowQRModal(ticketNumber: string) {
-    let TicketList = TicketInfo.data?.ticketList.find(x => x.ticketNumber == ticketNumber)
+    let TicketList = TicketInfo.data?.order.ticketList.find(x => x.ticketNumber == ticketNumber)
     QRModalShow.value = true
     ModalQRCode.value = TicketList?.qrCode ?? ""
     ModalTicketStatus.value = TicketList?.ticketStatus ?? 0
@@ -344,9 +349,9 @@ function Pay() {
     const formData = {
         "MerchantID": TicketInfo.data?.MerchantID,
         "Version": TicketInfo.data?.Version, // 用最新版 1.5 即可
-        "MerchantOrderNo": TicketInfo.data?.orderNumber,
-        "Amt": TicketInfo.data?.activityInfo.totalAmount,
-        "Email": TicketInfo.data?.email,
+        "MerchantOrderNo": TicketInfo.data?.order.orderNumber,
+        "Amt": TicketInfo.data?.order.activityInfo.totalAmount,
+        "Email": TicketInfo.data?.order.email,
         "TimeStamp": Date.now, // 時間格式 1684224973
         "TradeSha": TicketInfo.data?.shaEncrypt,
         "TradeInfo": TicketInfo.data?.aesEncrypt
@@ -369,8 +374,8 @@ const CancelModalShow = ref(false)
 const CancelCheck = ref(false)
 const Toast = useToast()
 function ModalCancelCheck(){
-    if(TicketInfo.data?.orderNumber){
-        deleteOrder(TicketInfo.data?.orderNumber).then(response => {
+    if(TicketInfo.data?.order.orderNumber){
+        deleteOrder(TicketInfo.data?.order.orderNumber).then(response => {
       Toast.success("訂單取消成功");
     })
     .catch(error => {
