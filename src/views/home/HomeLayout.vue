@@ -2,16 +2,17 @@
   <carousel :carousel-items="carouselItems" />
   <search-bar class="container" @change-router-path="changeRouterPath" />
   <news-message class="container" />
-  <activities-area
-    v-for="activityAreaItem in activitiesAreaItem"
-    :key="activityAreaItem.tag"
-    :title="activityAreaItem.title"
-    :title-color="activityAreaItem.titleColor"
-    :button-class="activityAreaItem.buttonClass"
-    :class="activityAreaItem.bgClass"
-    :activities="activityAreaItem.data"
-    @change-router-path="changeRouterPath"
-  />
+  <template v-for="activityAreaItem in activitiesAreaItem">
+    <activities-area
+      v-if="!!activityAreaItem.data.length"
+      :title="activityAreaItem.title"
+      :title-color="activityAreaItem.titleColor"
+      :button-class="activityAreaItem.buttonClass"
+      :class="activityAreaItem.bgClass"
+      :activities="activityAreaItem.data"
+      @change-router-path="changeRouterPath"
+    />
+  </template>
   <about />
 </template>
 <script setup lang="ts">
