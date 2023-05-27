@@ -210,24 +210,29 @@
                     <li>5. 若有任何疑問，請向客服聯繫。</li>
                 </ul>
             </div>
-            <div class="my-3 text-center">
-                <input type="checkbox" class="me-3" v-model="CancelCheck">
-                <span>我已閱讀以上注意事項並確定繼續操作</span>
+            <div class="my-3 text-center">                
+                <div class="d-inline-block" @click="CancelCheck = !CancelCheck">
+                    <input type="checkbox" class="me-3 cancelCheck"  id="check"  :checked="CancelCheck" >
+                <span >我已閱讀以上注意事項並確定繼續操作</span>     
+                </div>
+                      
             </div>
             <div class="text-center">
-                <button class="btn btn-danger cancel-modal-btn" @click="ModalCancelCheck()">取消訂單</button>
+                <button class="btn btn-danger cancel-modal-btn" :disabled="!CancelCheck" @click="ModalCancelCheck()">取消訂單</button>
             </div>
         </div>
     </Modal>
 </template>
 <script setup lang="ts">
-import { ref, watch, reactive } from 'vue';
+import { ref, watch, reactive, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { dateFormatUTC } from '@/utils/dateFormat'
 import Modal from '../../components/Modal.vue'
 import { deleteOrder, getOrderInfo } from '@/apis/users/ticket';
 import { useToast } from 'vue-toastification';
+
 const route = useRoute()
+const router = useRouter()
 const status = ref([
     {
         title: "狀態",
@@ -341,18 +346,17 @@ function ShowQRModal(ticketNumber: string) {
     ModalTicketSchedule.value = TicketList?.scheduleName ?? ""
     ModalTicketPrice.value = TicketList?.price ?? 0
 }
-
 function Pay() {
     const form = document.createElement('form');
     form.method = 'post'
-    form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway'
+    form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway'   
     const formData = {
         "MerchantID": TicketInfo.data?.MerchantID,
         "Version": TicketInfo.data?.Version, // 用最新版 1.5 即可
         "MerchantOrderNo": TicketInfo.data?.order.orderNumber,
         "Amt": TicketInfo.data?.order.activityInfo.totalAmount,
         "Email": TicketInfo.data?.order.email,
-        "TimeStamp": Date.now, // 時間格式 1684224973
+        "TimeStamp": TicketInfo.data?.TimeStamp, // 時間格式 1684224973
         "TradeSha": TicketInfo.data?.shaEncrypt,
         "TradeInfo": TicketInfo.data?.aesEncrypt
     }
@@ -366,7 +370,9 @@ function Pay() {
         }
     }
     document.body.appendChild(form);
-    form.submit()
+    nextTick(()=>{
+        form.submit()
+    })    
 
 }
 //CancelModal
@@ -374,9 +380,11 @@ const CancelModalShow = ref(false)
 const CancelCheck = ref(false)
 const Toast = useToast()
 function ModalCancelCheck(){
-    if(TicketInfo.data?.order.orderNumber){
-        deleteOrder(TicketInfo.data?.order.orderNumber).then(response => {
+    if(TicketInfo.data?.order.activityId){
+        deleteOrder(TicketInfo.data?.order._id).then(response => {
       Toast.success("訂單取消成功");
+      CancelModalShow.value = false
+      GetDate()
     })
     .catch(error => {
       Toast.error(error.response.data.message)      
@@ -618,6 +626,9 @@ border-bottom: 1px solid var(--gray);
 }
 .cancel-modal-btn{
     padding: 8px 68px;
+}
+.cancelCheck{
+    pointer-events: none;
 }
 }
 
