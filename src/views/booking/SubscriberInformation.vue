@@ -120,21 +120,6 @@ const clearInfoData = async () => {
   for (const keyName of Object.keys(filledInfoForm.value)) {
     changeValue('', keyName as keyof ExtendedPreFilledInfo)
   }
-  await preFilledInfoForm.value?.setValues({
-    email: '',
-    buyer: '',
-    cellPhone: '',
-    address: ''
-  })
-}
-// 清空錯誤訊息
-const clearErrorMsg = async () => {
-  await preFilledInfoForm.value?.setErrors({
-    email: undefined,
-    buyer: undefined,
-    cellPhone: undefined,
-    address: undefined
-  })
 }
 
 // 帶入預填資料的checkbox
@@ -145,8 +130,6 @@ watch(
     //帶入預填資料
     if (value) await autoFilledInfoData()
     else await clearInfoData()
-    //欄位清空
-    await clearErrorMsg()
   }
 )
 
