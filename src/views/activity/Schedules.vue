@@ -39,7 +39,7 @@
       </div>
     </div>
     <modal
-      v-model="showLoginModal"
+      v-model="showLoginModal.show"
       :is-centered="true"
       :hide-footer="true"
       :backdrop-disabled="true"
@@ -106,15 +106,21 @@ const showTicketResult = (scheduleIndex: number): TicketResult => {
 //購票跳轉判斷(登入)
 const isLogin = localStorage.getItem('Token')
 const router = useRouter()
-const showLoginModal = ref(false)
+const showLoginModal = ref({
+  show: false,
+  routeToScheduleId: ''
+})
 const buyTicket = (scheduleId: string) => {
   if (isLogin) router.push(`/booking/${scheduleId}`)
-  else showLoginModal.value = true
+  else {
+    showLoginModal.value.routeToScheduleId = scheduleId
+    showLoginModal.value.show = true
+  }
 }
 
 const toLogin = () => {
-  showLoginModal.value = false
-  router.push('/login')
+  showLoginModal.value.show = false
+  router.push(`/login?redirect=booking&id=${showLoginModal.value.routeToScheduleId}`)
 }
 </script>
 
