@@ -1,4 +1,6 @@
-export function beforeEach(to: { matched: any[]; name: string }, from: any, next: any) {
+import type { RouteLocationNormalized } from 'vue-router'
+
+export function beforeEach(to: RouteLocationNormalized, from: any, next: any) {
   const isLoggedIn = localStorage.getItem('Token')
   // 判斷是否為需要驗證權限的路由
   if (to.matched.some((record) => record.meta.requiresAuth)) {
