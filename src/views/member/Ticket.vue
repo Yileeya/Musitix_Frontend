@@ -20,7 +20,7 @@
                     活動名稱
                 </div>
                 <div class="td">
-                    日期
+                    活動日期
                 </div>
                 <div class="td">
                     票種/數量
