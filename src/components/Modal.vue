@@ -4,7 +4,7 @@
     class="modal fade"
     :data-bs-backdrop="backdropDisabled ? 'static' : true"
     :data-bs-keyboard="!backdropDisabled"
-    @click.prevent="handleBackgroundClick"
+    @click="handleBackgroundClick"
   >
     <div
       class="modal-dialog modal-dialog-scrollable"
