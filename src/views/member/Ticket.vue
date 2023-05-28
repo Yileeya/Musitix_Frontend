@@ -20,7 +20,7 @@
                     活動名稱
                 </div>
                 <div class="td">
-                    活動日期
+                    建立日期
                 </div>
                 <div class="td">
                     票種/數量
@@ -37,7 +37,7 @@
                     {{item.activityTitle}}
                 </div>
                 <div class="td">
-                    {{dateFormatUTC(item.activityStartDate, 'YYYY/MM/DD (dd) hh:mm')}}
+                    {{dateFormatUTC(item.orderCreateDate, 'YYYY/MM/DD (dd) hh:mm')}}
                 </div>
                 <div class="td">
                     {{item.categoryName[0]}}/{{item.ticketCount}}
@@ -93,8 +93,7 @@ const ticketTitle = reactive([
 ])
  interface TicketTable{
     activityTitle:string,
-    activityStartDate:string,
-    activityEndDate:string,
+    orderCreateDate:string,    
     scheduleName:string[],
     categoryName:string[],
     ticketCount:string,
@@ -177,7 +176,7 @@ function ChangeType(){
 
 GetTicketRecord()
 function GetTicketRecord() {
-    getTicketRecord().then(response=>{
+    getTicketRecord().then(response=>{       
         TicketTable.push(...response.data.data)
         SelectTicketTable()       
     })  
