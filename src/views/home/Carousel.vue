@@ -14,11 +14,12 @@
     <div class="carousel-inner">
       <div
         v-for="(item, index) in carouselItems"
-        :key="'img' + item.id"
+        :key="'img' + item._id"
         class="carousel-item"
         :class="[{ active: index === 0 }]"
+        @click.prevent="changeRouterPath(item.activity_id)"
       >
-        <img :src="item.imageUrl" class="w-100" :alt="item.title" />
+        <img :src="item.image" class="w-100" :alt="item.activity_title" />
       </div>
     </div>
 
@@ -40,16 +41,16 @@
 </template>
 
 <script setup lang="ts">
-export interface CarouselItems {
-  id: number | string
-  title: string
-  imageUrl: string
-  activityUrl: string
-}
+import type { Banner } from '@/types/banner/banner'
+import { useRouter } from 'vue-router'
 
 defineProps<{
-  carouselItems: CarouselItems[]
+  carouselItems: Banner[]
 }>()
+const router = useRouter()
+const changeRouterPath = (activityId: string) => {
+  router.push(`/activity/${activityId}`)
+}
 </script>
 
 <style scoped lang="scss">

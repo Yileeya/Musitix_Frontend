@@ -76,7 +76,7 @@ const showPriceRange = computed(() => {
 
     img {
       width: 100%;
-      max-height: 250px;
+      height: 250px;
       object-position: center;
       object-fit: cover;
     }

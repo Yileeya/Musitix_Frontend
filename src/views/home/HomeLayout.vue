@@ -19,14 +19,14 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Carousel from '@/views/home/Carousel.vue'
-import type { CarouselItems } from '@/views/home/Carousel.vue'
-import carouselJson from '@/demoData/home/carouselJson'
 import SearchBar from '@/views/home/SearchBar.vue'
 import NewsMessage from '@/views/home/NewsMessage.vue'
 import ActivitiesArea from '@/views/home/ActivitiesArea.vue'
 import type { Activity } from '@/types/activity/activity'
+import type { Banner } from '@/types/banner/banner'
 import About from '@/views/home/About.vue'
 import { getActivities } from '@/apis/activities/activities'
+import { getBanners } from '@/apis/banners/banners'
 import { pageLoadingStore } from '@/stores/pageLoading'
 import { useToast } from 'vue-toastification'
 
@@ -34,8 +34,6 @@ const Toast = useToast()
 
 const pageLoading = pageLoadingStore()
 pageLoading.changeLoadingStatus(true)
-
-const carouselItems: CarouselItems[] = reactive(carouselJson)
 
 const router = useRouter()
 const changeRouterPath = (path: string) => {
@@ -75,15 +73,21 @@ const activitiesAreaItem = reactive([
   }
 ])
 
+//banner
+const carouselItems = ref<Banner[]>([])
+
 async function fetchData() {
   try {
-    const [activities] = await Promise.all([getActivities()])
+    const [activities, bannerAbout] = await Promise.all([getActivities(), getBanners()])
 
     if (activities.status === 200) {
       let res = activities.data.data
       hotActivities.value = res.hotActivities
       upcomingActivities.value = res.upcomingActivities
       recentActivities.value = res.recentActivities
+    }
+    if (bannerAbout.status === 200) {
+      carouselItems.value = bannerAbout.data.data
     }
   } catch (err: any) {
     Toast.error(err.response.data.message)
