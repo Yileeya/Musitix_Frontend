@@ -1,6 +1,5 @@
 <template>
   <q-r-code-vue3
-    v-if="ticketNumber"
     :width="200"
     :height="200"
     :value="ticketNumber"
@@ -19,7 +18,6 @@
     }"
     fileExt="png"
     :download="false"
-    :image="'favicon.png'"
   />
 </template>
 

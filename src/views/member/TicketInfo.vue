@@ -118,7 +118,7 @@
         :size="'lg'" :hide-footer="true">
         <div class="modal-body">
             <div class="Qrcode-Region">
-                <qrcode :ticket-number="ModalQRCode"/>
+                <qrcode v-if="ModalQRCode" :ticket-number="ModalQRCode"/>
                 <div class="btn rounded-pill"
                      :class="status.find(x => x.status == ModalTicketStatus)?.class">
                     {{  status.find(x => x.status == ModalTicketStatus)?.title }}
