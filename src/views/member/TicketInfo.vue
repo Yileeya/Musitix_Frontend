@@ -118,13 +118,10 @@
         :size="'lg'" :hide-footer="true">
         <div class="modal-body">
             <div class="Qrcode-Region">
-                <div class="QRCode">
-                    <img :src="ModalQRCode" alt="">
-                </div>
-                <div>
-                    <span class="btn rounded-pill" :class="status.find(x => x.status == ModalTicketStatus)?.class">{{
-                        status.find(x => x.status ==
-                            ModalTicketStatus)?.title }}</span>
+                <qrcode :ticket-number="ModalQRCode"/>
+                <div class="btn rounded-pill"
+                     :class="status.find(x => x.status == ModalTicketStatus)?.class">
+                    {{  status.find(x => x.status == ModalTicketStatus)?.title }}
                 </div>
             </div>
             <div>
@@ -230,6 +227,7 @@ import { dateFormatUTC } from '@/utils/dateFormat'
 import Modal from '../../components/Modal.vue'
 import { deleteOrder, getOrderInfo } from '@/apis/users/ticket';
 import { useToast } from 'vue-toastification';
+import Qrcode from "@/components/Qrcode.vue";
 
 const route = useRoute()
 const router = useRouter()
@@ -341,7 +339,7 @@ const ModalTicketPrice = ref(0)
 function ShowQRModal(ticketNumber: string) {
     let TicketList = TicketInfo.data?.order.ticketList.find(x => x.ticketNumber == ticketNumber)
     QRModalShow.value = true
-    ModalQRCode.value = TicketList?.qrCode ?? ""
+    ModalQRCode.value = TicketList?.ticketNumber ?? ""
     ModalTicketStatus.value = TicketList?.ticketStatus ?? 0
     ModalTicketSchedule.value = TicketList?.scheduleName ?? ""
     ModalTicketPrice.value = TicketList?.price ?? 0
@@ -577,14 +575,8 @@ function ModalCancelCheck(){
     display: flex;
     margin-top: -30px;
 
-    .QRCode {
+    .Qrcode-Region {
         width: 240px;
-        height: 240px;
-
-        img {
-            width: 100%;
-            height: 100%;
-        }
     }
 
     .name {
