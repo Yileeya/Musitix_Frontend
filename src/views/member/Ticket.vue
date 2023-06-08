@@ -1,4 +1,4 @@
-<template>    
+<template>
     <div class="container ticket-title">
         <div class="title-item" v-for="item in ticketTitle">
             <button class="btn" :class="item.active ? 'active' : ''" @click="ChangeTitle(item.param)">
@@ -31,22 +31,27 @@
             </div>
             <div class="tr" v-for="item in TicketTableSelect">
                 <div class="td">
-                   <span class="btn rounded-pill" :class="status.find(x=>x.status == item.orderStatus)?.class">{{status.find(x=>x.status == item.orderStatus)?.title}}</span>
+                    <span class="btn rounded-pill" :class="status.find(x => x.status == item.orderStatus)?.class">{{
+                        status.find(x => x.status ==
+                            item.orderStatus)?.title }}</span>
                 </div>
                 <div class="td">
-                    {{item.activityTitle}}
+                    <div class="mobile">活動名稱</div>
+                    {{ item.activityTitle }}
                 </div>
                 <div class="td">
-                    {{dateFormatUTC(item.orderCreateDate, 'YYYY/MM/DD (dd) hh:mm')}}
+                    <div class="mobile">建立日期</div>
+                    {{ dateFormatUTC(item.orderCreateDate, 'YYYY/MM/DD (dd) hh:mm') }}
                 </div>
                 <div class="td">
-                    {{item.categoryName[0]}}/{{item.ticketCount}}
+                    <div class="mobile">票種/數量</div>
+                    {{ item.categoryName[0] }}/{{ item.ticketCount }}
                 </div>
                 <div class="td">
                     <RouterLink :to="`/member/ticket/${item.orderId}`" class="btn ticket-info-btn">訂單資訊</RouterLink>
-                    
+
                 </div>
-            
+
             </div>
         </div>
     </div>
@@ -65,46 +70,46 @@ const ticketTitle = reactive([
         param: "all",
         count: 0,
         active: true,
-        status:[0,1,2,3,4,5,6]
+        status: [0, 1, 2, 3, 4, 5, 6]
     },
     {
         title: "待付款",
         param: "wait",
         count: 0,
         active: false,
-        status:[2]
+        status: [2]
     },
     {
         title: "可使用",
         param: "use",
         count: 0,
         active: false,
-        status:[1]
+        status: [1]
     },
     {
         title: "其他",
         param: "other",
         count: 0,
         active: false,
-        status:[0,3,4,5,6]
+        status: [0, 3, 4, 5, 6]
     },
 
 
 ])
- interface TicketTable{
-    activityTitle:string,
-    orderCreateDate:string,    
-    scheduleName:string[],
-    categoryName:string[],
-    ticketCount:string,
-    orderId:string,
-    orderStatus:number
+interface TicketTable {
+    activityTitle: string,
+    orderCreateDate: string,
+    scheduleName: string[],
+    categoryName: string[],
+    ticketCount: string,
+    orderId: string,
+    orderStatus: number
 }
 const Route = useRoute()
 const Router = useRouter()
 const param = ref(Route.name)
 const status = ref([
-{
+    {
         title: "狀態",
         status: -1,
         class: ""
@@ -118,7 +123,7 @@ const status = ref([
         title: "待付款",
         status: 2,
         class: "status-wait"
-        
+
     },
     {
         title: "已使用",
@@ -152,7 +157,7 @@ const Table = reactive([])
 const TicketTable = reactive<TicketTable[]>([])
 const TicketTableSelect = reactive<TicketTable[]>([])
 const typeB = ref(Route.query["typeB"] as string ?? "-1")
-if(Route.query["type"]){
+if (Route.query["type"]) {
     ChangeTitle(Route.query["type"] as string)
 }
 function ChangeTitle(param: string) {
@@ -164,39 +169,39 @@ function ChangeTitle(param: string) {
         }
     })
     typeB.value = "-1"
-    Router.replace({query:{"type":param}})    
+    Router.replace({ query: { "type": param } })
     SelectTicketTable(param)
 }
-function ChangeType(){     
-        SelectTicketTable()
-        Router.replace({query:{...Route.query,"typeB":typeB.value}})
+function ChangeType() {
+    SelectTicketTable()
+    Router.replace({ query: { ...Route.query, "typeB": typeB.value } })
 }
 
 //body
 
 GetTicketRecord()
 function GetTicketRecord() {
-    getTicketRecord().then(response=>{       
+    getTicketRecord().then(response => {
         TicketTable.push(...response.data.data)
-        SelectTicketTable()       
-    })  
-    
-   
+        SelectTicketTable()
+    })
+
+
 }
-function SelectTicketTable(type:string|null = null){
-    if(!type){
+function SelectTicketTable(type: string | null = null) {
+    if (!type) {
         type = Route.query["type"] as string
     }
-    const status =  ticketTitle.find(x=>x.param == type)?.status  
+    const status = ticketTitle.find(x => x.param == type)?.status
     let list = TicketTable
-    if(status){
-        list =  list.filter(x=>status.includes(x.orderStatus))   
+    if (status) {
+        list = list.filter(x => status.includes(x.orderStatus))
     }
-    if(typeB.value && typeB.value != "-1"){
-        list = list.filter(x=>x.orderStatus.toString() == typeB.value)  
+    if (typeB.value && typeB.value != "-1") {
+        list = list.filter(x => x.orderStatus.toString() == typeB.value)
     }
-    TicketTableSelect.length = 0                 
-        TicketTableSelect.push(...list)  
+    TicketTableSelect.length = 0
+    TicketTableSelect.push(...list)
 }
 
 </script>
@@ -265,15 +270,20 @@ function SelectTicketTable(type:string|null = null){
         .tr {
             display: flex;
 
+            @media (max-width: 992px) {
+                display: block;
+            }
+
             .td {
                 margin-right: 24px;
-               
+
                 display: flex;
                 justify-content: center;
                 align-items: center;
+
                 &:nth-child(1) {
                     width: 110px;
-                    border:none;
+                    border: none;
                 }
 
                 &:nth-child(2) {
@@ -297,51 +307,87 @@ function SelectTicketTable(type:string|null = null){
         }
 
         .th {
-           margin-bottom: 24px;
+            margin-bottom: 24px;
+
             .td {
                 color: var(--primary-color);
-            border-color: var(--primary-color);
-            border-right: 1px solid black;
+                border-color: var(--primary-color);
+                border-right: 1px solid black;
                 border-left: 1px solid black;
+
+                @media (max-width: 992px) {
+                    display: none;
+
+                    &:first-child {
+                        display: block;
+                        width: 100%;
+
+                        select {
+                            text-align: center;
+                        }
+                    }
+                }
             }
         }
-        .tr{
+
+        .tr {
             padding: 8px 0;
             border-bottom: 1px solid var(--gray);
-            .td{
 
+            @media (max-width: 992px) {
+                padding-bottom: 8px;
+                margin-bottom: 32px;
+            }
+
+            .td {
+                .mobile {
+                    display: none;
+                }
+
+                @media (max-width: 992px) {
+                    &:nth-child(1n) {
+                        width: 100%;
+                        justify-content: start;
+                        margin-bottom: 16px;
+                    }
+
+                    .mobile {
+                        display: inline;
+                    }
+                }
             }
         }
     }
 }
 
-.ticket-info-btn{
+.ticket-info-btn {
     background-color: black;
     color: #FFFFFF;
     width: 100%;
-    &:hover{
+
+    &:hover {
         background-color: var(--warning-color);
         color: black;
     }
 }
+
 .status-success {
     border-color: var(--dark-green-color);
     color: var(--dark-green-color);
     width: 100%;
-    cursor:default;
+    cursor: default;
 }
 
 .status-wait {
     border-color: var(--orange-color);
     color: var(--orange-color);
     width: 100%;
-    cursor:default;
+    cursor: default;
 }
 
 .status-stop {
     border-color: var(--secondary-color);
     color: var(--secondary-color);
     width: 100%;
-    cursor:default;
-}
-</style>
+    cursor: default;
+}</style>

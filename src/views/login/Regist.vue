@@ -130,12 +130,16 @@ const RegistSubmit = handleSubmit(async(values) => {
   color: var(--primary-color);
 margin-bottom: 32px;
 font-weight: bold;
+@media (max-width: 992px) {
+   text-align: center;
+            }
 }
   .bg{
     background-color: var(--primary-color);
     min-height: inherit;   
     margin: 0;     
     display: flex;
+    padding: 32px;
   }
   .container-body{
     background: #FFFFFF;
@@ -146,6 +150,10 @@ font-weight: bold;
   width: 40%;
     min-width: 600px;
     margin: auto;
+    @media (max-width: 992px) {
+    width: 100%;
+    min-width: unset;
+            }
   }
   .regist-btn{
     color: #FFFFFF;

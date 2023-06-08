@@ -7,25 +7,25 @@
                     <div class="ticket-image">
                         <img :src="TicketInfo.data.order.activityInfo.mainImageUrl" alt="ticket-image">
                     </div>
-                    <div class="d-flex">
+                    <div class="ticket-info-item">
                         <p class="name">演出時間</p>
-                        <p class="content">{{ dateFormatUTC(TicketInfo.data.order.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')
-                        }} </p>
+                        <p class="content">{{ dateFormatUTC(TicketInfo.data.order.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')}} </p>
                     </div>
-                    <div class="d-flex">
+                    <div class="ticket-info-item">
                         <p class="name">地點</p>
                         <p class="content">
-                            {{ TicketInfo.data.order.activityInfo.location }}<br />{{ TicketInfo.data.order.activityInfo.address }} </p>
+                            {{ TicketInfo.data.order.activityInfo.location }}<br />{{
+                                TicketInfo.data.order.activityInfo.address }} </p>
                     </div>
-                    <div class="d-flex">
+                    <div class="ticket-info-item">
                         <p class="name">場次</p>
                         <p class="content">{{ TicketInfo.data.order.ticketList[0].scheduleName }} </p>
                     </div>
-                    <div class="d-flex">
+                    <div class="ticket-info-item">
                         <p class="name">票數 </p>
                         <p class="content">{{ TicketInfo.data.order.activityInfo.ticketTotalCount }} 張 </p>
                     </div>
-                    <div class="d-flex">
+                    <div class="ticket-info-item">
                         <p class="name">總金額 </p>
                         <p class="content">{{ TicketInfo.data.order.activityInfo.totalAmount }} 元</p>
                     </div>
@@ -36,36 +36,36 @@
                 </div>
             </div>
             <div class="order-info">
-                <div class="d-flex">
+                <div class="order-info-item">
                     <p class="name">訂單編號</p>
                     <p class="content">{{ TicketInfo.data.order.orderNumber }}</p>
                 </div>
-                <div class="d-flex">
+                <div class="order-info-item">
                     <p class="name">訂單成立時間</p>
                     <p class="content">{{ TicketInfo.data.order.orderCreateDate }}</p>
                 </div>
-                <div class="d-flex">
+                <div class="order-info-item">
                     <p class="name">狀態</p>
                     <p class="content" :class="status.find(x => x.status == TicketInfo.data?.order.orderStatus)?.class">{{
                         status.find(x => x.status == TicketInfo.data?.order.orderStatus)?.title }}</p>
                 </div>
-                <div class="d-flex">
+                <div class="order-info-item">
                     <p class="name">訂購人</p>
                     <p class="content">{{ TicketInfo.data.order.buyer }}</p>
                 </div>
-                <div class="d-flex">
+                <div class="order-info-item">
                     <p class="name">手機號碼</p>
                     <p class="content">{{ TicketInfo.data.order.cellPhone }}</p>
                 </div>
-                <div class="d-flex">
+                <div class="order-info-item">
                     <p class="name">聯絡信箱</p>
                     <p class="content">{{ TicketInfo.data.order.email }}</p>
                 </div>
-                <div class="d-flex">
+                <div class="order-info-item">
                     <p class="name">地址</p>
                     <p class="content">{{ TicketInfo.data.order.address }}</p>
                 </div>
-                <div class="d-flex">
+                <div class="order-info-item">
                     <p class="name">備註</p>
                     <p class="content">{{ TicketInfo.data.order.memo }}</p>
                 </div>
@@ -92,18 +92,21 @@
                 </div>
                 <div class="tr" v-for="item in TicketInfo.data.order.ticketList">
                     <div class="td">
-                        <span class="btn rounded-pill my-auto"
+                        <span class="btn rounded-pill my-auto ticket-status"
                             :class="status.find(x => x.status == item.ticketStatus)?.class">{{
                                 status.find(x => x.status ==
                                     item.ticketStatus)?.title }}</span>
                     </div>
                     <div class="td">
+                        <div class="mobile">票卷編號</div>
                         {{ item.ticketNumber }}
                     </div>
                     <div class="td">
+                        <div class="mobile">價格</div>
                         {{ item.price }}
                     </div>
                     <div class="td">
+                        <div class="mobile">票種</div>
                         {{ item.categoryName }}
                     </div>
                     <div class="td">
@@ -131,8 +134,7 @@
                 <h2 class="ticket-title">{{ TicketInfo.data.order.activityInfo.title }}</h2>
                 <div class="d-flex">
                     <p class="name">演出時間</p>
-                    <p class="content">{{ dateFormatUTC(TicketInfo.data.order.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')
-                    }} </p>
+                    <p class="content">{{ dateFormatUTC(TicketInfo.data.order.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')}} </p>
                 </div>
                 <div class="d-flex">
                     <p class="name">地點</p>
@@ -160,15 +162,14 @@
             </div>
         </div>
     </Modal>
-    <Modal v-model="CancelModalShow" class="cancelModal" v-if="TicketInfo.data" :title="''" :backdrop-disabled="true" :is-centered="true"
-        :size="'lg'" :hide-footer="true">
+    <Modal v-model="CancelModalShow" class="cancelModal" v-if="TicketInfo.data" :title="''" :backdrop-disabled="true"
+        :is-centered="true" :size="'lg'" :hide-footer="true">
         <div>
             <h2 class="ticket-title">{{ TicketInfo.data.order.activityInfo.title }}</h2>
             <div class="event-info">
                 <div class="d-flex">
                     <p class="name">演出時間</p>
-                    <p class="content">{{ dateFormatUTC(TicketInfo.data.order.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')
-                    }} </p>
+                    <p class="content">{{ dateFormatUTC(TicketInfo.data.order.activityInfo.startDate, 'YYYY/MM/DD (dd) hh:mm')}} </p>
                 </div>
                 <div class="d-flex">
                     <p class="name">地點</p>
@@ -183,42 +184,43 @@
                 </div>
             </div>
             <div class="ticket-info">
-            <div class="d-flex">
-                <p class="name">訂單編號</p>
-                <p class="content">{{ TicketInfo.data.order.orderNumber }} </p>
-            </div>           
-            <div class="d-flex">
-                <p class="name">票數</p>
-                <p class="content">{{ TicketInfo.data.order.activityInfo.ticketTotalCount}} </p>
+                <div class="d-flex">
+                    <p class="name">訂單編號</p>
+                    <p class="content">{{ TicketInfo.data.order.orderNumber }} </p>
+                </div>
+                <div class="d-flex">
+                    <p class="name">票數</p>
+                    <p class="content">{{ TicketInfo.data.order.activityInfo.ticketTotalCount }} </p>
+                </div>
+                <div class="d-flex">
+                    <p class="name">原始訂單金額</p>
+                    <p class="content text-danger">{{ TicketInfo.data.order.activityInfo.totalAmount }} 元 </p>
+                </div>
+                <div class="d-flex">
+                    <p class="name">預計退款金額</p>
+                    <p class="content  text-danger">{{ TicketInfo.data.order.activityInfo.totalAmount }} 元 </p>
+                </div>
             </div>
-            <div class="d-flex">
-                <p class="name">原始訂單金額</p>
-                <p class="content text-danger">{{ TicketInfo.data.order.activityInfo.totalAmount }} 元 </p>
-            </div>
-            <div class="d-flex">
-                <p class="name">預計退款金額</p>
-                <p class="content  text-danger">{{TicketInfo.data.order.activityInfo.totalAmount  }} 元 </p>
-            </div>
-        </div>
             <div class="notice">
                 <h6>注意事項</h6>
                 <ul>
                     <li>1. 取消訂票為取消此訂單的所有票券，無單一票券退票功能。</li>
-                    <li>2.  活動開始前一週 ～ 前三天，退款 10% 總金額。</li>
+                    <li>2. 活動開始前一週 ～ 前三天，退款 10% 總金額。</li>
                     <li>3. 取消訂票需由主辦方人工審核，至少需要七個工作天，請耐心等候。</li>
                     <li>4. 審核期間，票券狀態為「審核中」；退票完成後，票券狀態為「已退票」。 </li>
                     <li>5. 若有任何疑問，請向客服聯繫。</li>
                 </ul>
             </div>
-            <div class="my-3 text-center">                
+            <div class="my-3 text-center">
                 <div class="d-inline-block" @click="CancelCheck = !CancelCheck">
-                    <input type="checkbox" class="me-3 cancelCheck"  id="check"  :checked="CancelCheck" >
-                <span >我已閱讀以上注意事項並確定繼續操作</span>     
+                    <input type="checkbox" class="me-3 cancelCheck" id="check" :checked="CancelCheck">
+                    <span>我已閱讀以上注意事項並確定繼續操作</span>
                 </div>
-                      
+
             </div>
             <div class="text-center">
-                <button class="btn btn-danger cancel-modal-btn" :disabled="!CancelCheck" @click="ModalCancelCheck()">取消訂單</button>
+                <button class="btn btn-danger cancel-modal-btn" :disabled="!CancelCheck"
+                    @click="ModalCancelCheck()">取消訂單</button>
             </div>
         </div>
     </Modal>
@@ -278,47 +280,47 @@ const status = ref([
 ])
 interface TicketInfoClass {
     "order": {
-		        "_id": string,
-		        "buyer": string,
-		        "cellPhone":string,
-		        "email": string,
-		        "address": string,
-		        "orderNumber": string,
-		        "orderStatus": number,
-		        "orderCreateDate": string,
-		        "memo": string,
-		        "ticketList": 
-		            {
-		                "scheduleName": string,
-		                "categoryName": string,
-		                "price": number,
-		                "ticketNumber": string,
-		                "ticketStatus": number,
-		                "qrCode": string,
-		                "_id": string
-		            }[]		           
-		        ,
-		        "activityInfo": {
-		            "title": string,
-		            "sponsorName": string,
-		            "location": string,
-		            "address": string,
-		            "startDate": string,
-		            "endDate": string,
-		            "mainImageUrl": string,
-		            "totalAmount": number,
-		            "ticketTotalCount": number,
-		            "ticketCategories": []
-		        },
-		        "activityId": string,
-		        "userId": string,
-		        "__v": number
-				}
-				"TimeStamp": number,
-        "MerchantID": "藍新商店代號",
-        "Version": "1.5",
-        "aesEncrypt": "藍新 aesEncrypt",
-        "shaEncrypt": "藍新 shaEncrypt"
+        "_id": string,
+        "buyer": string,
+        "cellPhone": string,
+        "email": string,
+        "address": string,
+        "orderNumber": string,
+        "orderStatus": number,
+        "orderCreateDate": string,
+        "memo": string,
+        "ticketList":
+        {
+            "scheduleName": string,
+            "categoryName": string,
+            "price": number,
+            "ticketNumber": string,
+            "ticketStatus": number,
+            "qrCode": string,
+            "_id": string
+        }[]
+        ,
+        "activityInfo": {
+            "title": string,
+            "sponsorName": string,
+            "location": string,
+            "address": string,
+            "startDate": string,
+            "endDate": string,
+            "mainImageUrl": string,
+            "totalAmount": number,
+            "ticketTotalCount": number,
+            "ticketCategories": []
+        },
+        "activityId": string,
+        "userId": string,
+        "__v": number
+    }
+    "TimeStamp": number,
+    "MerchantID": "藍新商店代號",
+    "Version": "1.5",
+    "aesEncrypt": "藍新 aesEncrypt",
+    "shaEncrypt": "藍新 shaEncrypt"
 }
 const TicketInfo = reactive<{ "data": TicketInfoClass | null }>({ "data": null })
 
@@ -326,7 +328,7 @@ GetDate()
 
 function GetDate() {
     console.log(route.params.id)
-    getOrderInfo(route.params.id as string).then(response=>{
+    getOrderInfo(route.params.id as string).then(response => {
         console.log(response.data)
         TicketInfo.data = response.data.data
     })
@@ -349,7 +351,7 @@ function ShowQRModal(ticketNumber: string) {
 function Pay() {
     const form = document.createElement('form');
     form.method = 'post'
-    form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway'   
+    form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway'
     const formData = {
         "MerchantID": TicketInfo.data?.MerchantID,
         "Version": TicketInfo.data?.Version, // 用最新版 1.5 即可
@@ -370,27 +372,27 @@ function Pay() {
         }
     }
     document.body.appendChild(form);
-    nextTick(()=>{
+    nextTick(() => {
         form.submit()
-    })    
+    })
 
 }
 //CancelModal
 const CancelModalShow = ref(false)
 const CancelCheck = ref(false)
 const Toast = useToast()
-function ModalCancelCheck(){
-    if(TicketInfo.data?.order.activityId){
+function ModalCancelCheck() {
+    if (TicketInfo.data?.order.activityId) {
         deleteOrder(TicketInfo.data?.order._id).then(response => {
-      Toast.success("訂單取消成功");
-      CancelModalShow.value = false
-      GetDate()
-    })
-    .catch(error => {
-      Toast.error(error.response.data.message)      
-    })
+            Toast.success("訂單取消成功");
+            CancelModalShow.value = false
+            GetDate()
+        })
+            .catch(error => {
+                Toast.error(error.response.data.message)
+            })
     }
-    
+
 }
 </script>
 
@@ -408,20 +410,48 @@ function ModalCancelCheck(){
     font-weight: 900;
     padding-bottom: 24px;
 
+    @media (max-width: 992px) {
+        text-align: center;
+    }
 }
 
 .ticket-info {
+    .ticket-info-item {
+        display: flex;
+
+        @media (max-width: 992px) {
+            display: block;
+        }
+    }
+
     .name {
         font-weight: bold;
         width: 68px;
         text-align: justify;
         text-align-last: justify;
+
+        @media (max-width: 992px) {
+            text-align: center;
+            text-align-last: unset;
+            width: 100%;
+            margin-bottom: 4px;
+        }
     }
 
     .content {
         margin-left: 24px;
         padding-left: 24px;
         border-left: 1px solid black;
+
+        @media (max-width: 992px) {
+            border-left: none;
+            border-top: 1px solid black;
+            text-align: center;
+            padding-top: 12px;
+            padding-bottom: 28px;
+            padding-left: 0;
+            margin-left: 0;
+        }
     }
 
 }
@@ -429,6 +459,10 @@ function ModalCancelCheck(){
 .ticket-info-region {
     position: relative;
     padding-right: 400px;
+
+    @media (max-width: 992px) {
+        padding-right: 0;
+    }
 
     .ticket-image img {
         position: absolute;
@@ -439,6 +473,13 @@ function ModalCancelCheck(){
         border-radius: 48px;
         overflow: hidden;
 
+        @media (max-width: 992px) {
+            position: relative;
+            width: 100%;
+            max-width: unset;
+            padding-bottom: 24px;
+        }
+
     }
 }
 
@@ -446,16 +487,47 @@ function ModalCancelCheck(){
     padding: 24px 0;
     border-bottom: 1px solid var(--gray);
 
+    @media (max-width: 992px) {
+        border-top: 1px solid var(--gray);
+    }
+
+
+    .order-info-item {
+        display: flex;
+
+        @media (max-width: 992px) {
+            display: block;
+        }
+
+    }
+
     .name {
         font-weight: bold;
         width: 112px;
         text-align: center;
+
+        @media (max-width: 992px) {
+            text-align: center;
+            text-align-last: unset;
+            width: 100%;
+            margin-bottom: 4px;
+        }
     }
 
     .content {
         margin-left: 24px;
         padding-left: 24px;
         border-left: 1px solid black;
+
+        @media (max-width: 992px) {
+            border-left: none;
+            border-top: 1px solid black;
+            text-align: center;
+            padding-top: 12px;
+            padding-bottom: 28px;
+            padding-left: 0;
+            margin-left: 0;
+        }
     }
 }
 
@@ -465,10 +537,19 @@ function ModalCancelCheck(){
     padding-bottom: 24px;
     border-bottom: 1px solid var(--gray);
 
+    @media (max-width: 992px) {
+        display: block;
+    }
+
     .pay-btn {
         background-color: var(--primary-color);
         color: #FFFFFF;
         padding: 8px 68px;
+
+        @media (max-width: 992px) {
+            width: 100%;
+            margin: 12px 0;
+        }
     }
 
     .cancel-btn {
@@ -476,6 +557,10 @@ function ModalCancelCheck(){
         padding: 8px 68px;
         border: 1px solid black;
 
+        @media (max-width: 992px) {
+            width: 100%;
+            margin: 12px 0;
+        }
     }
 }
 
@@ -483,6 +568,9 @@ function ModalCancelCheck(){
     color: var(--primary-color);
     font-weight: 900;
     padding: 24px 0;
+    @media (max-width: 992px) {
+             text-align: center;
+            }
 }
 
 .status-success {
@@ -509,6 +597,9 @@ function ModalCancelCheck(){
     .th,
     .tr {
         display: flex;
+ @media (max-width: 992px) {
+                display: block;
+            }
 
         .td {
             margin-right: 24px;
@@ -551,17 +642,42 @@ function ModalCancelCheck(){
             border-color: var(--primary-color);
             border-right: 1px solid black;
             border-left: 1px solid black;
+              @media (max-width: 992px) {
+                    display: none;
+                }
         }
     }
 
     .tr {
         padding: 8px 0;
         border-bottom: 1px solid var(--gray);
+@media (max-width: 992px) {
+                padding-bottom: 8px;
+                margin-bottom: 32px;
+            }
+        .td {
+             .mobile {
+                    display: none;
+                }
 
-        .td {}
+                @media (max-width: 992px) {
+                    &:nth-child(1n) {
+                        width: 100%;
+                        justify-content: start;
+                        margin-bottom: 16px;
+                    }
+
+                    .mobile {
+                        display: inline;
+                        font-weight: 700;
+                    }
+                }
+        }
     }
 }
-
+.ticket-status{
+    width: 100%;
+}
 .ticket-info-btn {
     background-color: var(--primary-color);
     color: #FFFFFF;
@@ -612,24 +728,27 @@ function ModalCancelCheck(){
 
     }
 }
-.cancelModal{
-    .event-info{
-padding: 24px 0;
-border-bottom: 1px solid var(--gray);
-}
-.ticket-info{
-padding: 24px 0;
-border-bottom: 1px solid var(--gray);
-.name{
-    width: 110px;
-}
-}
-.cancel-modal-btn{
-    padding: 8px 68px;
-}
-.cancelCheck{
-    pointer-events: none;
-}
-}
 
-</style>
+.cancelModal {
+    .event-info {
+        padding: 24px 0;
+        border-bottom: 1px solid var(--gray);
+    }
+
+    .ticket-info {
+        padding: 24px 0;
+        border-bottom: 1px solid var(--gray);
+
+        .name {
+            width: 110px;
+        }
+    }
+
+    .cancel-modal-btn {
+        padding: 8px 68px;
+    }
+
+    .cancelCheck {
+        pointer-events: none;
+    }
+}</style>

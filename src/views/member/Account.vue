@@ -8,7 +8,7 @@
       </div>
       <div class="container" v-if="userProfile.UserProfiles != null">
         <div class="row">
-          <div class="col-lg-auto col-12">
+          <div class="col-auto mx-auto">
             <div class="account-img-div">
               <div class="account-img">
                 <img :src="pictureUrl" alt="" v-if="pictureUrl">
@@ -115,7 +115,9 @@ function FileUpload() {
 
 .account-img-div {
   position: relative;
-
+  @media (max-width: 992px) {
+    margin-bottom: 24px;
+  }
   .account-img,
   .account-img-hover {
     width: 100px;
