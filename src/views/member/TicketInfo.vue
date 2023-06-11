@@ -326,10 +326,8 @@ const TicketInfo = reactive<{ "data": TicketInfoClass | null }>({ "data": null }
 
 GetDate()
 
-function GetDate() {
-    console.log(route.params.id)
-    getOrderInfo(route.params.id as string).then(response => {
-        console.log(response.data)
+function GetDate() {   
+    getOrderInfo(route.params.id as string).then(response => {        
         TicketInfo.data = response.data.data
     })
 
