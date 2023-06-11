@@ -23,6 +23,7 @@
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.21",
     "pinia": "^2.0.32",
+    "qr-code-generator-vue3": "^1.4.21",
     "sass": "^1.62.0",
     "vee-validate": "^4.8.4",
     "vue": "^3.2.47",

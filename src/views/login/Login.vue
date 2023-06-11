@@ -26,7 +26,7 @@
                 <button type="submit" class="btn login-btn" :disabled="isSubmitting">登入</button>
               </div>
               <div class="col-12 text-center mt-2">
-                <a :href="API_URL + '/google'" class="google-login-link">使用Google登入</a>
+                <a :href="loginWithGoogleUrl" class="google-login-link">使用Google登入</a>
               </div>
               <div class="col-12 text-center mt-2">
                 <RouterLink :to="'/regist'" class="regist-link">註冊會員</RouterLink>
@@ -53,8 +53,14 @@ const router = useRouter()
 const Toast = useToast()
 const userProfile = useUserProfileStore()
 
+let loginWithGoogleUrl = API_URL + '/google';
+const { redirect, id } = route.query;
+if (redirect && id) {
+  loginWithGoogleUrl += `?redirect=${redirect}&id=${id}`;
+}
+
 // 若有googleAuthCode，處理google登入
-const googleAuthCode = route.query['googleAuthCode'] as string
+const googleAuthCode = route.query['googleAuthCode'] as string;
 if (!!googleAuthCode && isString(googleAuthCode)) {
   const pageLoading = pageLoadingStore()
   pageLoading.changeLoadingStatus(true)
