@@ -4,13 +4,13 @@
       <h2>最新消息</h2>
       <!--      <button type="button" class="btn btn-black">More　+</button>-->
     </div>
-    <section class="news-message-area">
-      <div v-for="item in news" :key="'news' + item.id" class="news-content">
+    <section class="news-message-area" v-if="newsObj.news.length > 0">
+      <div v-for="item in newsObj.news" :key="'news' + item.id" class="news-content" @click="MessageDetail(item.id)">
         <div class="tag">
-          {{ item.tag }}
+          訊息
         </div>
         <div class="news">
-          {{ item.content }}
+          {{ item.title }}
         </div>
       </div>
     </section>
@@ -22,15 +22,30 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import newsMessage from '@/demoData/home/newsMessage'
-
+import { useRouter } from 'vue-router'
+import { getNews } from '@/apis/news/news'
+const Router = useRouter()
 interface NewsMessage {
-  id: number | string
-  tag: string
+  id: string,
+  title: string,
+  date: string,
   content: string
-  newsUrl: string
 }
 
-const news: NewsMessage[] = reactive(newsMessage)
+const newsObj: {news:NewsMessage[]} = reactive({news:[]})
+GetMessages()
+function GetMessages(){
+  getNews().then(result=>{   
+    newsObj.news = result.data.data  
+    if(newsObj.news.length > 2) {
+      newsObj.news.length = 2
+    }
+  
+  }) 
+}
+function MessageDetail(id:string){
+  Router.push({ path:"/news",query: { id: id}})
+}
 </script>
 
 <style scoped lang="scss">
