@@ -57,19 +57,24 @@ import HomeSvg from '@/components/icons/HomeSvg.vue'
 import SearchSvg from '@/components/icons/SearchSvg.vue'
 import NewsSvg from '@/components/icons/NewsSvg.vue'
 import PeopleSvg from '@/components/icons/PeopleSvg.vue'
+import QuestionSvg from '@/components/icons/QuestionSvg.vue'
 
 const navItems = ref([
   {
     name: '活動搜尋',
     link: '/search'
   },
-  // {
-  //   name: '最新消息',
-  //   link: '/news'
-  // },
+  {
+    name: '最新消息',
+    link: '/news'
+  },
   {
     name: '會員專區',
     link: '/member'
+  },
+  {
+    name: '聯絡我們',
+    link: '/questions'
   }
 ])
 const iconNavItems = ref([
@@ -83,22 +88,27 @@ const iconNavItems = ref([
     icon: markRaw(SearchSvg),
     link: '/search'
   },
-  // {
-  //   name: 'news',
-  //   icon: markRaw(NewsSvg),
-  //   link: '/news'
-  // },
+  {
+    name: 'news',
+    icon: markRaw(NewsSvg),
+    link: '/news'
+  },
   {
     name: 'people',
     icon: markRaw(PeopleSvg),
     link: '/member'
+  },
+  {
+    name: 'questions',
+    icon: markRaw(QuestionSvg),
+    link: '/questions'
   }
 ])
 
 const userProfile = useUserProfileStore()
 const router = useRouter()
 const showNavItems = computed(() => {
-  return navItems.value.slice(0, userProfile.IsLogin ? 3 : -1)
+  return navItems.value.filter((item) => (userProfile.IsLogin ? item : item.link !== '/member'))
 })
 const showIconNavItems = computed(() => {
   return iconNavItems.value.filter((item) => (userProfile.IsLogin ? item : item.name !== 'people'))
