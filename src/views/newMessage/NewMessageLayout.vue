@@ -29,10 +29,8 @@
   </section>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref, watch, watchEffect } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import newsMessage from '@/demoData/home/newsMessage'
-import router from '@/router'
 import { dateFormatUTC } from '@/utils/dateFormat'
 import { getNews } from '@/apis/news/news'
 
@@ -82,7 +80,7 @@ watch(() => Route.query, () => {
     max-width: 100%;
     position: absolute;
     bottom: -5em;
-    right: -6em;
+    right: 0;
     z-index: -1;
 
     @media (max-width: 1350px) {

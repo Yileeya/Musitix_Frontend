@@ -67,19 +67,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, reactive, ref, watch, watchEffect } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import newsMessage from '@/demoData/home/newsMessage'
-import router from '@/router'
-import { dateFormatUTC } from '@/utils/dateFormat'
-import { getNews } from '@/apis/news/news'
+import {  ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
-import { patchProfiles } from '@/apis/users/profile'
 import { postQuestions, type QuestionsModel } from '@/apis/question/question'
 import { useToast } from 'vue-toastification'
 
-const Router = useRouter()
-const Route = useRoute()
 const Toast = useToast()
 const simpleSchema = {
   email(value: string) {
