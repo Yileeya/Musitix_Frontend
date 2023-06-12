@@ -107,12 +107,12 @@ const simpleSchema = {
 const { handleSubmit, isSubmitting, errors } = useForm(
   { validationSchema: simpleSchema }
   );
-const { value: type } = useField(() => 'type');
+const { value: type } = useField<number>(() => 'type');
 type.value = 1
-const { value: subject } = useField(() => 'subject');
-const { value: name } = useField(() => 'name');
-const { value: email } = useField(() => 'email');
-const { value: content } = useField(() => 'content');
+const { value: subject } = useField<string>(() => 'subject');
+const { value: name } = useField<string>(() => 'name');
+const { value: email } = useField<string>(() => 'email');
+const { value: content } = useField<string>(() => 'content');
 const errorMessage = ref("")
 const QuestionSubmit = handleSubmit(async (values) => {
   const Questions:QuestionsModel = {
