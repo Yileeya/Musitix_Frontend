@@ -112,6 +112,8 @@ const scrollToByTickets = () => {
 
       h5 {
         margin: 0;
+        font-weight: 400;
+        line-height: 32px;
       }
     }
   }

@@ -23,4 +23,7 @@ defineProps<{
   width: 100%;
   margin-bottom: 15px;
 }
+.html-content :deep(li) {
+  margin: 24px 0;
+}
 </style>
