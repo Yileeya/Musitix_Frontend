@@ -76,6 +76,9 @@ const fetchSearch = async (query: SearchActivityQuery) => {
 <style scoped lang="scss">
 .search-layout {
   position: relative;
+  .container {
+    max-width: 1300px;
+  }
   &::before {
     content: '';
     position: absolute;
@@ -92,19 +95,20 @@ const fetchSearch = async (query: SearchActivityQuery) => {
     }
   }
   .search-section {
-    padding: 3em 0;
+    padding: 3em 12px;
   }
 
   .activities {
-    max-width: 1700px;
     display: grid;
-    grid-row-gap: 2em;
-    grid-column-gap: 1em;
+    gap: 1.5em;
     grid-template-columns: repeat(3, 1fr);
-    padding: 0 5% 5%;
+    padding-bottom: 3em;
 
     .activity-card {
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      :deep .card-img-body {
+        border-radius: 6px 6px 0 0;
+      }
     }
 
     @media (max-width: 1100px) {
