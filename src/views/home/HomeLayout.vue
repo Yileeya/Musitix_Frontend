@@ -103,7 +103,7 @@ fetchData()
   background-repeat: no-repeat;
 
   &.hot {
-    background-color: var(--primary-color);
+    background-color: #141c75;
   }
 
   &.up-coming {
@@ -132,6 +132,7 @@ fetchData()
   @media (max-width: 992px) {
     background-image: url(@/assets/img/home_about_phone_bg.png);
     background-position: center;
+    background-size: cover;
   }
 }
 </style>

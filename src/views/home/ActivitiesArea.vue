@@ -73,8 +73,7 @@ function emitRouterChange() {
 
   .activities {
     display: grid;
-    grid-row-gap: 2em;
-    grid-column-gap: 1em;
+    gap: 1.5em;
     grid-template-columns: repeat(3, 1fr);
     @media (max-width: 1200px) {
       grid-template-columns: repeat(2, 1fr);
