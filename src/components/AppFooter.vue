@@ -79,6 +79,11 @@ const footerItems = ref([
         title: '退票相關',
         icon: '',
         link: '/'
+      },
+      {
+        title: '聯絡我們',
+        icon: '',
+        link: '/questions'
       }
     ]
   },

@@ -57,7 +57,6 @@ import HomeSvg from '@/components/icons/HomeSvg.vue'
 import SearchSvg from '@/components/icons/SearchSvg.vue'
 import NewsSvg from '@/components/icons/NewsSvg.vue'
 import PeopleSvg from '@/components/icons/PeopleSvg.vue'
-import QuestionSvg from '@/components/icons/QuestionSvg.vue'
 
 const navItems = ref([
   {
@@ -71,10 +70,6 @@ const navItems = ref([
   {
     name: '會員專區',
     link: '/member'
-  },
-  {
-    name: '聯絡我們',
-    link: '/questions'
   }
 ])
 const iconNavItems = ref([
@@ -97,11 +92,6 @@ const iconNavItems = ref([
     name: 'people',
     icon: markRaw(PeopleSvg),
     link: '/member'
-  },
-  {
-    name: 'questions',
-    icon: markRaw(QuestionSvg),
-    link: '/questions'
   }
 ])
 
