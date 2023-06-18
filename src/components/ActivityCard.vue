@@ -33,6 +33,7 @@
 import { useRouter } from 'vue-router'
 import type { Activity } from '@/types/activity/activity'
 import { dateFormatUTC } from '@/utils/dateFormat'
+import { priceAddCommas } from '@/utils/priceAddCommas'
 import { ref, computed } from 'vue'
 
 const props = defineProps<{
@@ -57,8 +58,8 @@ const showDateFormatText = computed(() => {
 
 const showPriceRange = computed(() => {
   const activity = props.activityItems
-  const minPrice = activity.minPrice
-  const maxPrice = activity.maxPrice
+  const minPrice = priceAddCommas(activity.minPrice)
+  const maxPrice = priceAddCommas(activity.maxPrice)
   if (minPrice === maxPrice) return '$' + minPrice
   else return '$' + minPrice + '  -  ' + ('$' + maxPrice)
 })
