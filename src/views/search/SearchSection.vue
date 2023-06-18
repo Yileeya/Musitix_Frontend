@@ -125,7 +125,7 @@ submit()
 .search-section {
   display: flex;
   column-gap: 1.5em;
-  align-items: center;
+  align-items: stretch;
 
   .form-control,
   .form-select {
