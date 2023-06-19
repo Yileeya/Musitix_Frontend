@@ -81,7 +81,7 @@ const filledInfoForm = ref<ExtendedPreFilledInfo>({
 })
 
 // 設定防呆規則
-const requiredRule = Yup.string().required('必填')
+const requiredRule = Yup.string().trim('不可有空白字元').required('必填')
 const schema = Yup.object().shape({
   email: Yup.string().email('請填寫信箱格式').required('必填'),
   buyer: requiredRule,
@@ -102,7 +102,7 @@ const validate = async () => {
 
 // 數據變更
 const changeValue = (value: string, keyName: keyof ExtendedPreFilledInfo) => {
-  filledInfoForm.value[keyName] = value
+  filledInfoForm.value[keyName] = value.trim()
 }
 // 帶入預填資料
 const autoFilledInfoData = async () => {

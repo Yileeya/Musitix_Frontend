@@ -45,6 +45,11 @@ const handleInputChange = (event: any) => {
   const trimmedValue = event.target.value.trim()
   handleChange(trimmedValue)
 }
+
+const handleBlurChange = (event: any) => {
+  const trimmedValue = event.target.value.trim()
+  handleBlur(trimmedValue)
+}
 </script>
 
 <template>
@@ -59,7 +64,7 @@ const handleInputChange = (event: any) => {
       :value="inputValue"
       :placeholder="placeholder"
       @input="handleInputChange"
-      @blur="handleBlur"
+      @blur="handleBlurChange"
     />
     <p class="text-danger" v-if="errorMessage || (meta.valid && successMessage)">
       {{ errorMessage || successMessage }}
