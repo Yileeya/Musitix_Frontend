@@ -102,7 +102,7 @@ const validate = async () => {
 
 // 數據變更
 const changeValue = (value: string, keyName: keyof ExtendedPreFilledInfo) => {
-  filledInfoForm.value[keyName] = value.trim()
+  filledInfoForm.value[keyName] = value
 }
 // 帶入預填資料
 const autoFilledInfoData = async () => {
