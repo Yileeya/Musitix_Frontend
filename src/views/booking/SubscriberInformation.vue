@@ -20,9 +20,9 @@
           class="form-control-group"
           :class="[{ 'width-half': index < 2 }]"
         >
-          <div class="label-name">
+          <label class="label-name" :for="keyName">
             {{ correspondPreFilledInfo[keyName as keyof ExtendedPreFilledInfo] }}
-          </div>
+          </label>
           <textarea
             v-if="keyName === 'memo'"
             v-model="filledInfoForm.memo"
@@ -34,7 +34,7 @@
             class="text-input"
             :value="filledInfoForm[keyName as keyof PreFilledInfo]"
             :name="keyName"
-            type="text"
+            :type="keyName === 'cellPhone' ? 'number' : 'text'"
             :placeholder="`請填寫${correspondPreFilledInfo[keyName as keyof PreFilledInfo]}`"
             @input="changeValue($event.target.value, keyName as keyof PreFilledInfo)"
           />

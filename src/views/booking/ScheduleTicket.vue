@@ -11,33 +11,38 @@
       </div>
       <div class="flex-tbody" v-if="tickets.length">
         <Form :validation-schema="schema" ref="ticketForm">
-          <div class="flex-tr" v-for="(item, index) in tickets" :key="item._id">
-            <div
-              class="flex-td"
-              v-for="tdIndex in 2"
-              :key="'td' + tdIndex"
-              :class="[{ 'td-price': tdIndex === 2 }]"
-            >
-              <span v-if="tdIndex === 2">$ </span>
-              {{ item[tdIndex === 1 ? 'categoryName' : 'price'] }}
-            </div>
-            <div class="flex-td">
-              <div class="validate-text-input">
-                <i
-                  class="fa fa-minus"
-                  @click="changeTicketNumberValue(item.buyNumber - 1, index)"
-                />
-                <validate-text-input
-                  class="text-input"
-                  :value="item.buyNumber"
-                  :name="`number${item._id}`"
-                  type="number"
-                  @input="changeTicketNumberValue($event.target.value, index)"
-                />
-                <i class="fa fa-plus" @click="changeTicketNumberValue(item.buyNumber + 1, index)" />
+          <template v-for="(item, index) in tickets" :key="item._id">
+            <div class="flex-tr" v-if="item.remainingQuantity">
+              <div
+                class="flex-td"
+                v-for="tdIndex in 2"
+                :key="'td' + tdIndex"
+                :class="[{ 'td-price': tdIndex === 2 }]"
+              >
+                <span v-if="tdIndex === 1">{{ item.categoryName }}</span>
+                <h5 v-else>$ {{ priceAddCommas(item.price) }}</h5>
+              </div>
+              <div class="flex-td">
+                <div class="validate-text-input">
+                  <i
+                    class="fa fa-minus"
+                    @click="changeTicketNumberValue(item.buyNumber - 1, index)"
+                  />
+                  <validate-text-input
+                    class="text-input"
+                    :value="item.buyNumber"
+                    :name="`number${item._id}`"
+                    type="number"
+                    @input="changeTicketNumberValue($event.target.value, index)"
+                  />
+                  <i
+                    class="fa fa-plus"
+                    @click="changeTicketNumberValue(item.buyNumber + 1, index)"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </template>
         </Form>
       </div>
     </div>
@@ -59,6 +64,7 @@ import { Form } from 'vee-validate'
 import ValidateTextInput from '@/components/ValidateTextInput.vue'
 import type { TicketCategory } from '@/types/activity/ticketCategory'
 import { bookingTicketStore } from '@/stores/bookingTicket'
+import { priceAddCommas } from '@/utils/priceAddCommas'
 
 const props = defineProps<{
   propsTickets: TicketCategory[]
@@ -149,14 +155,30 @@ defineExpose({
 <style scoped lang="scss">
 .flex-table {
   margin-top: 3em;
+  .flex-thead {
+    .flex-tr {
+      padding: 15px 0;
+      .flex-th {
+        border-width: 1px;
+      }
+      .flex-th:last-child {
+        border: 1px solid;
+        border-top: none;
+        border-bottom: none;
+      }
+    }
+  }
 
   .flex-tbody {
     .flex-tr {
       border-bottom: 1px solid var(--gray);
-      padding: 20px 30px;
+      padding: 20px 0;
 
       .td-price {
         color: var(--primary-color);
+        h5 {
+          margin-bottom: 0;
+        }
       }
 
       .validate-text-input {

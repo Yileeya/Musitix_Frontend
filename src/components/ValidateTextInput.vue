@@ -40,6 +40,11 @@ const {
 } = useField(name, undefined, {
   initialValue: props.value
 })
+
+const handleInputChange = (event: any) => {
+  const trimmedValue = event.target.value.trim()
+  handleChange(trimmedValue)
+}
 </script>
 
 <template>
@@ -53,7 +58,7 @@ const {
       :type="type"
       :value="inputValue"
       :placeholder="placeholder"
-      @input="handleChange"
+      @input="handleInputChange"
       @blur="handleBlur"
     />
     <p class="text-danger" v-if="errorMessage || (meta.valid && successMessage)">
@@ -78,5 +83,9 @@ const {
   &:focus {
     border-color: var(--primary-color);
   }
+}
+
+input[type='number']::-webkit-inner-spin-button {
+  appearance: none;
 }
 </style>

@@ -96,7 +96,7 @@ const submitForm = async () => {
   }
 
   const bookingForm = bookingTicket.getBookingForm
-  const errorMsg = '訂票失敗，跳轉回活動頁。'
+  let errorMsg = '訂票失敗，跳轉回活動頁。'
   const activityId = activitySchedule.value.activityId
   pageLoading.changeLoadingStatus(true)
   pageLoading.changeLoadingContent('訂單成立中請稍後...')
@@ -110,6 +110,7 @@ const submitForm = async () => {
       handleFetchError(errorMsg, `/activity/${activityId}`)
     }
   } catch (err: any) {
+    errorMsg = err.response.data.message
     handleFetchError(errorMsg, `/activity/${activityId}`)
   }
   pageLoading.changeLoadingStatus(false)
