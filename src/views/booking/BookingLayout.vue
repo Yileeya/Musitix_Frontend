@@ -1,8 +1,8 @@
 <template>
   <div class="booking-layout" v-if="!pageLoading.loading">
-    <steps-title class="container" />
+    <steps-title class="container" v-model:current-step="currentStep" />
     <div class="container">
-      <div class="white-section">
+      <div class="white-section" v-show="currentStep === 1">
         <activity-info-title
           :title="activitySchedule.title"
           :start-time="activitySchedule.schedule.startTime"
@@ -16,6 +16,7 @@
         />
       </div>
       <subscriber-information
+        v-show="currentStep === 2"
         class="white-section"
         ref="subscriberInformation"
         :props-pre-filled-info="preFilledInfo"
@@ -24,7 +25,16 @@
     <check-privacy-policy class="text-center" v-model="checkPrivacy" />
     <div class="text-center btn-area container">
       <button class="btn btn-purple" @click="reBack">取消</button>
-      <button class="btn btn-purple" @click="submitForm" :disabled="!checkPrivacy">確認</button>
+      <button
+        v-if="currentStep === 1"
+        class="btn btn-purple"
+        @click="nextStepToFilledSubscriberInformation"
+      >
+        下一步
+      </button>
+      <button v-else class="btn btn-purple" @click="submitForm" :disabled="!checkPrivacy">
+        確認
+      </button>
     </div>
   </div>
 </template>
@@ -59,6 +69,7 @@ defineComponent({
 
 const scheduleTicket = ref(null)
 const subscriberInformation = ref(null)
+const currentStep = ref(1)
 
 const route = useRoute()
 const router = useRouter()
@@ -81,19 +92,25 @@ const handleFetchError = (errorMsg: string, routerTo: string) => {
   router.push(routerTo)
 }
 
-// 確認訂票
 const bookingTicket = bookingTicketStore()
-const submitForm = async () => {
-  const scheduleTicketValidateResult = await (scheduleTicket.value as any)?.validate()
-  const subscriberInformationValidateResult = await (subscriberInformation.value as any)?.validate()
-  if (!scheduleTicketValidateResult || !subscriberInformationValidateResult) return
 
+// 下一步：填寫資料
+const nextStepToFilledSubscriberInformation = async () => {
+  const scheduleTicketValidateResult = await (scheduleTicket.value as any)?.validate()
+  if (!scheduleTicketValidateResult) return
   const bookingTicketResult = bookingTicket.ticketList
   if (!bookingTicketResult.length) {
     //無選擇票數
     Toast.warning('請選擇票數！')
     return
   }
+  currentStep.value = 2
+}
+
+// 確認訂票
+const submitForm = async () => {
+  const subscriberInformationValidateResult = await (subscriberInformation.value as any)?.validate()
+  if (!subscriberInformationValidateResult) return
 
   const bookingForm = bookingTicket.getBookingForm
   let errorMsg = '訂票失敗，跳轉回活動頁。'
@@ -140,7 +157,7 @@ fetchData()
 
 <style scoped lang="scss">
 .booking-layout {
-  background-color: var(--primary-color);
+  background-color: #141c75;
   padding: 3% 0;
   min-height: inherit;
 

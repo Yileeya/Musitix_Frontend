@@ -1,7 +1,11 @@
 <template>
   <section class="steps-title">
     <template v-for="(step, index) in stepTitles">
-      <div class="step" :class="[`step-${index + 1}`]">
+      <div
+        class="step"
+        :class="[{ active: index + 1 === currentStep }, { hover: index + 1 < currentStep }]"
+        @click="index + 1 < currentStep && $emit('update:currentStep', index + 1)"
+      >
         <span class="index">{{ index + 1 }}</span>
         <span>{{ step }}</span>
       </div>
@@ -13,7 +17,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const stepTitles = ref(['確認訂票', '訂票結果'])
+defineProps(['currentStep'])
+defineEmits(['update:currentStep'])
+const stepTitles = ref(['選擇票數', '填寫資料', '訂票結果'])
 </script>
 
 <style scoped lang="scss">
@@ -29,12 +35,18 @@ const stepTitles = ref(['確認訂票', '訂票結果'])
       margin-right: 5px;
     }
   }
-  .step-1 {
-    color: white;
+  .active {
+    color: white !important;
     border-bottom: 2px solid;
   }
-  .step-2 {
+  .step {
     color: var(--warning-color);
+    &.hover {
+      cursor: pointer;
+      &:hover {
+        color: white;
+      }
+    }
   }
   .arrow {
     display: flex;

@@ -133,7 +133,7 @@ const changeTicketNumberValue = async (number: number, ticketsIndex: number) => 
 }
 
 //計算總價
-const totalPrice = ref<number>(0)
+const totalPrice = ref<number | string>(0)
 const countTotalPrice = async () => {
   //檢測防呆有無通過
   let isPass = await validate()
@@ -143,7 +143,7 @@ const countTotalPrice = async () => {
   _.forEach(tickets.value, (ticket) => {
     sum += ticket.price * ticket.buyNumber
   })
-  totalPrice.value = sum
+  totalPrice.value = priceAddCommas(sum)
 }
 
 //匯出function
