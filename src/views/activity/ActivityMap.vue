@@ -22,7 +22,7 @@ defineProps<{
 
 <style scoped lang="scss">
 .activity-map {
-  background-color: var(--primary-color);
+  background-color: #141c75;
   padding: 2.5em 0;
   h2 {
     color: white;

@@ -46,6 +46,9 @@ const infoTitleItems: Record<string, InfoTitleItem> = ref({
         dateFormatUTC(props.dateRange[0], 'YYYY/MM/DD (dd)'),
         dateFormatUTC(props.dateRange[1], 'YYYY/MM/DD (dd)')
       ]
+
+      //同一天則顯示當日
+      if (format[0] === format[1]) return format[0]
       return format.join(' — ')
     }),
     icon: markRaw(CalendarSvg)
@@ -88,7 +91,7 @@ const scrollToByTickets = () => {
 }
 
 .info-section {
-  background: var(--primary-color);
+  background: #141c75;
   padding: 3.5em 0;
   color: white;
 
