@@ -14,7 +14,11 @@
           <div class="flex-tr" v-for="(item, index) in schedules" :key="item.date">
             <div class="flex-td width-250">
               <calendar-svg class="icon" />
-              {{ dateFormatUTC(item.date, 'YYYY/MM/DD (dd)') }}
+              <span>{{ dateFormatUTC(item.startTime, 'YYYY/MM/DD') }}</span>
+              <template v-if="showScheduleEndTime(item.startTime, item.endTime)">
+                <span class="separator"></span>
+                <span>{{ showScheduleEndTime(item.startTime, item.endTime) }}</span>
+              </template>
             </div>
             <div class="flex-td">
               <i class="fa fa-clock-o fa-lg icon"></i>
@@ -101,6 +105,14 @@ const showTicketResult = (scheduleIndex: number): TicketResult => {
     css: 'btn-black',
     text: '購票'
   }
+}
+
+//場次時間
+const showScheduleEndTime = (start: string, end: string) => {
+  const startDateFormat = dateFormatUTC(start, 'YYYY/MM/DD')
+  const endDateFormat = dateFormatUTC(end, 'YYYY/MM/DD')
+  if (startDateFormat === endDateFormat) return null
+  else return endDateFormat
 }
 
 //購票跳轉判斷(登入)
@@ -193,13 +205,13 @@ const toLogin = () => {
       .date-range {
         display: flex;
         align-items: center;
+      }
 
-        .separator {
-          width: 15px;
-          border-top: 1px solid black;
-          margin: 0 5px;
-          display: inline-block;
-        }
+      .separator {
+        width: 15px;
+        border-top: 1px solid black;
+        margin: 0 5px;
+        display: inline-block;
       }
     }
 
@@ -271,15 +283,13 @@ const toLogin = () => {
             display: flex;
             flex-direction: column;
             align-items: center;
-
-            .separator {
-              height: 15px;
-              width: auto;
-              border-right: 1px solid black;
-              margin: 5px 0;
-            }
           }
-
+          .separator {
+            height: 15px;
+            width: auto;
+            border-right: 1px solid black;
+            margin: 5px 0;
+          }
           &.btn-block {
             max-width: initial !important;
             width: 85%;
