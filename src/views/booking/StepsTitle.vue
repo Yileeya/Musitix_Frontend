@@ -68,9 +68,12 @@ const stepTitles = ref(['選擇票數', '填寫資料', '訂票結果'])
     }
   }
   @media (max-width: 992px) {
-    .step-2,
+    .step:not(.active),
     .arrow {
       display: none;
+    }
+    .step.active {
+      padding: 1em 2.5em 4px;
     }
   }
 }
